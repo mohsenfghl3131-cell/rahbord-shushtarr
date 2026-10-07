@@ -17,7 +17,8 @@ export async function middleware(request:NextRequest){
       }
     }
   );
-  const{data:{claims}}=await supabase.auth.getClaims();
+  const{data:claimsData}=await supabase.auth.getClaims();
+  const claims=claimsData?.claims;
   const path=request.nextUrl.pathname;
   const isApi=path.startsWith("/api/");
   const isPublic=path==="/"||path==="/login"||path==="/setup";
