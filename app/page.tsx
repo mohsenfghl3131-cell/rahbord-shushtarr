@@ -1,2 +1,1 @@
-import Link from "next/link";
-export default function Home(){return <main className="shell"><section className="hero"><span className="eyebrow">راهبرد شوشتر</span><h1>سامانه مدیریت و پایش گزارش‌ها</h1><p>زیرساخت عملیاتی سامانه با احراز هویت، کنترل نقش و دسترسی حوزه‌ای ساخته می‌شود.</p><Link className="button" href="/login">ورود به سامانه</Link></section></main>}
+import{redirect}from"next/navigation";import{createServerClient}from"@/lib/supabase/server";export default async function Home(){const s=await createServerClient();const{data:{user}}=await s.auth.getUser();redirect(user?"/dashboard":"/login")}
