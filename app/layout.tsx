@@ -1,4 +1,1 @@
-import type { Metadata } from "next";
-import "./globals.css";
-export const metadata: Metadata={title:"راهبرد شوشتر",description:"سامانه مدیریت و پایش گزارش‌های راهبرد شوشتر"};
-export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="fa" dir="rtl"><body>{children}</body></html>}
+import type {Metadata} from "next";import "./globals.css";export const metadata:Metadata={title:{default:"راهبرد شوشتر | مرکز عملیات",template:"%s | راهبرد شوشتر"},description:"مرکز یکپارچه مدیریت، گزارش‌دهی، پایش و تحلیل راهبرد شوشتر",applicationName:"راهبرد شوشتر",viewport:"width=device-width, initial-scale=1"};export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="fa" dir="rtl"><body>{children}</body></html>}
