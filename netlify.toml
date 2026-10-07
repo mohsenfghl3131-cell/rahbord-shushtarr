@@ -5,4 +5,5 @@
 [build.environment]
   NODE_VERSION = "20"
 
-# Next.js SSR/App Router is handled by Netlify's current OpenNext adapter.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
