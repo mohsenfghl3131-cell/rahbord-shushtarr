@@ -26,6 +26,12 @@ export async function GET(request:Request){
   const mine=url.searchParams.get("mine")==="1";
 
   const db=admin();
+  const sectionScoped=ctx.responsibleGroupIds.length>0 && !["main_admin","deputy","battalion_commander"].includes(ctx.profile.role);
+  let responsibleCategoryIds:string[]=[];
+  if(sectionScoped){
+    const {data:sectionCategories}=await db.from("categories").select("id").in("group_id",ctx.responsibleGroupIds).eq("is_active",true);
+    responsibleCategoryIds=(sectionCategories??[]).map((x:{id:string})=>x.id);
+  }
   let query=db.from("reports")
     .select("id,title,body,status,rejection_reason,created_at,area_id,category_id,creator_id,areas(name),categories(name,group_id,category_groups(id,name,responsible_user_id))")
     .is("deleted_at",null)
@@ -36,7 +42,9 @@ export async function GET(request:Request){
   if(q)query=query.or("title.ilike.%"+q+"%,body.ilike.%"+q+"%");
   if(status)query=query.eq("status",status);
   if(category)query=query.eq("category_id",category);
-  const sectionScoped=ctx.responsibleGroupIds.length>0 && !["main_admin","deputy","battalion_commander"].includes(ctx.profile.role);
+  if(sectionScoped){
+    query=query.in("category_id",responsibleCategoryIds.length?responsibleCategoryIds:["00000000-0000-0000-0000-000000000000"]);
+  }
   if(area){
     if(!sectionScoped && !canUseArea(ctx,area) && ctx.profile.role!=="main_admin"&&ctx.profile.role!=="deputy"&&ctx.profile.role!=="battalion_commander")
       return NextResponse.json({message:"دسترسی به این حوزه مجاز نیست."},{status:403});
@@ -48,12 +56,7 @@ export async function GET(request:Request){
   const {data,error}=await query;
   if(error)return NextResponse.json({message:"خطا در دریافت گزارش‌ها."},{status:500});
 
-  let reports=data??[];
-  if(ctx.responsibleGroupIds.length && !["main_admin","deputy","battalion_commander"].includes(ctx.profile.role)){
-    reports=reports.filter((r:any)=>ctx.responsibleGroupIds.includes(r.categories?.category_groups?.id));
-  }
-
-  return NextResponse.json({reports});
+  return NextResponse.json({reports:data??[]});
 }
 
 export async function POST(request:Request){
