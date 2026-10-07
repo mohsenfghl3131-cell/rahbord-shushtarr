@@ -67,7 +67,7 @@ export default function AppShell({ children }: Props) {
   }, [pathname]);
 
   const role = me?.profile?.role;
-  const visible = nav.filter((item) => !item.roles.length || (role && item.roles.includes(role)));
+  const visible = nav.filter((item) => !item.roles.length || (role && item.roles.includes(role)) || (item.href === "/reports" && me?.can_review));
 
   const isActive = (href: string) => {
     if (href === "/dashboard") return pathname === "/dashboard";
