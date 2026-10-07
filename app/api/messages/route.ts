@@ -10,7 +10,8 @@ export async function GET(){
  const admin=db();
  const{data,error}=await admin.from("messages").select("id,sender_id,recipient_id,parent_id,subject,body,read_at,created_at,sender:profiles!messages_sender_id_fkey(id,user_code,display_name,role),recipient:profiles!messages_recipient_id_fkey(id,user_code,display_name,role)").or("sender_id.eq."+c.user.id+",recipient_id.eq."+c.user.id).order("created_at",{ascending:false}).limit(100);
  if(error)return NextResponse.json({message:"خطا در دریافت پیام‌ها."},{status:500});
- return NextResponse.json({messages:data??[],can_write:canWrite(c)});
+ const{data:recipients}=await admin.from("profiles").select("id,user_code,display_name,role").eq("is_active",true).order("display_name");
+ return NextResponse.json({messages:data??[],recipients:recipients??[],can_write:canWrite(c)});
 }
 
 export async function POST(req:Request){
