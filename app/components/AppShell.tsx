@@ -18,6 +18,7 @@ const nav: readonly NavItem[] = [
   { label: "ثبت گزارش", href: "/reports/new", icon: "＋", roles: [] },
   { label: "گزارش‌های من", href: "/reports/mine", icon: "▤", roles: [] },
   { label: "همه گزارش‌ها", href: "/reports", icon: "☷", roles: ["main_admin", "deputy", "battalion_commander", "area_manager"] },
+  { label: "پیام‌ها", href: "/messages", icon: "✉", roles: ["main_admin", "area_manager"] },
   { label: "کاربران", href: "/users", icon: "♟", roles: ["main_admin", "deputy", "battalion_commander"] },
   { label: "حوزه‌ها", href: "/areas", icon: "⌖", roles: ["main_admin", "deputy", "battalion_commander", "area_manager"] },
   { label: "دسته‌بندی‌ها", href: "/categories", icon: "▦", roles: ["main_admin", "deputy", "battalion_commander"] },
@@ -40,6 +41,7 @@ const pageTitles: Record<string, string> = {
   "/reports/new": "ثبت گزارش جدید",
   "/reports/mine": "گزارش‌های من",
   "/reports": "همه گزارش‌ها",
+  "/messages": "پیام‌ها",
   "/users": "مدیریت کاربران",
   "/areas": "مدیریت حوزه‌ها",
   "/categories": "دسته‌بندی‌ها",
@@ -67,7 +69,7 @@ export default function AppShell({ children }: Props) {
   }, [pathname]);
 
   const role = me?.profile?.role;
-  const visible = nav.filter((item) => !item.roles.length || (role && item.roles.includes(role)) || (item.href === "/reports" && me?.can_review));
+  const visible = nav.filter((item) => !item.roles.length || (role && item.roles.includes(role)) || (item.href === "/reports" && me?.can_review) || (item.href === "/messages" && me?.can_message));
 
   const isActive = (href: string) => {
     if (href === "/dashboard") return pathname === "/dashboard";
