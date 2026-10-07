@@ -1,3 +1,34 @@
-import {NextResponse} from "next/server";import {getCurrentContext} from "@/lib/auth";import {createClient} from "@supabase/supabase-js";
-export async function GET(){const ctx=await getCurrentContext();if(!ctx)return NextResponse.json({message:"احراز هویت لازم است."},{status:401});const db=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.SUPABASE_SERVICE_ROLE_KEY!);const {data:access}=await db.from("user_area_access").select("area_id,areas(id,name)").eq("user_id",ctx.user.id);const profile={...ctx.profile}; if(profile.avatar_path){const {data:s}=await db.storage.from("avatars").createSignedUrl(profile.avatar_path,300); (profile as any).avatar_url=s?.signedUrl??null} return NextResponse.json({profile,areas:access??[]})}
-export async function PATCH(request:Request){const ctx=await getCurrentContext();if(!ctx)return NextResponse.json({message:"احراز هویت لازم است."},{status:401});const b=await request.json();const displayName=String(b.display_name??"").trim();if(!displayName)return NextResponse.json({message:"نام نمایشی الزامی است."},{status:400});const db=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.SUPABASE_SERVICE_ROLE_KEY!);const {error}=await db.from("profiles").update({display_name:displayName,updated_at:new Date().toISOString()}).eq("id",ctx.user.id);if(error)return NextResponse.json({message:"ویرایش پروفایل انجام نشد."},{status:500});await db.from("audit_logs").insert({user_id:ctx.user.id,action:"profile.update",entity_type:"profile",entity_id:ctx.user.id,metadata:{display_name:displayName}});return NextResponse.json({ok:true})}
+import {NextResponse} from "next/server";
+import {getCurrentContext} from "@/lib/auth";
+import {createClient} from "@supabase/supabase-js";
+
+export async function GET(){
+  const ctx=await getCurrentContext();
+  if(!ctx)return NextResponse.json({message:"احراز هویت لازم است."},{status:401});
+  const db=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.SUPABASE_SERVICE_ROLE_KEY!);
+  const profile={...ctx.profile};
+  if(profile.avatar_path){
+    const {data:s}=await db.storage.from("avatars").createSignedUrl(profile.avatar_path,300);
+    (profile as any).avatar_url=s?.signedUrl??null;
+  }
+  return NextResponse.json({
+    profile,
+    areas:ctx.areaIds,
+    responsible_groups:ctx.responsibleGroups,
+    responsible_group_ids:ctx.responsibleGroupIds,
+    can_review:ctx.canReview
+  });
+}
+
+export async function PATCH(request:Request){
+  const ctx=await getCurrentContext();
+  if(!ctx)return NextResponse.json({message:"احراز هویت لازم است."},{status:401});
+  const b=await request.json();
+  const displayName=String(b.display_name??"").trim();
+  if(!displayName)return NextResponse.json({message:"نام نمایشی الزامی است."},{status:400});
+  const db=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.SUPABASE_SERVICE_ROLE_KEY!);
+  const {error}=await db.from("profiles").update({display_name:displayName,updated_at:new Date().toISOString()}).eq("id",ctx.user.id);
+  if(error)return NextResponse.json({message:"ویرایش پروفایل انجام نشد."},{status:500});
+  await db.from("audit_logs").insert({user_id:ctx.user.id,action:"profile.update",entity_type:"profile",entity_id:ctx.user.id,metadata:{display_name:displayName}});
+  return NextResponse.json({ok:true});
+}
