@@ -46,8 +46,14 @@ export async function POST(request:Request){
   const displayName=String(b.display_name??"").trim();
   const password=String(b.password??"");
   const role=String(b.role??"area_force");
-  const areaIds=Array.isArray(b.area_ids)
-    ? [...new Set(b.area_ids.filter((x:any)=>typeof x==="string"&&x.trim()).map((x:string)=>x.trim()))]
+  const areaIds: string[] = Array.isArray(b.area_ids)
+    ? Array.from(
+        new Set(
+          b.area_ids
+            .filter((x: unknown): x is string => typeof x === "string" && x.trim().length > 0)
+            .map((x: string) => x.trim())
+        )
+      )
     : [];
 
   if(!userCode||!displayName||password.length<8||!roles.includes(role)){
@@ -127,7 +133,7 @@ export async function POST(request:Request){
   if(areaIds.length){
     const {error:accessError}=await admin
       .from("user_area_access")
-      .insert(areaIds.map((area_id:string)=>({user_id:userId,area_id})));
+      .insert(areaIds.map((area_id) => ({user_id:userId,area_id})));
 
     if(accessError){
       await admin.from("user_area_access").delete().eq("user_id",userId);
