@@ -36,11 +36,12 @@ export async function GET(request:Request){
   if(q)query=query.or("title.ilike.%"+q+"%,body.ilike.%"+q+"%");
   if(status)query=query.eq("status",status);
   if(category)query=query.eq("category_id",category);
+  const sectionScoped=ctx.responsibleGroupIds.length>0 && !["main_admin","deputy","battalion_commander"].includes(ctx.profile.role);
   if(area){
-    if(!canUseArea(ctx,area)&&ctx.profile.role!=="main_admin"&&ctx.profile.role!=="deputy"&&ctx.profile.role!=="battalion_commander")
+    if(!sectionScoped && !canUseArea(ctx,area) && ctx.profile.role!=="main_admin"&&ctx.profile.role!=="deputy"&&ctx.profile.role!=="battalion_commander")
       return NextResponse.json({message:"دسترسی به این حوزه مجاز نیست."},{status:403});
     query=query.eq("area_id",area);
-  }else if(ctx.profile.role==="area_manager"||ctx.profile.role==="area_force"){
+  }else if(!sectionScoped && (ctx.profile.role==="area_manager"||ctx.profile.role==="area_force")){
     query=query.in("area_id",ctx.areaIds.length?ctx.areaIds:["00000000-0000-0000-0000-000000000000"]);
   }
 
