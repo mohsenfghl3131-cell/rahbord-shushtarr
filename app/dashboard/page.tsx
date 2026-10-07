@@ -59,7 +59,7 @@ export default async function Dashboard(){
     scoped(db.from("reports").select("id",{count:"exact",head:true}).gte("created_at",startOfToday).is("deleted_at",null)),
     scoped(db.from("reports").select("created_at,status").gte("created_at",weekStart).is("deleted_at",null).order("created_at",{ascending:true})),
     scoped(db.from("reports").select("id,title,status,created_at,areas(name),categories(name)").is("deleted_at",null).order("created_at",{ascending:false}).limit(6)),
-    db.from("audit_logs").select("id,action,created_at,metadata").order("created_at",{ascending:false}).limit(6)),
+    db.from("audit_logs").select("id,action,created_at,metadata").order("created_at",{ascending:false}).limit(6),
     scoped(db.from("reports").select("area_id,status,areas(name)").is("deleted_at",null))
   ]);
 
