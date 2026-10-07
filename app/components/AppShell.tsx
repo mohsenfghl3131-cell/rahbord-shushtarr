@@ -26,13 +26,19 @@ const roles:Record<string,string>={main_admin:"مدیر اصلی",deputy:"معا
 export default function AppShell({children}:Props){
   const pathname=usePathname();
   const [me,setMe]=useState<any>(null);
+  const [mobileOpen,setMobileOpen]=useState(false);
   useEffect(()=>{fetch("/api/me").then(r=>r.ok?r.json():null).then(setMe).catch(()=>null)},[]);
   const role=me?.profile?.role;
   const visible=nav.filter(x=>!x.roles.length||(role&&x.roles.includes(role)));
   const active=(href:string)=>href==="/dashboard"?pathname==="/dashboard":pathname===href||pathname.startsWith(href+"/");
   const initials=me?.profile?.display_name?.slice(0,1)??"ر";
+  const pageTitle=pathname==="/reports/new"?"ثبت گزارش جدید":pathname==="/reports/mine"?"گزارش‌های من":pathname==="/reports"?"همه گزارش‌ها":pathname==="/users"?"مدیریت کاربران":pathname==="/users/new"?"ایجاد کاربر":pathname==="/areas"?"مدیریت حوزه‌ها":pathname==="/analytics"?"گزارش‌های تحلیلی":pathname==="/categories"?"دسته‌بندی‌ها":pathname==="/audit"?"لاگ‌های سامانه":pathname==="/files"?"فایل‌ها":pathname==="/settings"?"تنظیمات":"راهبرد شوشتر";
+
+  const closeMobile=()=>setMobileOpen(false);
+
   return <div className="app-shell unified-shell">
-    <aside className="sidebar">
+    {mobileOpen&&<button className="sidebar-backdrop" aria-label="بستن منو" onClick={closeMobile}/>} 
+    <aside className={"sidebar"+(mobileOpen?" open":"")}>
       <div className="brand">
         <div className="brand-mark">ر</div>
         <div className="brand-copy"><b>راهبرد شوشتر</b><small>مرکز عملیات و پایش</small></div>
@@ -40,20 +46,21 @@ export default function AppShell({children}:Props){
       </div>
       <div className="sidebar-scroll">
         <div className="sidebar-section"><span>فضای کاری</span><nav>
-          {visible.filter(x=>["/dashboard","/reports/new","/reports/mine","/reports"].includes(x.href)).map(x=><Link key={x.href} href={x.href} className={active(x.href)?"active":""}><span className="nav-icon">{x.icon}</span><span className="nav-label">{x.label}</span></Link>)}
+          {visible.filter(x=>["/dashboard","/reports/new","/reports/mine","/reports"].includes(x.href)).map(x=><Link key={x.href} href={x.href} className={active(x.href)?"active":""} onClick={closeMobile}><span className="nav-icon">{x.icon}</span><span className="nav-label">{x.label}</span></Link>)}
         </nav></div>
         <div className="sidebar-section"><span>مدیریت سامانه</span><nav>
           {visible.filter(x=>["/users","/areas","/categories","/files","/analytics","/audit","/settings"].includes(x.href)).map(x=><Link key={x.href} href={x.href} className={active(x.href)?"active":""}><span className="nav-icon">{x.icon}</span><span className="nav-label">{x.label}</span></Link>)}
         </nav></div>
       </div>
       <div className="sidebar-profile">
-        <Link href="/profile" className="sidebar-user"><div className="avatar sidebar-avatar">{initials}</div><div><b>{me?.profile?.display_name??"کاربر سامانه"}</b><small>{roles[role]??"در حال بارگذاری"}</small></div><span>‹</span></Link>
-        <Link className="sidebar-logout" href="/logout"><span>↪</span>خروج امن</Link>
+        <Link href="/profile" className="sidebar-user" onClick={closeMobile}><div className="avatar sidebar-avatar">{initials}</div><div><b>{me?.profile?.display_name??"کاربر سامانه"}</b><small>{roles[role]??"در حال بارگذاری"}</small></div><span>‹</span></Link>
+        <Link className="sidebar-logout" href="/logout" onClick={closeMobile}><span>↪</span>خروج امن</Link>
       </div>
     </aside>
     <div className="main">
       <header className="header unified-header">
-        <div className="header-context"><span>سامانه مدیریت و پایش</span><b>{pathname==="/reports/new"?"ثبت گزارش جدید":pathname==="/reports/mine"?"گزارش‌های من":pathname==="/reports"?"همه گزارش‌ها":pathname==="/users"?"مدیریت کاربران":pathname==="/users/new"?"ایجاد کاربر":pathname==="/areas"?"مدیریت حوزه‌ها":pathname==="/analytics"?"گزارش‌های تحلیلی":"راهبرد شوشتر"}</b></div>
+        <button className="menu-toggle" type="button" aria-label="منوی سامانه" aria-expanded={mobileOpen} onClick={()=>setMobileOpen(value=>!value)}><span/><span/><span/></button>
+        <div className="header-context"><span>سامانه مدیریت و پایش</span><b>{pageTitle}</b></div>
         <div className="header-spacer"/>
         <Link className="header-profile" href="/profile"><span className="header-live"/>{me?.profile?.display_name??"کاربر"}</Link>
       </header>
