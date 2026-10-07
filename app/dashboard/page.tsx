@@ -40,17 +40,38 @@ export default async function Dashboard() {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
-  const restricted =
-    ctx.profile.role === "area_manager" || ctx.profile.role === "area_force";
+  const sectionScoped =
+    ctx.responsibleGroupIds.length > 0 &&
+    !["main_admin", "deputy", "battalion_commander"].includes(ctx.profile.role);
+
+  const { data: responsibleCategories } = sectionScoped
+    ? await db
+        .from("categories")
+        .select("id")
+        .in("group_id", ctx.responsibleGroupIds)
+        .eq("is_active", true)
+    : { data: [] as { id: string }[] };
+
+  const responsibleCategoryIds = (responsibleCategories ?? []).map((x: { id: string }) => x.id);
 
   const scope = (query: any) => {
-    if (!restricted) return query;
-    return query.in(
-      "area_id",
-      ctx.areaIds.length
-        ? ctx.areaIds
-        : ["00000000-0000-0000-0000-000000000000"]
-    );
+    if (sectionScoped) {
+      return query.in(
+        "category_id",
+        responsibleCategoryIds.length
+          ? responsibleCategoryIds
+          : ["00000000-0000-0000-0000-000000000000"]
+      );
+    }
+    if (ctx.profile.role === "area_manager" || ctx.profile.role === "area_force") {
+      return query.in(
+        "area_id",
+        ctx.areaIds.length
+          ? ctx.areaIds
+          : ["00000000-0000-0000-0000-000000000000"]
+      );
+    }
+    return query;
   };
 
   const now = new Date();
