@@ -18,13 +18,20 @@ export async function getCurrentContext(){
   const{data:profile}=await admin.from("profiles").select("*").eq("id",userId).maybeSingle();
   if(!profile?.is_active)return null;
 
-  const{data:access}=await admin.from("user_area_access").select("area_id").eq("user_id",userId);
+  const[{data:access},{data:responsibleGroups}]=await Promise.all([
+    admin.from("user_area_access").select("area_id").eq("user_id",userId),
+    admin.from("category_groups").select("id,name").eq("responsible_user_id",userId).eq("is_active",true).order("sort_order")
+  ]);
+
+  const groupIds=(responsibleGroups??[]).map((x:{id:string})=>x.id);
 
   return{
     user:{id:userId},
     profile:profile as Profile,
     areaIds:(access??[]).map((x:{area_id:string})=>x.area_id),
-    canReview:reviewRoles.includes(profile.role as AppRole)
+    responsibleGroupIds:groupIds,
+    responsibleGroups:responsibleGroups??[],
+    canReview:reviewRoles.includes(profile.role as AppRole)||groupIds.length>0
   };
 }
 
