@@ -139,3 +139,38 @@ nav{padding-top:18px;display:grid;gap:5px}nav a{padding:11px 12px;border-radius:
   .main{margin-right:0;width:100%}
   .unified-header{padding:0 14px;gap:9px}
 }
+
+
+/* Activated cyber command sidebar */
+.sidebar-controls{position:absolute;top:27px;left:12px;z-index:3}
+.sidebar-collapse{width:27px;height:27px;border:1px solid rgba(100,220,255,.14);border-radius:8px;background:rgba(255,255,255,.045);color:#77a1bd;font:700 15px Vazirmatn;cursor:pointer;display:grid;place-items:center;transition:.2s}
+.sidebar-collapse:hover{background:rgba(0,211,255,.12);color:#42ddff;border-color:rgba(66,221,255,.3);box-shadow:0 0 18px rgba(0,211,255,.1)}
+.sidebar-collapsed .sidebar{width:88px;padding-left:9px;padding-right:9px}
+.sidebar-collapsed .main{margin-right:88px;width:calc(100% - 88px)}
+.sidebar-collapsed .brand{justify-content:center;padding-left:0;padding-right:0}
+.sidebar-collapsed .brand-copy,.sidebar-collapsed .brand-status,.sidebar-collapsed .sidebar-section>span,.sidebar-collapsed .nav-label,.sidebar-collapsed .sidebar-user>div:nth-child(2),.sidebar-collapsed .sidebar-user>span,.sidebar-collapsed .sidebar-logout{display:none}
+.sidebar-collapsed .sidebar-controls{left:50%;transform:translateX(-50%);top:79px}
+.sidebar-collapsed .sidebar-scroll{padding-top:38px}
+.sidebar-collapsed .sidebar nav a{justify-content:center;padding:7px}
+.sidebar-collapsed .sidebar nav a .nav-icon{width:38px;height:38px}
+.sidebar-collapsed .sidebar-user{justify-content:center;padding:8px}
+.sidebar-collapsed .sidebar-profile{padding-top:13px}
+.sidebar-collapsed .sidebar-avatar{width:38px;height:38px}
+.sidebar-collapsed .sidebar nav a.active{box-shadow:inset -3px 0 0 #27d9ff,0 0 22px rgba(0,207,255,.08)}
+.sidebar nav a{isolation:isolate}
+.sidebar nav a.active:before{content:"";position:absolute;right:-13px;top:50%;width:3px;height:27px;transform:translateY(-50%);border-radius:0 5px 5px 0;background:#2bdcff;box-shadow:0 0 14px #2bdcff}
+.sidebar nav a.active .nav-label{font-weight:800;color:#f7fdff}
+.sidebar nav a:active{transform:scale(.985)}
+@media(max-width:1100px) and (min-width:701px){.sidebar-collapsed .sidebar{width:78px}.sidebar-collapsed .main{margin-right:78px;width:calc(100% - 78px)}}
+@media(max-width:700px){
+  .sidebar-controls{display:none}
+  .sidebar-collapsed .sidebar{width:min(310px,88vw);padding:16px 12px}
+  .sidebar-collapsed .main{margin-right:0;width:100%}
+  .sidebar-collapsed .brand{justify-content:flex-start;padding-left:7px;padding-right:7px}
+  .sidebar-collapsed .brand-copy,.sidebar-collapsed .brand-status,.sidebar-collapsed .sidebar-section>span,.sidebar-collapsed .nav-label,.sidebar-collapsed .sidebar-user>div:nth-child(2),.sidebar-collapsed .sidebar-user>span,.sidebar-collapsed .sidebar-logout{display:block}
+  .sidebar-collapsed .sidebar-scroll{padding-top:8px}
+  .sidebar-collapsed .sidebar nav a{justify-content:flex-start;padding:9px 10px}
+  .sidebar-collapsed .sidebar nav a .nav-icon{width:30px;height:30px}
+  .sidebar-collapsed .sidebar-user{justify-content:flex-start;padding:9px}
+  .sidebar-collapsed .sidebar-avatar{width:34px;height:34px}
+}
