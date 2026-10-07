@@ -1,0 +1,25 @@
+import {NextResponse} from "next/server";import {createClient} from "@supabase/supabase-js";import {getCurrentContext,canUseArea} from "@/lib/auth";
+export async function GET(request:Request){
+ const ctx=await getCurrentContext();if(!ctx)return NextResponse.json({message:"احراز هویت لازم است."},{status:401});
+ const url=new URL(request.url);const q=url.searchParams.get("q")?.trim();const status=url.searchParams.get("status");const area=url.searchParams.get("area_id");const category=url.searchParams.get("category_id");
+ const supabase=await (await import("@/lib/supabase/server")).createServerClient();
+ let query=supabase.from("reports").select("id,title,body,status,rejection_reason,created_at,area_id,category_id,creator_id,areas(name),categories(name)").is("deleted_at",null).order("created_at",{ascending:false}).limit(100);
+ if(q)query=query.or("title.ilike.%"+q+"%,body.ilike.%"+q+"%");
+ if(status)query=query.eq("status",status);
+ if(category)query=query.eq("category_id",category);
+ if(area){if(!canUseArea(ctx,area))return NextResponse.json({message:"دسترسی به این حوزه مجاز نیست."},{status:403});query=query.eq("area_id",area)}
+ else if(ctx.profile.role==="area_manager"||ctx.profile.role==="area_force")query=query.in("area_id",ctx.areaIds.length?ctx.areaIds:["00000000-0000-0000-0000-000000000000"]);
+ const {data,error}=await query;if(error)return NextResponse.json({message:"خطا در دریافت گزارش‌ها."},{status:500});return NextResponse.json({reports:data??[]});
+}
+export async function POST(request:Request){
+ const ctx=await getCurrentContext();if(!ctx)return NextResponse.json({message:"احراز هویت لازم است."},{status:401});
+ const body=await request.json();const title=String(body.title??"").trim();const text=String(body.body??"").trim();const areaId=String(body.area_id??"");const categoryId=String(body.category_id??"");
+ if(!title||!text||!areaId||!categoryId)return NextResponse.json({message:"عنوان، متن، حوزه و دسته‌بندی الزامی است."},{status:400});
+ if(!canUseArea(ctx,areaId))return NextResponse.json({message:"شما به این حوزه دسترسی ندارید."},{status:403});
+ const supabase=await (await import("@/lib/supabase/server")).createServerClient();
+ const {data,error}=await supabase.from("reports").insert({title,body:text,area_id:areaId,category_id:categoryId,creator_id:ctx.user.id,status:"pending"}).select("id").single();
+ if(error||!data)return NextResponse.json({message:"ثبت گزارش انجام نشد."},{status:500});
+ const admin=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.SUPABASE_SERVICE_ROLE_KEY!);
+ await admin.from("audit_logs").insert({user_id:ctx.user.id,action:"report.create",entity_type:"report",entity_id:data.id,metadata:{area_id:areaId,category_id:categoryId}});
+ return NextResponse.json({id:data.id},{status:201});
+}
