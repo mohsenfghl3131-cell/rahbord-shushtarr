@@ -10,7 +10,7 @@ export async function GET(){
  const admin=db();
  const{data,error}=await admin.from("messages").select("id,sender_id,recipient_id,parent_id,subject,body,read_at,created_at,sender:profiles!messages_sender_id_fkey(id,user_code,display_name,role),recipient:profiles!messages_recipient_id_fkey(id,user_code,display_name,role)").or("sender_id.eq."+c.user.id+",recipient_id.eq."+c.user.id).order("created_at",{ascending:false}).limit(100);
  if(error)return NextResponse.json({message:"خطا در دریافت پیام‌ها."},{status:500});
- const{data:recipients}=await admin.from("profiles").select("id,user_code,display_name,role").eq("is_active",true).order("display_name");
+ const{data:recipients}=await admin.from("profiles").select("id,user_code,display_name,role").eq("is_active",true).neq("id",c.user.id).order("display_name");
  const messages=(data??[]).map((m:any)=>({...m,is_sender:m.sender_id===c.user.id}));
  return NextResponse.json({messages,recipients:recipients??[],can_write:canWrite(c)});
 }
