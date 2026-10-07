@@ -203,28 +203,60 @@ export default async function Dashboard(){
       <aside className="sidebar">
         <div className="brand">
           <div className="brand-mark">ر</div>
-          <div>
+          <div className="brand-copy">
             <b>راهبرد شوشتر</b>
-            <small>مرکز عملیات و پایش گزارش‌ها</small>
+            <small>مرکز عملیات و پایش</small>
+          </div>
+          <span className="brand-status" title="سامانه فعال"/>
+        </div>
+
+        <div className="sidebar-scroll">
+          <div className="sidebar-section">
+            <span>فضای کاری</span>
+            <nav>
+              {visibleNav.filter(item=>["/dashboard","/reports/new","/reports/mine","/reports"].includes(item.href)).map(item=>(
+                <Link
+                  className={item.href==="/dashboard"?"active":""}
+                  href={item.href}
+                  key={item.href}
+                >
+                  <span className="nav-icon">{item.icon}</span>
+                  <span className="nav-label">{item.label}</span>
+                  {item.href==="/reports"&&pendingCount>0&&<em>{pendingCount>99?"۹۹+":pendingCount.toLocaleString("fa-IR")}</em>}
+                </Link>
+              ))}
+            </nav>
+          </div>
+
+          <div className="sidebar-section">
+            <span>مدیریت سامانه</span>
+            <nav>
+              {visibleNav.filter(item=>["/users","/areas","/categories","/files","/analytics","/audit","/settings"].includes(item.href)).map(item=>(
+                <Link
+                  className={item.href==="/dashboard"?"active":""}
+                  href={item.href}
+                  key={item.href}
+                >
+                  <span className="nav-icon">{item.icon}</span>
+                  <span className="nav-label">{item.label}</span>
+                </Link>
+              ))}
+            </nav>
           </div>
         </div>
 
-        <nav>
-          {visibleNav.map(item=>(
-            <Link
-              className={item.href==="/dashboard"?"active":""}
-              href={item.href}
-              key={item.href}
-            >
-              <span>{item.icon}</span>
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="sidebar-footer">
-          <Link className="button" style={{width:"100%"}} href="/logout">
-            خروج امن از سامانه
+        <div className="sidebar-profile">
+          <Link href="/profile" className="sidebar-user">
+            <div className="avatar sidebar-avatar">{ctx.profile.display_name?.slice(0,1)??"م"}</div>
+            <div>
+              <b>{ctx.profile.display_name}</b>
+              <small>{roleLabels[ctx.profile.role]??ctx.profile.role}</small>
+            </div>
+            <span>‹</span>
+          </Link>
+          <Link className="sidebar-logout" href="/logout">
+            <span>↪</span>
+            خروج امن
           </Link>
         </div>
       </aside>
