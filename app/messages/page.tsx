@@ -1,0 +1,20 @@
+"use client";
+import AppShell from "@/app/components/AppShell";
+import{useEffect,useState}from"react";
+
+export default function Messages(){
+ const[messages,setMessages]=useState<any[]>([]),[recipients,setRecipients]=useState<any[]>([]),[canWrite,setCanWrite]=useState(false),[selected,setSelected]=useState<any>(null),[form,setForm]=useState({recipient_id:"",subject:"",body:""}),[error,setError]=useState(""),[sending,setSending]=useState(false);
+ async function load(){const r=await fetch("/api/messages");const d=await r.json();if(!r.ok){setError(d.message||"خطا");return}setMessages(d.messages||[]);setRecipients((d.recipients||[]));setCanWrite(Boolean(d.can_write))}
+ useEffect(()=>{load()},[]);
+ async function send(e:any){e.preventDefault();setSending(true);setError("");const r=await fetch("/api/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(form)});const d=await r.json();if(!r.ok){setError(d.message||"ارسال نشد.");setSending(false);return}setForm({recipient_id:"",subject:"",body:""});setSending(false);load()}
+ async function open(m:any){setSelected(m);if(m.recipient_id&&m.read_at==null){await fetch("/api/messages",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:m.id})});load()}}
+ return <AppShell><main className="shell unified-page">
+  <div className="topbar"><div><span className="eyebrow">ارتباطات امن سامانه</span><h1>پیام‌ها</h1><p>ارتباط مستقیم مسئولان حوزه و بخش‌ها با مدیریت سامانه.</p></div><span className="header-live">● ارتباط امن</span></div>
+  {error&&<div className="error">{error}</div>}
+  <div className="messages-layout">
+   {canWrite&&<form className="form-panel message-compose" onSubmit={send}><div className="form-step"><span>✦</span><div><b>پیام جدید</b><small>گیرنده را انتخاب و پیام را ارسال کنید.</small></div></div><label>دریافت‌کننده<select value={form.recipient_id} onChange={e=>setForm({...form,recipient_id:e.target.value})} required><option value="">انتخاب دریافت‌کننده</option>{recipients.map(u=><option key={u.id} value={u.id}>{u.display_name} · {u.user_code}</option>)}</select></label><label>موضوع<input value={form.subject} onChange={e=>setForm({...form,subject:e.target.value})} required/></label><label>متن پیام<textarea rows={8} value={form.body} onChange={e=>setForm({...form,body:e.target.value})} required/></label><button className="button neon-button" disabled={sending}>{sending?"در حال ارسال…":"ارسال پیام"}</button></form>}
+   <section className="panel message-list"><div className="panel-title"><div><span className="panel-eyebrow">INBOX / SENT</span><h2>صندوق پیام‌ها</h2></div></div>{messages.length===0?<div className="empty-state">پیامی وجود ندارد.</div>:messages.map(m=><button className={"message-row "+(!m.read_at&&m.recipient_id?"unread":"")} key={m.id} onClick={()=>open(m)}><span className="message-icon">✉</span><div><b>{m.subject}</b><small>{m.sender_id===m.recipient_id?"":m.sender?.display_name} {m.sender_id===m.recipient_id?"": "←"} {m.recipient?.display_name} · {new Date(m.created_at).toLocaleString("fa-IR")}</small></div><i>{m.read_at?"خوانده‌شده":"جدید"}</i></button>)}</section>
+  </div>
+  {selected&&<div className="message-modal" onClick={()=>setSelected(null)}><article onClick={e=>e.stopPropagation()}><button className="modal-close" onClick={()=>setSelected(null)}>×</button><span className="panel-eyebrow">پیام</span><h2>{selected.subject}</h2><div className="message-route">از: <b>{selected.sender?.display_name}</b>　→　به: <b>{selected.recipient?.display_name}</b></div><p>{selected.body}</p>{canWrite&&selected.sender_id!==selected.recipient_id&&<button className="button" onClick={()=>{setForm({recipient_id:selected.sender_id,subject:"پاسخ: "+selected.subject,body:""});setSelected(null)}}>پاسخ به پیام</button>}</article></div>}
+ </main></AppShell>
+}
