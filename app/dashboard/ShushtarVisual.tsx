@@ -1,0 +1,5 @@
+"use client";
+import Image from"next/image";
+export default function ShushtarVisual(){
+ return <section className="shushtar-visual"><div className="waterfall-photo"><Image src="https://upload.wikimedia.org/wikipedia/commons/1/15/Shushtar_Historical_Hydraulic_System_2.jpg" alt="آبشارها و سازه‌های آبی شوشتر" fill sizes="(max-width:900px) 100vw, 55vw" unoptimized/><div className="photo-overlay"><span>شوشتر</span><b>میراث آب و تمدن</b></div></div><div className="roadman-card"><div className="roadman-scene"><div className="roadman"><span className="head">●</span><span className="body">▣</span><span className="leg l">╱</span><span className="leg r">╲</span><span className="search">⌕</span></div><i className="scan-line"/></div><div><span className="panel-eyebrow">FIELD SCOUT</span><h3>در حال پایش گزارش‌ها</h3><p>نیروی راهبر در حال جست‌وجوی گزارش‌های جدید است…</p></div></div></section>
+}
