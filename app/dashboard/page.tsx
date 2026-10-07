@@ -467,8 +467,7 @@ export default async function Dashboard(){
               </div>
             </section>
           </div>
-        </section>
-      </section>
+        </div>
     </main>
   );
 }
