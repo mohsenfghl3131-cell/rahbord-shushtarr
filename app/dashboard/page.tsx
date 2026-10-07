@@ -3,6 +3,8 @@ import { createClient } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
 import { getCurrentContext } from "@/lib/auth";
 import AppShell from "@/app/components/AppShell";
+import QuranCard from "./QuranCard";
+import ShushtarVisual from "./ShushtarVisual";
 
 type AreaStat = {
   name: string;
@@ -206,7 +208,15 @@ export default async function Dashboard() {
             <span>⌁</span>
             <div><b>مرکز تحلیل</b><small>روندها و رتبه‌بندی حوزه‌ها</small></div>
           </Link>
+          {(ctx.profile.role === "main_admin" || ctx.profile.role === "area_manager" || ctx.responsibleGroupIds.length > 0) && (
+            <Link href="/messages">
+              <span>✉</span>
+              <div><b>مرکز پیام</b><small>ارتباط با مدیریت و مسئولان</small></div>
+            </Link>
+          )}
         </section>
+        <QuranCard />
+        <ShushtarVisual />
 
         <section className="stats">
           <Stat label="کل گزارش‌ها" value={total} tone="blue" note="تمام گزارش‌های فعال" />
