@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "next/link";import type {CSSProperties} from "react";
 import {createClient} from "@supabase/supabase-js";
 import {redirect} from "next/navigation";
 import {getCurrentContext} from "@/lib/auth";
@@ -150,7 +150,7 @@ export default async function Dashboard(){
           <section className="panel">
             <div className="panel-title"><div><span className="panel-eyebrow">وضعیت فعلی</span><h2>توزیع گزارش‌ها</h2></div></div>
             <div className="status-overview">
-              <div className="status-ring" style={{"--approved":approvalRate+"%"} as React.CSSProperties}><strong>{approvalRate}٪</strong><small>نرخ تأیید</small></div>
+              <div className="status-ring" style={{"--approved":approvalRate+"%"} as CSSProperties}><strong>{approvalRate}٪</strong><small>نرخ تأیید</small></div>
               <div className="status-legend">
                 <Legend label="تأیید شده" value={approvedCount} cls="approved"/>
                 <Legend label="در انتظار" value={pendingCount} cls="pending"/>
