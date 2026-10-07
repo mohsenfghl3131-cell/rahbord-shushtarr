@@ -49,7 +49,7 @@ export default function AppShell({children}:Props){
           {visible.filter(x=>["/dashboard","/reports/new","/reports/mine","/reports"].includes(x.href)).map(x=><Link key={x.href} href={x.href} className={active(x.href)?"active":""} onClick={closeMobile}><span className="nav-icon">{x.icon}</span><span className="nav-label">{x.label}</span></Link>)}
         </nav></div>
         <div className="sidebar-section"><span>مدیریت سامانه</span><nav>
-          {visible.filter(x=>["/users","/areas","/categories","/files","/analytics","/audit","/settings"].includes(x.href)).map(x=><Link key={x.href} href={x.href} className={active(x.href)?"active":""}><span className="nav-icon">{x.icon}</span><span className="nav-label">{x.label}</span></Link>)}
+          {visible.filter(x=>["/users","/areas","/categories","/files","/analytics","/audit","/settings"].includes(x.href)).map(x=><Link key={x.href} href={x.href} className={active(x.href)?"active":""} onClick={closeMobile}><span className="nav-icon">{x.icon}</span><span className="nav-label">{x.label}</span></Link>)}
         </nav></div>
       </div>
       <div className="sidebar-profile">
