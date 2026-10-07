@@ -1,0 +1,2 @@
+import Link from "next/link";
+export default function Home(){return <main className="shell"><section className="hero"><span className="eyebrow">راهبرد شوشتر</span><h1>سامانه مدیریت و پایش گزارش‌ها</h1><p>زیرساخت عملیاتی سامانه با احراز هویت، کنترل نقش و دسترسی حوزه‌ای ساخته می‌شود.</p><Link className="button" href="/login">ورود به سامانه</Link></section></main>}
