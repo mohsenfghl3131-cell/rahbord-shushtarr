@@ -1,0 +1,9 @@
+"use client";
+import{useEffect,useState}from"react";
+export default function QuranCard(){
+ const[c,setC]=useState<any>({ayah:"",text:"",reference:""}),[edit,setEdit]=useState(false),[canEdit,setCanEdit]=useState(false),[saving,setSaving]=useState(false),[error,setError]=useState("");
+ useEffect(()=>{fetch("/api/dashboard-content").then(r=>r.json()).then(d=>{if(d.content)setC(d.content);setCanEdit(Boolean(d.can_edit))})},[]);
+ async function save(e:any){e.preventDefault();setSaving(true);setError("");const r=await fetch("/api/dashboard-content",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify(c)});const d=await r.json();if(!r.ok){setError(d.message||"ذخیره نشد.");setSaving(false);return}setEdit(false);setSaving(false)}
+ if(edit)return <section className="panel quran-card quran-edit"><div className="panel-title"><div><span className="panel-eyebrow">DASHBOARD CONTENT</span><h2>ویرایش پیام قرآنی</h2></div></div><form onSubmit={save}><label>آیه<input value={c.ayah} onChange={e=>setC({...c,ayah:e.target.value})}/></label><label>متن<textarea rows={3} value={c.text} onChange={e=>setC({...c,text:e.target.value})}/></label><label>مرجع<input value={c.reference} onChange={e=>setC({...c,reference:e.target.value})}/></label>{error&&<div className="error">{error}</div>}<div className="quran-actions"><button className="button" disabled={saving}>{saving?"در حال ذخیره…":"ذخیره تغییرات"}</button><button type="button" className="small-btn" onClick={()=>setEdit(false)}>انصراف</button></div></form></section>;
+ return <section className="quran-card"><div className="quran-symbol">۞</div><div className="quran-copy"><span>پیام امروز</span><blockquote>{c.ayah}</blockquote><p>{c.text}</p><small>{c.reference}</small></div>{canEdit&&<button className="quran-edit-btn" onClick={()=>setEdit(true)}>ویرایش</button>}</section>
+}
