@@ -31,6 +31,7 @@ const auditLabels: Record<string, string> = {
   "auth.logout": "خروج از سامانه",
   "file.upload": "آپلود فایل",
   "profile.update": "ویرایش پروفایل",
+  "message.create": "ارسال پیام",
 };
 
 export default async function Dashboard() {
