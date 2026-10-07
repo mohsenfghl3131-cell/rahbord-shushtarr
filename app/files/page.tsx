@@ -1,0 +1,6 @@
+"use client";
+import{useEffect,useState}from"react";
+export default function FilesPage(){const[files,setFiles]=useState<any[]>([]);const[loading,setLoading]=useState(true);const[msg,setMsg]=useState("");
+useEffect(()=>{fetch("/api/files").then(r=>r.json()).then(d=>{if(d.files)setFiles(d.files);else setMsg(d.message||"دریافت فایل‌ها انجام نشد.");setLoading(false)})},[]);
+async function openFile(f:any){const r=await fetch("/api/files/signed?bucket="+encodeURIComponent(f.bucket)+"&path="+encodeURIComponent(f.path));const d=await r.json();if(!r.ok){setMsg(d.message||"دسترسی به فایل ممکن نیست.");return}location.href=d.signed_url}
+return <main className="shell"><div className="topbar"><div><span className="eyebrow">راهبرد شوشتر</span><h1>فایل‌های خصوصی من</h1><p>فایل‌های بارگذاری‌شده توسط حساب شما</p></div></div><section className="panel private-files-panel">{msg&&<div className="error">{msg}</div>}{loading?<p>در حال دریافت فایل‌ها…</p>:files.length===0?<p>فایل خصوصی‌ای برای نمایش وجود ندارد.</p>:<div className="private-file-list">{files.map(f=><div className="private-file" key={f.id}><div className="file-icon">▣</div><div className="private-file-info"><b>{f.name}</b><small>{f.title} · {f.mime_type||"نوع نامشخص"}</small></div><button className="small-btn green-btn" onClick={()=>openFile(f)}>مشاهده امن</button></div>)}</div>}</section></main>}
