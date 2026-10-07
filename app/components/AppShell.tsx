@@ -6,8 +6,14 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 type Props = { children: ReactNode };
+type NavItem = {
+  label: string;
+  href: string;
+  icon: string;
+  roles: readonly string[];
+};
 
-const nav = [
+const nav: readonly NavItem[] = [
   { label: "داشبورد", href: "/dashboard", icon: "⌂", roles: [] },
   { label: "ثبت گزارش", href: "/reports/new", icon: "＋", roles: [] },
   { label: "گزارش‌های من", href: "/reports/mine", icon: "▤", roles: [] },
@@ -76,7 +82,7 @@ export default function AppShell({ children }: Props) {
 
   const closeMobile = () => setMobileOpen(false);
 
-  const renderNav = (items: typeof nav) =>
+  const renderNav = (items: readonly NavItem[]) =>
     items.map((item) => {
       const active = isActive(item.href);
       return (
