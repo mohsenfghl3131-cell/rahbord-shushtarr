@@ -16,6 +16,7 @@ export async function POST(request:Request){
     const supabase=await createServerClient();
     const {data,error:signInError}=await supabase.auth.signInWithPassword({email:authUser.user.email,password});
     if(signInError||!data.session)return NextResponse.json({message:"کد کاربری یا رمز عبور نادرست است."},{status:401});
+    await admin.from("audit_logs").insert({user_id:data.user.id,action:"auth.login",entity_type:"auth",entity_id:data.user.id,metadata:{}});
     return NextResponse.json({user:{id:data.user.id}});
   }catch{return NextResponse.json({message:"خطای داخلی سامانه."},{status:500})}
 }
