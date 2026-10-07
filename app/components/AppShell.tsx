@@ -1,10 +1,11 @@
 "use client";
 
+import type {ReactNode} from "react";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
 import {useEffect,useState} from "react";
 
-type Props={children:React.ReactNode};
+type Props={children:ReactNode};
 
 const nav=[
   {label:"داشبورد",href:"/dashboard",icon:"⌂",roles:[]},
