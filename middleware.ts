@@ -24,6 +24,7 @@ export async function middleware(request:NextRequest){
   const isPublic=path==="/"||path==="/login"||path==="/setup";
   if(!claims&&!isPublic&&!isApi)return NextResponse.redirect(new URL("/login",request.url));
   if(claims&&path==="/setup")return NextResponse.redirect(new URL("/dashboard",request.url));
+  response.headers.set("Cache-Control","private, no-store");
   return response;
 }
 
