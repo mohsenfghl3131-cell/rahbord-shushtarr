@@ -1,0 +1,1 @@
+"use client";import{useEffect}from"react";export default function Logout(){useEffect(()=>{fetch("/api/auth/logout",{method:"POST"}).finally(()=>{window.location.href="/login"})},[]);return <main className="auth"><div className="card">در حال خروج از سامانه…</div></main>}
