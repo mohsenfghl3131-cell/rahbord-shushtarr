@@ -1,0 +1,5 @@
+import {NextResponse} from "next/server";
+import {createClient} from "@supabase/supabase-js";
+import {getCurrentContext} from "@/lib/auth";
+const db=()=>createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.SUPABASE_SERVICE_ROLE_KEY!);
+export async function GET(){const ctx=await getCurrentContext();if(!ctx)return NextResponse.json({message:"احراز هویت لازم است."},{status:401});const {data,error}=await db().from("report_files").select("id,report_id,storage_bucket,storage_path,original_name,mime_type,size_bytes,created_at,reports!inner(id,title,creator_id)").eq("uploaded_by",ctx.user.id).order("created_at",{ascending:false}).limit(100);if(error){console.error("files list",error);return NextResponse.json({message:"فایل‌ها دریافت نشدند."},{status:500})}return NextResponse.json({files:(data??[]).map((x:any)=>({id:x.id,report_id:x.report_id,name:x.original_name,mime_type:x.mime_type,size_bytes:x.size_bytes,created_at:x.created_at,title:x.reports?.title??"گزارش",bucket:x.storage_bucket,path:x.storage_path}))})}
