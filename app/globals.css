@@ -192,3 +192,59 @@ nav{padding-top:18px;display:grid;gap:5px}nav a{padding:11px 12px;border-radius:
 .shushtar-visual{display:grid;grid-template-columns:1.45fr .75fr;gap:18px;margin:18px 0}.waterfall-photo{position:relative;min-height:310px;overflow:hidden;border-radius:22px;border:1px solid rgba(0,229,255,.16);box-shadow:0 0 40px rgba(0,229,255,.07)}.waterfall-photo img{width:100%;height:100%;min-height:310px;object-fit:cover;display:block;filter:saturate(1.05) contrast(1.03)}.photo-overlay{position:absolute;inset:auto 0 0;padding:50px 24px 20px;background:linear-gradient(transparent,rgba(0,0,0,.8))}.photo-overlay span,.photo-overlay b{display:block}.photo-overlay span{font-size:11px;letter-spacing:3px;color:#63eaff}.photo-overlay b{font-size:23px;margin-top:5px}.roadman-card{display:flex;flex-direction:column;justify-content:space-between;padding:20px;border-radius:22px;border:1px solid rgba(0,229,255,.15);background:linear-gradient(160deg,rgba(0,229,255,.055),rgba(255,255,255,.018));overflow:hidden}.roadman-scene{position:relative;height:205px;border-radius:16px;background:radial-gradient(circle at 50% 30%,rgba(0,229,255,.08),transparent 45%),linear-gradient(180deg,rgba(255,255,255,.025),rgba(0,0,0,.15));overflow:hidden}.roadman{position:absolute;left:25%;bottom:36px;width:80px;height:125px;animation:scoutWalk 3.2s ease-in-out infinite}.roadman .head{position:absolute;left:27px;top:2px;font-size:30px}.roadman .body{position:absolute;left:27px;top:37px;font-size:35px;color:#63eaff}.roadman .leg{position:absolute;top:75px;font-size:38px}.roadman .leg.l{left:17px;animation:legA .5s ease-in-out infinite alternate}.roadman .leg.r{left:38px;animation:legB .5s ease-in-out infinite alternate}.roadman .search{position:absolute;right:-25px;top:35px;font-size:45px;color:#d7ae50;animation:searchScan 1.2s ease-in-out infinite}.scan-line{position:absolute;left:8%;right:8%;bottom:27px;height:1px;background:linear-gradient(90deg,transparent,#63eaff,transparent);box-shadow:0 0 12px #63eaff;animation:scanMove 2.2s linear infinite}.roadman-card h3{margin:7px 0}.roadman-card p{font-size:13px;opacity:.55;margin:0}.roadman-card .panel-eyebrow{display:block}
 @keyframes scoutWalk{0%,100%{transform:translateX(0)}50%{transform:translateX(145px)}}@keyframes legA{to{transform:rotate(18deg)}}@keyframes legB{to{transform:rotate(-18deg)}}@keyframes searchScan{0%,100%{transform:rotate(-15deg) translateY(0)}50%{transform:rotate(18deg) translateY(6px)}}@keyframes scanMove{0%{transform:translateX(-30%)}100%{transform:translateX(30%)}}
 @media(max-width:900px){.messages-layout,.shushtar-visual{grid-template-columns:1fr}.message-compose{position:static}.quran-card{align-items:flex-start}.quran-copy blockquote{font-size:19px}}@media(max-width:560px){.quran-card{padding:18px;gap:12px}.quran-symbol{font-size:36px}.quran-copy blockquote{font-size:17px}.roadman{left:15%}}
+
+
+/* Rounded field scout */
+.roadman-card{
+  position:relative;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(0,229,255,.12),transparent 42%),
+    linear-gradient(160deg,#091b2a,#07131f 72%,#0a1724);
+}
+.roadman-scene{
+  height:225px;
+  border-radius:20px;
+  border:1px solid rgba(99,234,255,.12);
+  background:
+    radial-gradient(circle at 50% 38%,rgba(0,229,255,.12),transparent 35%),
+    radial-gradient(circle at 20% 90%,rgba(113,87,255,.11),transparent 35%),
+    linear-gradient(180deg,#0b2131,#07131f);
+}
+.roadman{
+  width:104px;
+  height:150px;
+  bottom:38px;
+  left:19%;
+  animation:scoutWalk 4s ease-in-out infinite;
+  filter:drop-shadow(0 8px 13px rgba(0,0,0,.45));
+}
+.roadman-head{position:absolute;left:31px;top:3px;width:46px;height:46px;border-radius:50%;background:linear-gradient(145deg,#ffe3bf,#d98e62);border:3px solid #19cfe9;box-shadow:0 0 18px rgba(0,229,255,.18);z-index:3}
+.roadman-head .helmet{position:absolute;left:-5px;top:-8px;width:54px;height:25px;border-radius:28px 28px 9px 9px;background:linear-gradient(145deg,#f6c84a,#d99b21);color:#fff;font-size:0;border:2px solid #ffe18a;box-shadow:0 4px 10px rgba(0,0,0,.25)}
+.roadman-head .helmet:after{content:"";position:absolute;left:5px;right:5px;bottom:-5px;height:7px;border-radius:8px;background:#e2ab2f}
+.roadman-head .face{position:absolute;right:8px;top:17px;color:#26384b;font-size:13px}
+.roadman-body{position:absolute;left:27px;top:47px;width:55px;height:61px;border-radius:18px 18px 13px 13px;background:linear-gradient(145deg,#159fbd,#08748e);border:2px solid #5be7fa;box-shadow:inset 0 -10px 18px rgba(0,0,0,.18)}
+.roadman-body:before{content:"";position:absolute;inset:7px 10px;border:2px solid rgba(255,232,126,.75);border-radius:9px;transform:skewY(-9deg)}
+.vest-line{position:absolute;top:11px;bottom:7px;left:25px;width:3px;background:#ffe57b;border-radius:4px;z-index:2}
+.badge{position:absolute;right:7px;top:9px;width:16px;height:16px;border-radius:50%;display:grid;place-items:center;background:#eafcff;color:#08748e;font-size:8px;font-weight:900;z-index:3}
+.roadman .arm{position:absolute;top:54px;width:12px;height:52px;border-radius:10px;background:#159fbd;border:2px solid #56dff2;transform-origin:top center;z-index:1}
+.roadman .arm-back{left:20px;transform:rotate(22deg);animation:armBack .7s ease-in-out infinite alternate}
+.roadman .arm-front{left:73px;transform:rotate(-55deg);animation:armFront 1.2s ease-in-out infinite}
+.roadman .leg{position:absolute;top:103px;width:15px;height:39px;border-radius:10px;background:#334b62;border:2px solid #62839d;transform-origin:top center}
+.roadman .leg-left{left:34px;animation:legA .65s ease-in-out infinite alternate}
+.roadman .leg-right{left:60px;animation:legB .65s ease-in-out infinite alternate}
+.roadman .boot{position:absolute;top:137px;width:24px;height:10px;border-radius:9px 12px 7px 7px;background:#142332;border:2px solid #59788f}
+.roadman .boot-left{left:23px;animation:bootA .65s ease-in-out infinite alternate}
+.roadman .boot-right{left:54px;animation:bootB .65s ease-in-out infinite alternate}
+.roadman .search{right:-34px;top:42px;font-size:52px;line-height:1;color:#f3c64b;text-shadow:0 0 12px rgba(243,198,75,.35);animation:searchScan 1.25s ease-in-out infinite}
+.roadman-shadow{position:absolute;left:16%;bottom:25px;width:150px;height:18px;border-radius:50%;background:rgba(0,0,0,.38);filter:blur(5px);animation:shadowMove 4s ease-in-out infinite}
+.scan-line{bottom:31px;background:linear-gradient(90deg,transparent,#54e9ff 25%,#fff 50%,#54e9ff 75%,transparent);box-shadow:0 0 16px #43ddff}
+.scan-dot{position:absolute;width:5px;height:5px;border-radius:50%;background:#67efff;box-shadow:0 0 12px #67efff;animation:dotPulse 1.5s ease-in-out infinite}
+.dot-one{top:32px;right:22%;}.dot-two{top:70px;left:17%;animation-delay:.6s}
+.roadman-copy{position:relative;z-index:2}
+.roadman-card h3{font-size:20px;color:#f3fbff;margin:8px 0 6px}
+.roadman-card p{font-size:11px;color:#88a6ba;line-height:1.9}
+@keyframes armBack{to{transform:rotate(-18deg)}}@keyframes armFront{0%,100%{transform:rotate(-45deg)}50%{transform:rotate(-78deg)}}
+@keyframes bootA{to{transform:translate(5px,-2px)}}@keyframes bootB{to{transform:translate(-5px,-2px)}}
+@keyframes shadowMove{0%,100%{transform:translateX(0) scaleX(.9);opacity:.65}50%{transform:translateX(72px) scaleX(1.1);opacity:.4}}
+@keyframes dotPulse{0%,100%{opacity:.3;transform:scale(.7)}50%{opacity:1;transform:scale(1.4)}}
+@media(max-width:560px){.roadman{left:12%}.roadman-scene{height:205px}.roadman-card h3{font-size:18px}}
