@@ -19,7 +19,8 @@ export async function GET(){
  if(error)return NextResponse.json({message:"دریافت مأموریت‌ها ناموفق بود."},{status:500});
  const {data:areas}=await admin.from("areas").select("id,name").eq("is_active",true).order("name");
  const {data:scores}=await admin.from("mission_scores").select("id,mission_id,area_id,actual_value,notes,entered_by,updated_at,areas(name),profiles:profiles!mission_scores_entered_by_fkey(display_name)");
- const visibleScores=(scores??[]).filter((s:any)=>isLeader||ctx.profile.role!=="area_manager"||ctx.areaIds.includes(s.area_id));
+ const missionIds=new Set((missions??[]).map((m:any)=>m.id));
+ const visibleScores=(scores??[]).filter((s:any)=>missionIds.has(s.mission_id)&&(isLeader||ctx.profile.role!=="area_manager"||ctx.areaIds.includes(s.area_id)));
  return NextResponse.json({missions:missions??[],areas:(areas??[]).filter((a:any)=>isLeader||ctx.profile.role!=="area_manager"||ctx.areaIds.includes(a.id)),scores:visibleScores,can_create:groupIds.length>0||isLeader,can_enter:canEnter(ctx),is_leader:isLeader,role:ctx.profile.role});
 }
 
