@@ -56,6 +56,7 @@ export default function AppShell({ children }: Props) {
   const [me, setMe] = useState<any>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
+  const [theme, setTheme] = useState<"light" | "dark">("light");
 
   useEffect(() => {
     fetch("/api/me")
