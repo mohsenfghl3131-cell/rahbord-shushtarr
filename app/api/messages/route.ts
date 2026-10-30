@@ -29,8 +29,14 @@ export async function POST(req:Request){
  let b:any;try{b=await req.json()}catch{return NextResponse.json({message:"اطلاعات پیام معتبر نیست."},{status:400})}
  const recipientId=String(b.recipient_id??"");const subject=String(b.subject??"").trim();const body=String(b.body??"").trim();const parentId=b.parent_id?String(b.parent_id):null;
  if(!recipientId||!subject||!body)return NextResponse.json({message:"گیرنده، موضوع و متن پیام الزامی است."},{status:400});
- const{data:recipient}=await db().from("profiles").select("id,is_active").eq("id",recipientId).maybeSingle();
- if(!recipient?.is_active)return NextResponse.json({message:"گیرنده انتخاب‌شده فعال نیست."},{status:400});
+ const admin=db();
+ const {data:groupRows}=await admin.from("category_groups").select("responsible_user_id").not("responsible_user_id","is",null);
+ const targetIds=(groupRows??[]).map((g:any)=>g.responsible_user_id).filter(Boolean);
+ let allowedQuery=admin.from("profiles").select("id,is_active,role").eq("id",recipientId).eq("is_active",true);
+ if(targetIds.length)allowedQuery=allowedQuery.or("role.in.(main_admin,deputy,battalion_commander,area_manager),id.in.("+targetIds.join(",")+")");
+ else allowedQuery=allowedQuery.in("role",["main_admin","deputy","battalion_commander","area_manager"]);
+ const{data:recipient}=await allowedQuery.maybeSingle();
+ if(!recipient||recipientId===c.user.id)return NextResponse.json({message:"نامه فقط به مدیر اصلی، معاون، فرمانده گردان یا مسئولان حوزه و بخش قابل ارسال است."},{status:400});
  const{data,error}=await admin.from("messages").insert({sender_id:c.user.id,recipient_id:recipientId,parent_id:parentId,subject,body}).select("id").single();
  if(error)return NextResponse.json({message:"ارسال پیام انجام نشد."},{status:500});
  await db().from("audit_logs").insert({user_id:c.user.id,action:"message.create",entity_type:"message",entity_id:data.id,metadata:{recipient_id:recipientId,subject}});
