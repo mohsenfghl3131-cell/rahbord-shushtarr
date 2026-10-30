@@ -403,3 +403,40 @@ body:before{opacity:.24;background-image:linear-gradient(rgba(76,171,221,.07) 1p
 @keyframes guardOrbit{to{transform:rotate(360deg)}}@keyframes guardPulse{0%,100%{opacity:.35;transform:scale(.7)}50%{opacity:1;transform:scale(1.5)}}
 @media(prefers-reduced-motion:reduce){.guard-orbit,.guard-signal{animation:none}}
 @media(max-width:700px){.guard-emblem-card{min-height:190px}.guard-emblem-scene{min-height:135px}}
+
+
+/* Final desktop dashboard polish: dark command sidebar and Shushtar hero */
+@media(min-width:701px){
+  .sidebar{background:linear-gradient(180deg,#102b49 0%,#0b2038 55%,#08182b 100%)!important;color:#eaf4ff!important;border-left:1px solid rgba(122,183,225,.13)!important;box-shadow:-14px 0 36px rgba(4,21,40,.18)!important}
+  .brand{border-bottom-color:rgba(174,211,240,.14)!important}
+  .brand-mark{background:linear-gradient(145deg,#16a9d5,#2870dc)!important;color:#fff!important;box-shadow:0 7px 22px rgba(0,160,220,.24)!important}
+  .brand b,.brand-copy b{color:#f4f9ff!important}.brand small,.brand-copy small{color:#8daecc!important}
+  .sidebar-section>span{color:#7898b8!important}
+  .sidebar nav a{color:#c1d3e5!important;border-color:transparent!important}
+  .sidebar nav a .nav-icon{background:rgba(255,255,255,.07)!important;color:#b9d5ee!important}
+  .sidebar nav a:hover{background:rgba(62,154,226,.15)!important;color:#fff!important}
+  .sidebar nav a.active{background:linear-gradient(100deg,#1c5aa0,#17477f)!important;color:#fff!important;box-shadow:inset -3px 0 #63d9ff,0 7px 18px rgba(0,0,0,.12)!important}
+  .sidebar nav a.active .nav-icon{background:rgba(255,255,255,.14)!important;color:#fff!important}
+  .sidebar-user b{color:#f2f8ff!important}.sidebar-user small{color:#9ab5cf!important}
+  .sidebar-logout{color:#c8d9e8!important;background:rgba(255,255,255,.055)!important;border-color:rgba(255,255,255,.08)!important}
+  .sidebar-logout:hover{background:rgba(255,255,255,.1)!important;color:#fff!important}
+}
+.welcome-pro{min-height:166px!important;padding:24px 30px!important;border:0!important;border-radius:10px!important;color:#fff!important;background:linear-gradient(90deg,rgba(6,27,49,.08) 0%,rgba(5,26,50,.88) 100%),url('https://upload.wikimedia.org/wikipedia/commons/1/15/Shushtar_Historical_Hydraulic_System_2.jpg') center 48%/cover no-repeat!important;box-shadow:0 8px 22px rgba(20,53,90,.12)!important}
+.welcome-pro h1{color:#fff!important;font-size:26px!important}.welcome-pro p,.welcome-pro .welcome-meta,.welcome-pro .welcome-kicker{color:#e5f2ff!important}
+.welcome-pro .online-dot{background:#37df9b!important;box-shadow:0 0 0 5px rgba(55,223,155,.13)!important}
+.welcome-pro .welcome-orbit{background:rgba(7,30,53,.78)!important;border:1px solid rgba(255,255,255,.2)!important;color:#fff!important}
+.content{padding:16px 18px 28px!important;background:#f2f6fb!important}
+.unified-header{background:#fff!important;color:#203b58!important}
+.stats{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px!important}
+.stat-card{background:#fff!important;border:1px solid #dce7f2!important;border-radius:9px!important;box-shadow:0 3px 12px rgba(30,74,120,.045)!important}
+.dashboard-grid-pro{grid-template-columns:1.12fr .9fr 1.08fr!important;gap:12px!important}
+.dashboard-grid-pro>.panel{background:#fff!important;border:1px solid #dce7f2!important;border-radius:9px!important;box-shadow:0 3px 12px rgba(30,74,120,.045)!important}
+@media(max-width:1100px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}.dashboard-grid-pro{grid-template-columns:1fr 1fr!important}}
+@media(max-width:700px){
+  .sidebar{background:linear-gradient(180deg,#102b49,#08182b)!important}
+  .welcome-pro{min-height:155px!important;padding:18px!important}
+  .welcome-pro h1{font-size:21px!important}
+  .content{padding:12px!important}
+  .stats{grid-template-columns:1fr 1fr!important}
+  .dashboard-grid-pro{grid-template-columns:1fr!important}
+}
