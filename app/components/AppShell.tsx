@@ -59,6 +59,20 @@ export default function AppShell({ children }: Props) {
   const [theme, setTheme] = useState<"light" | "dark">("light");
 
   useEffect(() => {
+    const saved = window.localStorage.getItem("rahbord-theme");
+    const initial = saved === "dark" ? "dark" : "light";
+    setTheme(initial);
+    document.documentElement.dataset.theme = initial;
+  }, []);
+
+  const toggleTheme = () => {
+    const next = theme === "dark" ? "light" : "dark";
+    setTheme(next);
+    document.documentElement.dataset.theme = next;
+    window.localStorage.setItem("rahbord-theme", next);
+  };
+
+  useEffect(() => {
     fetch("/api/me")
       .then((r) => (r.ok ? r.json() : null))
       .then(setMe)
@@ -187,6 +201,10 @@ export default function AppShell({ children }: Props) {
             <span>سامانه مدیریت و پایش</span>
             <b>{pageTitle}</b>
           </div>
+          <button className="theme-toggle" type="button" onClick={toggleTheme} aria-label={theme === "dark" ? "فعال‌سازی تم روشن" : "فعال‌سازی تم تاریک"} title={theme === "dark" ? "حالت روشن" : "حالت تاریک"}>
+            <span aria-hidden="true">{theme === "dark" ? "☀" : "☾"}</span>
+            <small>{theme === "dark" ? "روشن" : "تاریک"}</small>
+          </button>
 
           <div className="header-spacer" />
 
