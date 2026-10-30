@@ -19,6 +19,7 @@ const nav: readonly NavItem[] = [
   { label: "گزارش‌های من", href: "/reports/mine", icon: "▤", roles: [] },
   { label: "همه گزارش‌ها", href: "/reports", icon: "☷", roles: ["main_admin", "deputy", "battalion_commander", "area_manager"] },
   { label: "ارسال نامه", href: "/messages", icon: "✉", roles: [] },
+  { label: "نمره‌دهی", href: "/scores", icon: "％", roles: ["main_admin", "deputy", "battalion_commander", "area_manager"] },
   { label: "کاربران", href: "/users", icon: "♟", roles: ["main_admin", "deputy", "battalion_commander"] },
   { label: "حوزه‌ها", href: "/areas", icon: "⌖", roles: ["main_admin", "deputy", "battalion_commander", "area_manager"] },
   { label: "دسته‌بندی‌ها", href: "/categories", icon: "▦", roles: ["main_admin", "deputy", "battalion_commander"] },
@@ -42,6 +43,7 @@ const pageTitles: Record<string, string> = {
   "/reports/mine": "گزارش‌های من",
   "/reports": "همه گزارش‌ها",
   "/messages": "ارسال نامه و صندوق نامه‌ها",
+  "/scores": "نمره‌دهی و سهمیه مأموریت‌ها",
   "/users": "مدیریت کاربران",
   "/areas": "مدیریت حوزه‌ها",
   "/categories": "دسته‌بندی‌ها",
@@ -84,7 +86,7 @@ export default function AppShell({ children }: Props) {
   }, [pathname]);
 
   const role = me?.profile?.role;
-  const visible = nav.filter((item) => !item.roles.length || (role && item.roles.includes(role)) || (item.href === "/reports" && me?.can_review) || (item.href === "/messages" && me?.can_message));
+  const visible = nav.filter((item) => !item.roles.length || (role && item.roles.includes(role)) || (item.href === "/reports" && me?.can_review) || (item.href === "/messages" && me?.can_message) || (item.href === "/scores" && (me?.responsible_group_ids?.length > 0)));
 
   const isActive = (href: string) => {
     if (href === "/dashboard") return pathname === "/dashboard";
@@ -120,7 +122,7 @@ export default function AppShell({ children }: Props) {
     ["/dashboard", "/reports/new", "/reports/mine", "/reports"].includes(item.href)
   );
   const management = visible.filter((item) =>
-    ["/messages", "/users", "/areas", "/categories", "/files", "/analytics", "/audit", "/settings"].includes(item.href)
+    ["/messages", "/scores", "/users", "/areas", "/categories", "/files", "/analytics", "/audit", "/settings"].includes(item.href)
   );
 
   return (
