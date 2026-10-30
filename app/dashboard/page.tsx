@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 import { getCurrentContext } from "@/lib/auth";
 import AppShell from "@/app/components/AppShell";
 import QuranCard from "./QuranCard";
-import ShushtarVisual from "./ShushtarVisual";
 
 type AreaStat = {
   name: string;
@@ -191,8 +190,6 @@ export default async function Dashboard() {
             </div>
           </div>
         </section>
-
-        <ShushtarVisual />
 
         <section className="stats">
           <Stat label="کل گزارش‌ها" value={total} tone="blue" note="تمام گزارش‌های فعال" />
