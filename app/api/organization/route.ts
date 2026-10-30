@@ -6,6 +6,7 @@ const areaNames=["حوزه یک شهری محمد رسول الله (ص)","حو�
 const empty=()=>({version:3,deputy_title:"معاونت",deputy_name:"",successor_title:"جانشین معاونت",successor_name:"",commanders:[{id:"c1",title:"فرمانده گردان ۱",name:"",sections:["شمسا","متنا","مپتا","نسرا"].map((title,i)=>({id:"s"+i,title,name:""}))},{id:"c2",title:"فرمانده گردان ۲",name:"",sections:["شمسا","متنا","مپتا","نسرا"].map((title,i)=>({id:"t"+i,title,name:""}))}],areas:areaNames.map((title,i)=>({id:"a"+i,title,leader_name:"",bases:[]}))});
 export async function GET(){
  const ctx=await getCurrentContext();if(!ctx)return NextResponse.json({message:"ابتدا وارد سامانه شوید."},{status:401});
+ if(!["main_admin","deputy","battalion_commander"].includes(ctx.profile.role))return NextResponse.json({message:"شما دسترسی مشاهده چارت سازمانی را ندارید."},{status:403});
  const {data:setting,error}=await db().from("site_settings").select("value").eq("key","organization_chart").maybeSingle();
  if(error)return NextResponse.json({message:"دریافت چارت انجام نشد."},{status:500});
  let chart=setting?.value;if(!chart||chart.version!==2&&chart.version!==3)chart=empty();
