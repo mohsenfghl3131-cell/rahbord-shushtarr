@@ -782,3 +782,20 @@ html[data-theme="dark"] .area-access-list label{background:var(--surface-muted)}
 @media(prefers-color-scheme:dark){
   html:not([data-theme]){color-scheme:light}
 }
+
+
+/* Daily Quran message follows the selected application theme */
+.quran-card{
+  background:linear-gradient(135deg,var(--surface),var(--surface2))!important;
+  color:var(--text-primary)!important;
+  border:1px solid var(--border-color)!important;
+  box-shadow:var(--shadow);
+}
+.quran-copy blockquote{color:var(--text-primary)!important}
+.quran-copy>span{color:var(--text-muted);opacity:1}
+.quran-copy p{color:var(--text-secondary);opacity:1}
+.quran-copy small{color:var(--text-muted);opacity:1}
+.quran-symbol{color:var(--link-color)}
+.quran-edit-btn{color:var(--text-primary);border-color:var(--border-color);background:var(--surface-muted)}
+.quran-edit{background:var(--surface)!important;color:var(--text-primary)!important}
+.quran-edit .panel-title h2,.quran-edit label{color:var(--text-primary)}
