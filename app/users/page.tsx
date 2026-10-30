@@ -1,4 +1,5 @@
 "use client";
+
 import AppShell from "@/app/components/AppShell";
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -10,35 +11,78 @@ const roleLabels: Record<string, string> = {
   area_manager: "مدیر حوزه",
   area_force: "نیروی حوزه",
 };
+const roleOptions = Object.entries(roleLabels);
 
 export default function Users() {
   const [users, setUsers] = useState<any[]>([]);
+  const [areas, setAreas] = useState<any[]>([]);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
   const [busy, setBusy] = useState("");
+  const [editing, setEditing] = useState<any>(null);
+  const [draft, setDraft] = useState({ display_name: "", role: "area_force", area_ids: [] as string[] });
 
   async function load() {
     setError("");
-    const [usersRes, meRes] = await Promise.all([fetch("/api/users"), fetch("/api/me")]);
+    const [usersRes, meRes, areasRes] = await Promise.all([
+      fetch("/api/users"),
+      fetch("/api/me"),
+      fetch("/api/areas"),
+    ]);
     const usersData = await usersRes.json();
     const meData = await meRes.json();
+    const areasData = areasRes.ok ? await areasRes.json() : { areas: [] };
     if (!usersRes.ok) throw new Error(usersData.message || "دریافت کاربران انجام نشد.");
     setUsers(usersData.users ?? []);
-    setIsAdmin(meData.profile?.role === "main_admin" || meData.role === "main_admin");
+    setAreas(areasData.areas ?? []);
+    setIsAdmin(meData.profile?.role === "main_admin");
   }
 
   useEffect(() => { load().catch(e => setError(e.message)); }, []);
+
+  function beginEdit(user: any) {
+    setEditing(user);
+    setDraft({
+      display_name: user.display_name ?? "",
+      role: user.role ?? "area_force",
+      area_ids: (user.user_area_access ?? []).map((x: any) => x.area_id).filter(Boolean),
+    });
+    setError("");
+    setNotice("");
+  }
+
+  async function saveEdit() {
+    if (!editing) return;
+    setBusy(editing.id);
+    setError("");
+    setNotice("");
+    const res = await fetch("/api/users/" + editing.id, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(draft),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      setError(data.message || "ذخیره تغییرات انجام نشد.");
+    } else {
+      setNotice("اطلاعات و دسترسی‌های کاربر به‌روزرسانی شد.");
+      setEditing(null);
+      await load();
+    }
+    setBusy("");
+  }
 
   async function toggleUser(user: any) {
     const next = !user.is_active;
     if (!confirm(next ? "این حساب فعال شود؟" : "این حساب غیرفعال شود؟")) return;
     setBusy(user.id);
+    setError("");
     setNotice("");
     const res = await fetch("/api/users/" + user.id, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ is_active: next })
+      body: JSON.stringify({ is_active: next }),
     });
     const data = await res.json();
     if (!res.ok) setError(data.message || "تغییر وضعیت انجام نشد.");
@@ -49,18 +93,54 @@ export default function Users() {
     setBusy("");
   }
 
+  function toggleArea(areaId: string) {
+    setDraft(current => ({
+      ...current,
+      area_ids: current.area_ids.includes(areaId)
+        ? current.area_ids.filter(id => id !== areaId)
+        : [...current.area_ids, areaId],
+    }));
+  }
+
   return <AppShell><main className="shell unified-page">
-    <div className="topbar"><div><span className="eyebrow">راهبرد شوشتر</span><h1>مدیریت کاربران</h1><p>مدیریت حساب‌ها، نقش‌ها و دسترسی حوزه‌ای</p></div><Link className="button" href="/users/new">＋ کاربر جدید</Link></div>
+    <div className="topbar">
+      <div><span className="eyebrow">راهبرد شوشتر</span><h1>مدیریت کاربران</h1><p>مدیریت حساب‌ها، نقش‌ها و دسترسی حوزه‌ای</p></div>
+      <Link className="button" href="/users/new">＋ کاربر جدید</Link>
+    </div>
     {notice && <div className="notice">{notice}</div>}
     {error && <div className="error">{error}</div>}
-    <section className="panel" style={{ marginTop: 18 }}>
-      <div className="users-grid">{users.map(u => <article className="user-card" key={u.id}>
-        <div className="avatar">{u.display_name?.[0] ?? "ک"}</div>
-        <div className="user-info"><b>{u.display_name}</b><small>{u.user_code}</small><span>{roleLabels[u.role] ?? u.role}</span>
-          <small>{(u.user_area_access ?? []).map((a: any) => a.areas?.name).filter(Boolean).join("، ") || "بدون حوزه تخصیص‌یافته"}</small>
+
+    {editing && isAdmin && <section className="form-panel" style={{ marginTop: 18 }}>
+      <div className="form-step"><span>✎</span><div><b>ویرایش کاربر: {editing.user_code}</b><small>نام نمایشی، نقش و حوزه‌های مجاز را تنظیم کنید.</small></div></div>
+      <label>نام و نام خانوادگی<input value={draft.display_name} onChange={e => setDraft(x => ({ ...x, display_name: e.target.value }))} /></label>
+      <label>نقش کاربر<select value={draft.role} onChange={e => setDraft(x => ({ ...x, role: e.target.value }))}>{roleOptions.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label>
+      <div className="area-access-list">
+        <b>حوزه‌های مجاز</b>
+        <div className="area-access-options">
+          {areas.map(area => <label key={area.id} className="area-access-option">
+            <input type="checkbox" checked={draft.area_ids.includes(area.id)} onChange={() => toggleArea(area.id)} />
+            <span>{area.name}</span>
+          </label>)}
         </div>
-        <div className={u.is_active ? "active-dot" : "inactive-dot"}>{u.is_active ? "فعال" : "غیرفعال"}</div>
-        {isAdmin && u.user_code !== "ADMIN001" && <button className="small-btn" disabled={busy === u.id} onClick={() => toggleUser(u)}>{busy === u.id ? "..." : u.is_active ? "غیرفعال‌سازی" : "فعال‌سازی"}</button>}
+      </div>
+      <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 14 }}>
+        <button className="button" disabled={busy === editing.id || !draft.display_name.trim()} onClick={saveEdit}>{busy === editing.id ? "در حال ذخیره…" : "ذخیره تغییرات"}</button>
+        <button className="small-btn" onClick={() => setEditing(null)}>انصراف</button>
+      </div>
+    </section>}
+
+    <section className="panel" style={{ marginTop: 18 }}>
+      <div className="users-grid">{users.map(user => <article className="user-card" key={user.id}>
+        <div className="avatar">{user.display_name?.[0] ?? "ک"}</div>
+        <div className="user-info">
+          <b>{user.display_name}</b><small>{user.user_code}</small><span>{roleLabels[user.role] ?? user.role}</span>
+          <small>{(user.user_area_access ?? []).map((a: any) => a.areas?.name).filter(Boolean).join("، ") || "بدون حوزه تخصیص‌یافته"}</small>
+        </div>
+        <div className={user.is_active ? "active-dot" : "inactive-dot"}>{user.is_active ? "فعال" : "غیرفعال"}</div>
+        {isAdmin && <div className="user-actions">
+          {user.user_code !== "ADMIN001" && <button className="small-btn" disabled={busy === user.id} onClick={() => toggleUser(user)}>{busy === user.id ? "…" : user.is_active ? "غیرفعال‌سازی" : "فعال‌سازی"}</button>}
+          <button className="small-btn" onClick={() => beginEdit(user)}>ویرایش دسترسی</button>
+        </div>}
       </article>)}</div>
     </section>
   </main></AppShell>;
