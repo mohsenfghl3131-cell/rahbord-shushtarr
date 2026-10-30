@@ -1748,3 +1748,20 @@ html:not([data-theme="dark"]) .org-editor select{
  html:not([data-theme="dark"]) .unified-shell .unified-header{background:rgba(239,246,253,.96)!important}
  html:not([data-theme="dark"]) .unified-shell>.sidebar{background:linear-gradient(165deg,#eff6fd,#e5eff8)!important}
 }
+
+
+.org-area-editor{margin-top:22px;padding-top:18px;border-top:1px solid var(--border-color)}
+.org-area-editor>h3{margin:0 0 12px;font-size:15px;color:var(--text-primary)}
+.org-area-edit-card{margin:12px 0;padding:13px;border:1px solid var(--border-color);border-radius:13px;background:var(--surface-raised)}
+.org-area-edit-card>.org-card-heading{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:10px}
+.org-base-edit-list{margin:8px 0}
+.org-base-edit-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:10px;border-top:1px dashed var(--border-color);padding:6px 0}
+.org-areas-poster{margin:30px 0 10px;padding:18px;border:1px solid #cbdce9;border-radius:16px;background:linear-gradient(145deg,#f3f8fc,#e8f1f8)}
+.org-areas-poster>h3{text-align:center;color:#244967;margin:0 0 16px;font-size:17px}
+.org-area-poster-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.org-area-poster-card{min-width:0;padding:13px;border:1px solid #d0dfeb;border-radius:12px;background:rgba(255,255,255,.78);break-inside:avoid}
+.org-area-poster-card h4{margin:0 0 9px;color:#1c527c;font-size:13px;line-height:1.9}
+.org-area-poster-card ul{margin:0;padding:0 18px 0 0;color:#405b73;font-size:11px;line-height:2}
+.org-area-poster-card small{color:#8395a6;font-size:10px}
+@media(max-width:650px){.org-area-edit-card>.org-card-heading,.org-base-edit-row{grid-template-columns:minmax(0,1fr)}.org-area-poster-grid{grid-template-columns:1fr}.org-area-poster-card h4{font-size:12px}}
+@media print{.org-areas-poster{background:#eef4f8!important;print-color-adjust:exact;-webkit-print-color-adjust:exact}.org-area-poster-card{background:#fff!important;print-color-adjust:exact;-webkit-print-color-adjust:exact}}
