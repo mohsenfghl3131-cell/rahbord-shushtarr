@@ -8,14 +8,15 @@ export default function Categories(){
  const[users,setUsers]=useState<any[]>([]);
  const[e,setE]=useState("");
  const[form,setForm]=useState({name:"",group_id:"",sort_order:0});
+ const[canManage,setCanManage]=useState(false);
 
  async function load(){
-  const r=await fetch("/api/categories");const d=await r.json();
+  const [r,me]=await Promise.all([fetch("/api/categories"),fetch("/api/me")]);const d=await r.json();const md=await me.json();
+  setCanManage(["main_admin","deputy","battalion_commander"].includes(md.profile?.role));
   if(!r.ok){setE(d.message||"دسترسی ندارید.");return}
   setGroups(d.groups||[]);setCats(d.categories||[]);
   if(!form.group_id&&d.groups?.[0])setForm(x=>({...x,group_id:d.groups[0].id}));
-  const u=await fetch("/api/users");
-  if(u.ok){const ud=await u.json();setUsers(ud.users||[])}
+  if(["main_admin","deputy","battalion_commander"].includes(md.profile?.role)){const u=await fetch("/api/users");if(u.ok){const ud=await u.json();setUsers(ud.users||[])}}
  }
  useEffect(()=>{load()},[]);
 
@@ -38,14 +39,15 @@ export default function Categories(){
  return <AppShell><main className="shell unified-page">
   <div className="topbar"><div><span className="eyebrow">ساختار گزارش‌دهی</span><h1>بخش‌ها و زیرمجموعه‌ها</h1><p>مسئول هر بخش می‌تواند گزارش‌های همان بخش را از تمام حوزه‌ها مشاهده و بررسی کند.</p></div></div>
   {e&&<div className="error">{e}</div>}
-  <section className="section-manager-grid">
+  {canManage&&<section className="section-manager-grid">
    {groups.map(g=><article className="section-manager-card" key={g.id}>
     <div><span className="section-glow">◈</span><div><small>بخش گزارش</small><h2>{g.name}</h2></div></div>
     <label>مسئول بخش<select value={g.responsible_user_id??""} onChange={ev=>assign(g.id,ev.target.value)}><option value="">بدون مسئول</option>{users.filter(u=>u.is_active).map(u=><option key={u.id} value={u.id}>{u.display_name} · {u.user_code}</option>)}</select></label>
     <div className="section-cats">{cats.filter(c=>c.group_id===g.id&&c.is_active).map(c=><span key={c.id}>{c.name}</span>)}</div>
    </article>)}
-  </section>
-  <form className="form-panel" onSubmit={add}><div className="form-step"><span>＋</span><div><b>افزودن زیرمجموعه</b><small>دسته‌بندی جدید را به یکی از بخش‌ها اضافه کنید.</small></div></div><label>نام زیرمجموعه<input value={form.name} onChange={x=>setForm({...form,name:x.target.value})} required/></label><label>بخش<select value={form.group_id} onChange={x=>setForm({...form,group_id:x.target.value})}>{groups.map(x=><option key={x.id} value={x.id}>{x.name}</option>)}</select></label>{e&&<div className="error">{e}</div>}<button className="button neon-button">افزودن زیرمجموعه</button></form>
-  <section className="panel" style={{marginTop:18}}>{cats.map(x=><div className="report-row" key={x.id}><div><b>{x.name}</b><small>{x.category_groups?.name}</small></div><button className="small-btn" onClick={()=>toggle(x)}>{x.is_active?"فعال":"غیرفعال"}</button></div>)}</section>
+  </section>}
+  {canManage&&<form className="form-panel" onSubmit={add}><div className="form-step"><span>＋</span><div><b>افزودن زیرمجموعه</b><small>دسته‌بندی جدید را به یکی از بخش‌ها اضافه کنید.</small></div></div><label>نام زیرمجموعه<input value={form.name} onChange={x=>setForm({...form,name:x.target.value})} required/></label><label>بخش<select value={form.group_id} onChange={x=>setForm({...form,group_id:x.target.value})}>{groups.map(x=><option key={x.id} value={x.id}>{x.name}</option>)}</select></label>{e&&<div className="error">{e}</div>}<button className="button neon-button">افزودن زیرمجموعه</button></form>
+  </form>}
+  <section className="panel" style={{marginTop:18}}>{cats.map(x=><div className="report-row" key={x.id}><div><b>{x.name}</b><small>{x.category_groups?.name}</small></div>{canManage&&<button className="small-btn" onClick={()=>toggle(x)}>{x.is_active?"فعال":"غیرفعال"}</button>}</div>)}</section>
  </main></AppShell>
 }
