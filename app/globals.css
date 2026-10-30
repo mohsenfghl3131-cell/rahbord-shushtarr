@@ -799,3 +799,36 @@ html[data-theme="dark"] .area-access-list label{background:var(--surface-muted)}
 .quran-edit-btn{color:var(--text-primary);border-color:var(--border-color);background:var(--surface-muted)}
 .quran-edit{background:var(--surface)!important;color:var(--text-primary)!important}
 .quran-edit .panel-title h2,.quran-edit label{color:var(--text-primary)}
+
+
+/* Analytics page: prevent the page title from inheriting the compact app toolbar */
+.analytics-heading{
+  display:flex;align-items:center;justify-content:space-between;gap:18px;
+  min-height:132px;height:auto;padding:22px 26px;margin:0 0 18px;
+  border:1px solid var(--border-color);border-radius:16px;
+  background:linear-gradient(135deg,rgba(14,42,65,.92),rgba(8,24,42,.96));
+  color:var(--text-primary);
+}
+.analytics-heading>div:first-child{min-width:0}
+.analytics-heading .eyebrow{display:block;color:#58c9ed;font-size:11px;margin-bottom:8px}
+.analytics-heading h1{margin:0;font-size:clamp(22px,3vw,34px);line-height:1.5;color:var(--text-primary);overflow-wrap:anywhere}
+.analytics-heading p{margin:6px 0 0;color:var(--text-secondary);font-size:12px;line-height:1.9}
+.analytics-heading .header-live{flex:0 0 auto;white-space:nowrap;padding:9px 13px;border-radius:10px;background:rgba(28,190,150,.1);color:#35d6ad}
+.unified-page .area-ranking .rank-row{display:grid;grid-template-columns:28px minmax(0,1fr) minmax(90px,.55fr) 34px;align-items:center;gap:12px;min-width:0}
+.unified-page .area-ranking .rank-row>span{width:auto;min-width:0;line-height:1.9;overflow-wrap:anywhere}
+.unified-page .area-ranking .rank-row>.bar{grid-column:auto;min-width:0}
+.unified-page .area-ranking .rank-row>strong{width:auto;text-align:left}
+html[data-theme="dark"] .unified-page .area-ranking .rank-row:first-of-type{background:rgba(33,92,128,.24);color:#eaf6ff}
+html[data-theme="dark"] .unified-page .area-ranking .rank-row>span,
+html[data-theme="dark"] .unified-page .area-ranking .rank-row>strong{color:#d8eaf8}
+html[data-theme="dark"] .unified-page .area-ranking .bar{background:rgba(180,210,230,.16)}
+@media(max-width:700px){
+ .analytics-heading{min-height:0;padding:17px 15px;margin-bottom:13px;align-items:flex-start;gap:8px}
+ .analytics-heading h1{font-size:22px;line-height:1.6}
+ .analytics-heading p{font-size:10px}
+ .analytics-heading .header-live{font-size:9px;padding:7px 9px}
+ .unified-page .area-ranking .rank-row{grid-template-columns:22px minmax(0,1fr) 28px;gap:8px;padding:12px 7px}
+ .unified-page .area-ranking .rank-row>span{grid-column:2;grid-row:1;font-size:11px}
+ .unified-page .area-ranking .rank-row>.bar{grid-column:2;grid-row:2;width:100%;margin-top:5px}
+ .unified-page .area-ranking .rank-row>strong{grid-column:3;grid-row:1;font-size:11px}
+}
