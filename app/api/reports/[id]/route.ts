@@ -15,9 +15,10 @@ export async function GET(_request:Request,{params}:{params:Promise<{id:string}>
   if(error||!report)return NextResponse.json({message:"گزارش پیدا نشد."},{status:404});
 
   const groupId=(report as any).categories?.category_groups?.id;
-  const sectionAllowed=ctx.responsibleGroupIds.includes(groupId);
+  const sectionAllowed=!!groupId&&ctx.responsibleGroupIds.includes(groupId);
   const manager=["main_admin","deputy","battalion_commander"].includes(ctx.profile.role);
-  const areaAllowed=ctx.profile.role!=="area_manager"&&ctx.profile.role!=="area_force" || ctx.areaIds.includes(report.area_id);
+  const areaRole=ctx.profile.role==="area_manager"||ctx.profile.role==="area_force";
+  const areaAllowed=areaRole&&ctx.areaIds.includes(report.area_id);
   const own=report.creator_id===ctx.user.id;
   if(!manager&&!sectionAllowed&&!areaAllowed&&!own)
     return NextResponse.json({message:"شما به این گزارش دسترسی ندارید."},{status:403});
