@@ -1,20 +1,37 @@
 "use client";
 import Link from "next/link";
 import {useEffect,useState} from "react";
-type Base={id:string;title:string;leader_name?:string};
-type Area={id:string;title:string;leader_name?:string;bases:Base[]};
+const unitNames=["رصد","تولید محتوا","شبکه انتشار","خبر رسانه، رسانه محله","آموزش و مقابله با شایعه"];
+type Unit={title:string;leader_name:string};type Base={id:string;title:string;leader_name:string;units:Unit[]};type Area={id:string;title:string;leader_name:string;successor_name:string;bases:Base[]};
 export default function AreaDetailPage({params}:{params:Promise<{areaId:string}>}){
- const [areaId,setAreaId]=useState(""),[area,setArea]=useState<Area|null>(null),[loading,setLoading]=useState(true),[error,setError]=useState("");
+ const [areaId,setAreaId]=useState(""),[area,setArea]=useState<Area|null>(null),[loading,setLoading]=useState(true),[saving,setSaving]=useState(false),[canEdit,setCanEdit]=useState(false),[error,setError]=useState(""),[notice,setNotice]=useState("");
  useEffect(()=>{let active=true;Promise.resolve(params).then(p=>{if(active)setAreaId(p.areaId)});return()=>{active=false}},[params]);
- useEffect(()=>{if(!areaId)return;let active=true;fetch("/api/organization").then(async r=>{const d=await r.json();if(!r.ok)throw Error(d.message||"دریافت اطلاعات انجام نشد");const found=(d.chart?.areas||[]).find((a:Area)=>a.id===areaId);if(!found)throw Error("حوزه موردنظر پیدا نشد.");if(active)setArea({...found,bases:Array.isArray(found.bases)?found.bases:[]})}).catch(e=>{if(active)setError(e.message||"خطا در دریافت اطلاعات")}).finally(()=>{if(active)setLoading(false)});return()=>{active=false}},[areaId]);
+ async function load(id:string){const r=await fetch("/api/organization/area?areaId="+encodeURIComponent(id));const d=await r.json();if(!r.ok)throw Error(d.message||"دریافت اطلاعات انجام نشد");setArea(d.area);setCanEdit(!!d.can_edit)}
+ useEffect(()=>{if(!areaId)return;let active=true;load(areaId).catch(e=>{if(active)setError(e.message||"خطا در دریافت اطلاعات")}).finally(()=>{if(active)setLoading(false)});return()=>{active=false}},[areaId]);
+ const patch=(fn:(a:Area)=>Area)=>setArea(a=>a?fn({...a,bases:a.bases.map(b=>({...b,units:b.units.map(u=>({...u}))}))}):a);
+ const setBase=(i:number,k:"title"|"leader_name",v:string)=>patch(a=>({...a,bases:a.bases.map((b,n)=>n===i?{...b,[k]:v}:b)}));
+ const setUnit=(i:number,j:number,v:string)=>patch(a=>({...a,bases:a.bases.map((b,n)=>n!==i?b:{...b,units:b.units.map((u,k)=>k===j?{...u,leader_name:v}:u)})}));
+ async function save(){if(!area)return;setSaving(true);setError("");setNotice("");try{const r=await fetch("/api/organization/area",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({areaId,area})});const d=await r.json();if(!r.ok)throw Error(d.message||"ذخیره انجام نشد");setArea(d.area);setNotice("اطلاعات چارت فرعی حوزه با موفقیت ذخیره شد و در چارت اصلی هم نمایش داده می‌شود.")}catch(e:any){setError(e.message||"ذخیره انجام نشد")}finally{setSaving(false)}}
+ function addBase(){patch(a=>({...a,bases:[...a.bases,{id:"b"+Math.random().toString(36).slice(2,9),title:"پایگاه جدید",leader_name:"",units:unitNames.map(title=>({title,leader_name:""}))}]}))}
  return <main className="shell org-page org-area-detail-page">
-  <div className="org-detail-toolbar"><Link href="/organization" className="org-back-link">← بازگشت به چارت سازمانی</Link><span>RAHBORD • SHUSHTAR</span></div>
-  {loading?<section className="panel org-detail-loading">در حال دریافت اطلاعات حوزه…</section>:error?<section className="panel org-detail-error"><h1>دریافت اطلاعات ممکن نشد</h1><p>{error}</p><Link href="/organization" className="button">بازگشت به چارت</Link></section>:area?<>
-   <section className="org-detail-hero"><div className="org-detail-kicker">ساختار حوزه / پایگاه‌ها</div><div className="org-detail-mark">ح</div><h1>{area.title}</h1><p>فهرست پایگاه‌های زیرمجموعه و مسئول هر پایگاه</p><div className="org-detail-leader"><span>مسئول حوزه</span><strong>{area.leader_name?.trim()||"تعیین نشده"}</strong></div><div className="org-detail-stats"><div><strong>{area.bases.length}</strong><span>پایگاه ثبت‌شده</span></div><div><strong>{area.bases.filter(b=>b.leader_name?.trim()).length}</strong><span>مسئول تعیین‌شده</span></div></div></section>
-   <section className="org-detail-section"><div className="org-detail-section-head"><div><span>زیرمجموعه‌ها</span><h2>پایگاه‌های این حوزه</h2></div><small>{area.bases.length} مورد</small></div>
-   {area.bases.length?<div className="org-detail-base-grid">{area.bases.map((b,i)=><article className="org-detail-base-card" key={b.id}><div className="org-base-number">{String(i+1).padStart(2,"0")}</div><div className="org-base-icon">⌂</div><h3>{b.title}</h3><div className="org-base-leader-label">مسئول پایگاه</div><strong className="org-base-leader-name">{b.leader_name?.trim()||"تعیین نشده"}</strong></article>)}</div>:<div className="org-detail-empty"><div>⌂</div><h3>هنوز پایگاهی ثبت نشده است</h3><p>برای افزودن پایگاه و ثبت مسئول آن، از بخش ویرایش چارت سازمانی استفاده کنید.</p><Link href="/organization" className="button">رفتن به ویرایش چارت</Link></div>}
+  <div className="org-detail-toolbar"><Link href="/areas" className="org-back-link">← بازگشت به حوزه‌های من</Link><span>RAHBORD • SHUSHTAR</span></div>
+  {loading?<section className="panel org-detail-loading">در حال دریافت اطلاعات حوزه…</section>:error&&!area?<section className="panel org-detail-error"><h1>دریافت اطلاعات ممکن نشد</h1><p>{error}</p><Link href="/areas" className="button">بازگشت به حوزه‌ها</Link></section>:area?<>
+   <section className="org-detail-hero"><div className="org-detail-kicker">چارت فرعی حوزه / پایگاه‌ها</div><div className="org-detail-mark">ح</div><h1>{area.title}</h1><p>جانشین، مسئولان پایگاه‌ها و مسئولان واحدهای زیرمجموعه</p><div className="org-detail-leader"><span>مسئول حوزه</span><strong>{area.leader_name||"تعیین نشده"}</strong></div><div className="org-detail-leader"><span>جانشین حوزه</span><strong>{area.successor_name||"تعیین نشده"}</strong></div><div className="org-detail-stats"><div><strong>{area.bases.length}</strong><span>پایگاه ثبت‌شده</span></div><div><strong>{area.bases.filter(b=>b.leader_name).length}</strong><span>مسئول پایگاه</span></div></div></section>
+   {notice&&<div className="notice">{notice}</div>}{error&&<div className="error">{error}</div>}
+   {canEdit&&<section className="panel org-editor org-area-subchart-editor"><div className="panel-title"><div><h2>مدیریت چارت فرعی این حوزه</h2><p>فقط اطلاعات همین حوزه را ویرایش می‌کنید.</p></div></div>
+    <label className="org-field">نام مسئول حوزه<input value={area.leader_name} maxLength={100} onChange={e=>patch(a=>({...a,leader_name:e.target.value}))}/></label>
+    <label className="org-field">نام جانشین حوزه<input value={area.successor_name} maxLength={100} onChange={e=>patch(a=>({...a,successor_name:e.target.value}))}/></label>
+    {area.bases.map((b,i)=><div className="org-area-edit-card" key={b.id}><div className="org-card-heading"><h3>پایگاه {i+1}</h3><button type="button" className="org-remove" onClick={()=>patch(a=>({...a,bases:a.bases.filter((_,n)=>n!==i)}))}>حذف پایگاه</button></div>
+      <label className="org-field">نام پایگاه<input value={b.title} maxLength={100} onChange={e=>setBase(i,"title",e.target.value)}/></label>
+      <label className="org-field">مسئول پایگاه<input value={b.leader_name} maxLength={100} onChange={e=>setBase(i,"leader_name",e.target.value)}/></label>
+      <div className="org-subunit-grid">{b.units.map((u,j)=><label className="org-field org-subunit-field" key={u.title}><span>{u.title}</span><input value={u.leader_name} maxLength={100} placeholder="نام مسئول" onChange={e=>setUnit(i,j,e.target.value)}/></label>)}</div>
+    </div>)}
+    <div className="org-save-row"><button type="button" className="org-add" disabled={area.bases.length>=100} onClick={addBase}>＋ افزودن پایگاه</button><button type="button" className="button" disabled={saving} onClick={save}>{saving?"در حال ذخیره…":"ذخیره چارت فرعی حوزه"}</button></div>
+   </section>}
+   <section className="org-detail-section"><div className="org-detail-section-head"><div><span>ساختار پایگاه‌ها</span><h2>پایگاه‌های این حوزه</h2></div><small>{area.bases.length} مورد</small></div>
+   {area.bases.length?<div className="org-detail-base-grid">{area.bases.map((b,i)=><article className="org-detail-base-card" key={b.id}><div className="org-base-number">{String(i+1).padStart(2,"0")}</div><div className="org-base-icon">⌂</div><h3>{b.title}</h3><div className="org-base-leader-label">مسئول پایگاه</div><strong className="org-base-leader-name">{b.leader_name||"تعیین نشده"}</strong><div className="org-subunit-view">{b.units.map(u=><div key={u.title}><span>{u.title}</span><b>{u.leader_name||"تعیین نشده"}</b></div>)}</div></article>)}</div>:<div className="org-detail-empty"><div>⌂</div><h3>هنوز پایگاهی ثبت نشده است</h3><p>{canEdit?"از بخش مدیریت چارت فرعی، پایگاه جدید اضافه کنید.":"برای این حوزه هنوز پایگاهی ثبت نشده است."}</p></div>}
    </section>
-   <div className="org-detail-footer"><Link href="/organization">بازگشت به فهرست حوزه‌ها</Link><span>سامانه مدیریت و پایش • راهبرد شوشتر</span></div>
+   <div className="org-detail-footer"><Link href="/areas">بازگشت به حوزه‌ها</Link><span>سامانه مدیریت و پایش • راهبرد شوشتر</span></div>
   </>:null}
  </main>
 }
