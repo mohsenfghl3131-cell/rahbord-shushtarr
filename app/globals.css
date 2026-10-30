@@ -248,3 +248,67 @@ nav{padding-top:18px;display:grid;gap:5px}nav a{padding:11px 12px;border-radius:
 @keyframes shadowMove{0%,100%{transform:translateX(0) scaleX(.9);opacity:.65}50%{transform:translateX(72px) scaleX(1.1);opacity:.4}}
 @keyframes dotPulse{0%,100%{opacity:.3;transform:scale(.7)}50%{opacity:1;transform:scale(1.4)}}
 @media(max-width:560px){.roadman{left:12%}.roadman-scene{height:205px}.roadman-card h3{font-size:18px}}
+
+
+/* ===== Premium visual refresh: Rahbord Shushtar ===== */
+:root{--bg:#071321;--surface:#0e1d2d;--surface2:#12253a;--ink:#eaf5ff;--muted:#8da5bc;--line:rgba(133,190,226,.14);--cyan:#35d8f2;--blue:#4388ff;--violet:#8b7bff;--green:#35d69b;--red:#ff7184;--shadow:0 18px 48px rgba(0,0,0,.18);--glow:0 0 28px rgba(53,216,242,.18)}
+html,body{background:#071321;color:var(--ink)}
+body:before{opacity:.24;background-image:linear-gradient(rgba(76,171,221,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(76,171,221,.07) 1px,transparent 1px);background-size:36px 36px}
+.app-shell{background:radial-gradient(ellipse at 70% -20%,rgba(32,115,185,.18),transparent 45%),#071321}
+.sidebar{width:276px;background:linear-gradient(180deg,#071522 0%,#0a1b2c 58%,#081522 100%);border-left:1px solid rgba(90,192,231,.16);box-shadow:-16px 0 50px rgba(0,0,0,.25)}
+.main{margin-right:276px;width:calc(100% - 276px);background:transparent}
+.header,.unified-header{background:rgba(8,23,38,.82);border-bottom:1px solid rgba(111,188,224,.13);box-shadow:0 8px 30px rgba(0,0,0,.12);backdrop-filter:blur(18px)}
+.header-context span{color:#6987a2}.header-context b{color:#e8f5ff}.header-profile{background:#10263a;border-color:rgba(125,190,225,.16);color:#d3e8f7}
+.content,.shell,.unified-page{color:#eaf5ff}
+.welcome,.welcome-pro{border:1px solid rgba(77,199,239,.24);background:radial-gradient(circle at 12% 20%,rgba(0,210,255,.16),transparent 35%),radial-gradient(circle at 85% 15%,rgba(112,99,255,.15),transparent 32%),linear-gradient(120deg,#10283c,#102137 58%,#171c3b);box-shadow:0 22px 55px rgba(0,0,0,.2)}
+.welcome h1,.welcome-pro h1{color:#f3fbff}.welcome p{color:#9ab3c9}.welcome-meta{color:#7895ae}.welcome-kicker{color:#62dff4}
+.welcome-orbit{background:radial-gradient(circle,#142e43 0 48%,#10273a 49% 100%);border-color:rgba(77,214,245,.5);box-shadow:0 0 0 14px rgba(8,174,234,.05),0 0 40px rgba(8,174,234,.16)}.welcome-orbit strong{color:#63e6f7}.welcome-orbit small{color:#8baac2}
+.quick-actions a,.stat-card,.panel,.analytics-card,.user-card,.area-card,.form-panel,.setting-card{background:linear-gradient(145deg,rgba(17,39,59,.96),rgba(12,29,46,.96));border:1px solid rgba(128,184,218,.14);box-shadow:0 14px 35px rgba(0,0,0,.16);color:#e5f2fc}
+.quick-actions a:hover,.user-card:hover,.area-card:hover{border-color:rgba(66,208,241,.4);box-shadow:0 18px 40px rgba(0,0,0,.24)}
+.quick-actions a>span,.activity-pro .activity-dot,.audit-icon,.file-icon{background:rgba(48,192,231,.12);color:#62dff4}
+.quick-actions b,.stat-card span,.panel-title h2,.area-rank-main strong,.report-card h3,.user-info b,.area-card b{color:#e7f4ff}
+.quick-actions small,.stat-card small,.panel-eyebrow,.area-rank-main small,.report-card small,.user-info small,.area-card small{color:#829db5}
+.stat-card:after{background:rgba(45,188,226,.1)}
+.panel-title a,.eyebrow{color:#5bd8f2}
+.trend-grid span{border-color:rgba(132,179,208,.12)}
+.trend-col small,.trend-col b{color:#91abc1}
+.status-ring:after{background:#102438}.status-ring strong{color:#5bd8f2}.status-ring small,.legend-row{color:#9bb1c5}
+.legend-row,.report-row,.recent-row,.area-rank,.audit-row{border-color:rgba(135,182,211,.12)}
+.area-bar,.bar{background:#20364a}.area-bar i,.bar i{background:linear-gradient(90deg,#38d7e9,#527eff)}
+.recent-row:hover{background:rgba(61,155,207,.08)}.recent-row b{color:#e6f3ff}.recent-row small,.recent-row time{color:#8aa5bc}
+.empty-state{color:#8ca6bd}
+.shell .topbar h1,.unified-page .topbar h1{color:#f0f8ff}.topbar p{color:#8ca6bd}
+.form-panel label,.auth label{color:#bfd2e2}
+.form-panel input,.form-panel select,.form-panel textarea,.field input,.reason-input{background:#0b1d2e;border-color:rgba(130,183,215,.2);color:#edf7ff}
+.form-panel input:focus,.form-panel select:focus,.form-panel textarea:focus,.field input:focus{border-color:#37cce9;box-shadow:0 0 0 3px rgba(55,204,233,.12)}
+.notice{background:rgba(44,167,219,.13);color:#8be4f5;border:1px solid rgba(63,192,231,.16)}
+.error{background:rgba(255,90,112,.1);border-color:rgba(255,110,130,.25);color:#ff9eaa}
+.rank-row,.audit-row{border-color:rgba(135,182,211,.12);color:#c7d9e8}
+.rank-row:first-of-type{background:rgba(43,145,197,.08)}
+.area-access-list{background:#0b1d2e;border-color:rgba(130,183,215,.14)}
+.area-access-list label{background:#10263a;color:#b9d5e8}
+.area-access-list span{color:#e0eff9}
+.profile-meta{border-color:rgba(135,182,211,.15)}.profile-meta small{color:#809bb2}.profile-meta b{color:#e8f4fd}
+.private-file{background:#10263a;border-color:rgba(130,183,215,.14)}.private-file-info b{color:#e7f4ff}.private-file-info small{color:#8da6bb}
+.selected-files div{background:#10263a;border-color:rgba(130,183,215,.14);color:#c9deed}
+.sidebar-section>span{color:#587894}.sidebar nav a{color:#9bb3c8}.sidebar nav a .nav-icon{background:rgba(255,255,255,.045);color:#8baac2}
+.sidebar nav a.active{background:linear-gradient(100deg,rgba(0,205,255,.18),rgba(83,83,255,.14));border-color:rgba(70,211,255,.2);color:#f5fcff}
+.sidebar-user{background:rgba(255,255,255,.045);border-color:rgba(155,221,255,.1)}.sidebar-user b{color:#edf8ff}.sidebar-user small{color:#7894ad}
+.sidebar-logout{background:rgba(255,90,112,.06);border-color:rgba(255,110,130,.12);color:#d18c9a}
+.button{background:linear-gradient(115deg,#08b9d9,#416ff5);box-shadow:0 9px 24px rgba(20,159,211,.2);font-size:11px;font-weight:700}
+.status.approved{background:rgba(36,202,142,.13);color:#65e5b1}.status.pending{background:rgba(245,177,57,.13);color:#ffd078}.status.rejected{background:rgba(255,91,112,.13);color:#ff9baa}
+@media(max-width:1000px){.sidebar{width:236px}.main{margin-right:236px;width:calc(100% - 236px)}}
+@media(max-width:700px){.sidebar{background:linear-gradient(180deg,#071522,#0b1b2c);border-bottom:1px solid rgba(111,188,224,.16)}.main{margin:0;width:100%}.content{padding:13px}.welcome-pro{padding:21px}.quick-actions{gap:8px}.quick-actions a{background:rgba(17,39,59,.96)}.unified-header{background:rgba(8,23,38,.94)}}
+
+/* Refined sign-in screen */
+.auth{background:radial-gradient(ellipse at 18% 18%,rgba(0,201,241,.18),transparent 32%),radial-gradient(ellipse at 85% 82%,rgba(104,94,255,.16),transparent 35%),#071321}
+.auth:before{width:620px;height:620px;border-color:rgba(76,210,245,.2);box-shadow:0 0 0 45px rgba(255,255,255,.012),0 0 0 90px rgba(255,255,255,.01)}
+.auth .card{width:min(460px,100%);padding:38px;background:linear-gradient(145deg,rgba(17,39,59,.97),rgba(9,25,41,.98));border:1px solid rgba(96,205,239,.22);border-radius:24px;box-shadow:0 35px 100px rgba(0,0,0,.4),inset 0 1px rgba(255,255,255,.04)}
+.auth .brand{display:flex;align-items:center;gap:12px;color:#f2fbff;font-size:17px;font-weight:800}
+.auth .brand:before{content:"ر";width:44px;height:44px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(145deg,#08cce5,#4268f6);color:#fff;font-size:22px;box-shadow:0 0 30px rgba(0,205,235,.22)}
+.auth h1{color:#f4fbff;font-size:25px;margin-top:15px}.auth p{color:#91abc1;font-size:11px;line-height:2}
+.auth label{color:#c5d8e7;font-size:10px}.auth input{background:#091a2a;border-color:rgba(133,188,220,.2);color:#f3faff;padding:13px 14px;border-radius:11px}.auth input::placeholder{color:#59758d}
+.auth input:focus{border-color:#36cce8;box-shadow:0 0 0 3px rgba(54,204,232,.12)}
+.auth .button{min-height:46px;margin-top:10px;border-radius:12px;font-size:12px}
+.auth .card:after{content:"سامانه یکپارچه مدیریت و پایش";display:block;text-align:center;margin-top:23px;padding-top:15px;border-top:1px solid rgba(130,185,218,.13);color:#66849e;font-size:9px}
+@media(max-width:480px){.auth{padding:16px}.auth .card{padding:27px 22px}.auth h1{font-size:22px}}
