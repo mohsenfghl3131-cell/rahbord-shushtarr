@@ -1232,3 +1232,113 @@ html[data-theme="dark"] .content:has(.welcome-pro) .area-rank:hover,html[data-th
  .content:has(.welcome-pro) .dashboard-shortcuts small{font-size:7px;line-height:1.6}
 }
 @media(prefers-reduced-motion:reduce){.welcome-orbit:before{animation:none}.content:has(.welcome-pro) .stat-card,.content:has(.welcome-pro) .dashboard-grid-pro>.panel,.content:has(.welcome-pro) .dashboard-shortcuts a{transition:none}}
+
+/* RESPONSIVE SYSTEM-WIDE LAYOUT: phone, tablet and desktop */
+html,body{max-width:100%;overflow-x:hidden}
+body{min-width:320px}
+img,video,canvas,svg{max-width:100%}
+.app-shell.unified-shell{display:flex;min-height:100dvh;width:100%;overflow-x:clip}
+.unified-shell>.sidebar{position:fixed!important;inset:0 0 0 auto!important;width:276px!important;height:100dvh!important;min-height:0!important;transform:none;z-index:30;display:flex!important;flex-direction:column!important}
+.unified-shell>.main{margin-right:276px!important;margin-left:0!important;width:calc(100% - 276px)!important;min-width:0;max-width:none}
+.unified-shell .unified-header{position:sticky;top:0;z-index:15;min-width:0}
+.unified-shell .sidebar-scroll{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden}
+.unified-shell .sidebar nav{grid-template-columns:minmax(0,1fr);min-width:0}
+.unified-shell .sidebar nav a{min-width:0}
+.unified-shell .sidebar-profile{flex:none}
+.unified-shell .menu-toggle{display:none}
+.unified-shell .sidebar-backdrop{display:none}
+.unified-shell .content,.unified-shell .unified-page,.unified-shell .shell{width:100%;max-width:1600px;margin-inline:auto;min-width:0}
+.unified-shell :is(input,select,textarea,button){max-width:100%;font:inherit}
+.unified-shell :is(input,select,textarea){min-width:0}
+.unified-shell button,.unified-shell a{touch-action:manipulation}
+.unified-shell table{max-width:100%;border-collapse:collapse}
+.unified-shell :is(.table-wrap,.table-container,.table-responsive,.recent-table,.reports-table,.users-table,.audit-table){max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.unified-shell :is(.panel,.form-panel,.user-card,.area-card,.setting-card,.report-card){min-width:0}
+.unified-shell .sidebar-collapsed .sidebar{width:82px!important}
+.unified-shell.sidebar-collapsed>.main{margin-right:82px!important;width:calc(100% - 82px)!important}
+.unified-shell.sidebar-collapsed .brand-copy,
+.unified-shell.sidebar-collapsed .brand-status,
+.unified-shell.sidebar-collapsed .sidebar-section>span,
+.unified-shell.sidebar-collapsed .nav-label,
+.unified-shell.sidebar-collapsed .sidebar-user>div:not(.avatar),
+.unified-shell.sidebar-collapsed .sidebar-user>span,
+.unified-shell.sidebar-collapsed .sidebar-logout{display:none!important}
+.unified-shell.sidebar-collapsed .brand{justify-content:center;padding-inline:0}
+.unified-shell.sidebar-collapsed .sidebar nav a{justify-content:center;padding:8px 3px}
+.unified-shell.sidebar-collapsed .sidebar nav a .nav-icon{margin:0}
+.unified-shell.sidebar-collapsed .sidebar-profile{display:flex;justify-content:center}
+.unified-shell.sidebar-collapsed .sidebar-user{justify-content:center;padding:8px 0}
+@media(min-width:761px) and (max-width:1100px){
+ .unified-shell>.sidebar{width:240px!important}
+ .unified-shell>.main{margin-right:240px!important;width:calc(100% - 240px)!important}
+ .unified-shell.sidebar-collapsed>.sidebar{width:76px!important}
+ .unified-shell.sidebar-collapsed>.main{margin-right:76px!important;width:calc(100% - 76px)!important}
+ .unified-shell .unified-header{padding-inline:20px}
+}
+@media(max-width:760px){
+ html,body{width:100%;overflow-x:hidden}
+ .app-shell.unified-shell{display:block!important;min-height:100dvh}
+ .unified-shell>.sidebar{
+  position:fixed!important;top:0!important;right:0!important;bottom:0!important;left:auto!important;
+  width:min(320px,88vw)!important;height:100dvh!important;max-height:100dvh;
+  padding:15px 12px!important;display:flex!important;flex-direction:column!important;
+  transform:translateX(110%)!important;transition:transform .24s ease!important;
+  z-index:40!important;overflow:hidden!important;border-radius:0!important;
+ }
+ .unified-shell>.sidebar.open{transform:translateX(0)!important}
+ .unified-shell>.sidebar .sidebar-scroll{display:block!important;flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;overflow-x:hidden!important}
+ .unified-shell>.sidebar .sidebar-section{display:block!important;margin-bottom:15px}
+ .unified-shell>.sidebar .sidebar-section>span{display:block!important}
+ .unified-shell>.sidebar nav{display:grid!important;grid-template-columns:1fr!important;gap:3px!important;padding-top:5px!important}
+ .unified-shell>.sidebar nav a{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;min-height:44px!important;width:100%;padding:7px 10px!important}
+ .unified-shell>.sidebar nav a .nav-icon{display:grid!important;place-items:center;flex:0 0 30px!important;width:30px!important;height:30px!important}
+ .unified-shell>.sidebar .nav-label{display:inline!important;white-space:normal;font-size:11px}
+ .unified-shell>.sidebar .brand-copy,.unified-shell>.sidebar .brand-status{display:block!important}
+ .unified-shell>.sidebar .sidebar-profile{display:block!important;flex:none!important;padding-top:8px}
+ .unified-shell>.sidebar .sidebar-user{display:flex!important;align-items:center}
+ .unified-shell>.sidebar .sidebar-logout{display:flex!important;width:100%!important;margin-top:7px}
+ .unified-shell>.sidebar .sidebar-controls{display:none!important}
+ .unified-shell>.sidebar-backdrop{display:block!important;position:fixed!important;inset:0!important;z-index:39!important;background:rgba(1,12,25,.62)!important;backdrop-filter:blur(4px);border:0!important}
+ .unified-shell>.main{display:block!important;margin:0!important;width:100%!important;min-width:0!important}
+ .unified-shell .unified-header{height:auto!important;min-height:62px!important;padding:8px 11px!important;gap:8px!important;display:flex;align-items:center}
+ .unified-shell .menu-toggle{display:flex!important;flex:0 0 38px!important;width:38px!important;height:38px!important;padding:0!important}
+ .unified-shell .header-context{flex:1;min-width:0;overflow:hidden}
+ .unified-shell .header-context span{font-size:7px!important}
+ .unified-shell .header-context b{font-size:11px!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ .unified-shell .header-spacer{display:none!important}
+ .unified-shell .header-profile{display:none!important}
+ .unified-shell .theme-toggle{display:grid!important;place-items:center;flex:0 0 38px!important;width:38px!important;min-width:38px!important;height:38px!important;padding:0!important}
+ .unified-shell .theme-toggle small{display:none!important}
+ .unified-shell .content,.unified-shell .unified-page{padding:12px 10px 26px!important;width:100%!important;max-width:100%!important}
+ .unified-shell .shell{padding:12px 10px!important}
+ .unified-shell .topbar{gap:8px;flex-wrap:wrap}
+ .unified-shell .topbar h1{font-size:19px!important;line-height:1.6}
+ .unified-shell .topbar p{font-size:10px!important;line-height:1.9}
+ .unified-shell .stats{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+ .unified-shell .dashboard-grid,.unified-shell .dashboard-grid-pro,.unified-shell .analytics-grid,.unified-shell .settings-grid,.unified-shell .users-grid,.unified-shell .area-grid,.unified-shell .profile-layout{grid-template-columns:minmax(0,1fr)!important}
+ .unified-shell .dashboard-grid>* ,.unified-shell .dashboard-grid-pro>*{grid-column:auto!important;min-width:0}
+ .unified-shell .panel,.unified-shell .form-panel,.unified-shell .user-card,.unified-shell .area-card,.unified-shell .setting-card{padding:13px!important;border-radius:13px!important}
+ .unified-shell .welcome{padding:17px!important;min-height:0!important;gap:10px}
+ .unified-shell .welcome h1{font-size:20px!important}
+ .unified-shell .welcome-orbit{width:78px!important;height:78px!important;flex-basis:78px!important}
+ .unified-shell .welcome-orbit strong{font-size:19px!important}
+ .unified-shell :is(input,select,textarea){font-size:16px!important;min-height:42px}
+ .unified-shell textarea{min-height:110px}
+ .unified-shell :is(button,.button,[type=submit]){min-height:42px}
+ .unified-shell .quick-actions{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .unified-shell .recent-row{min-width:0}
+ .unified-shell .correspondence-grid{grid-template-columns:minmax(0,1fr)!important}
+ .unified-shell .correspondence-compose,.unified-shell .correspondence-inbox{min-width:0}
+ .unified-shell .report-card{flex-direction:column;align-items:stretch}
+ .unified-shell .report-actions{min-width:0;width:100%;flex-direction:row;flex-wrap:wrap}
+ .unified-shell .area-access-list{grid-template-columns:minmax(0,1fr)!important}
+ .unified-shell .sidebar-collapsed .sidebar{width:min(320px,88vw)!important}
+}
+@media(max-width:380px){
+ .unified-shell .content,.unified-shell .unified-page{padding-inline:8px!important}
+ .unified-shell .stats{gap:6px!important}
+ .unified-shell .stat-card{padding:10px!important}
+ .unified-shell .quick-actions{grid-template-columns:1fr!important}
+ .unified-shell .header-context b{font-size:10px!important}
+}
+@media(prefers-reduced-motion:reduce){.unified-shell>.sidebar{transition:none!important}}
