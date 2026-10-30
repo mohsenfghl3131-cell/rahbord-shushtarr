@@ -72,6 +72,9 @@ export async function POST(request:Request){
   const db=admin();
   const {data:category}=await db.from("categories").select("id,group_id,category_groups!inner(id,is_active)").eq("id",categoryId).eq("is_active",true).maybeSingle();
   if(!category)return NextResponse.json({message:"دسته‌بندی معتبر نیست."},{status:400});
+  if(ctx.responsibleGroupIds.length>0 && !["main_admin","deputy","battalion_commander"].includes(ctx.profile.role) && !ctx.responsibleGroupIds.includes(category.group_id)){
+    return NextResponse.json({message:"شما فقط مجاز به ثبت گزارش در بخش مسئولیت خود هستید."},{status:403});
+  }
   const {data,error}=await db.from("reports").insert({title,body:text,area_id:areaId,category_id:categoryId,creator_id:ctx.user.id,status:"pending"}).select("id").single();
   if(error||!data)return NextResponse.json({message:"ثبت گزارش انجام نشد."},{status:500});
   await db.from("audit_logs").insert({user_id:ctx.user.id,action:"report.create",entity_type:"report",entity_id:data.id,metadata:{area_id:areaId,category_id:categoryId}});
