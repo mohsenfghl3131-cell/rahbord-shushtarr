@@ -1,1 +1,54 @@
-"use client";import{FormEvent,useState}from"react";export default function LoginPage(){const[code,setCode]=useState("");const[password,setPassword]=useState("");const[loading,setLoading]=useState(false);const[error,setError]=useState("");async function submit(e:FormEvent){e.preventDefault();setLoading(true);setError("");try{const r=await fetch("/api/auth/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({user_code:code.trim(),password})});const d=await r.json();if(!r.ok){setError(d.message??"ورود ناموفق بود.");setLoading(false);return}window.location.href="/dashboard"}catch{setError("ارتباط با سامانه برقرار نشد. دوباره تلاش کنید.");setLoading(false)}}return <main className="auth"><form className="card" onSubmit={submit}><div className="brand">◈ راهبرد شوشتر</div><h1>ورود به مرکز عملیات</h1><p>مدیریت گزارش‌ها، حوزه‌ها و پایش عملکرد در یک محیط یکپارچه.</p><label>کد کاربری<input value={code} onChange={e=>setCode(e.target.value)} autoComplete="username" placeholder="کد کاربری خود را وارد کنید" required/></label><label>رمز عبور<input type="password" value={password} onChange={e=>setPassword(e.target.value)} autoComplete="current-password" placeholder="رمز عبور" required/></label>{error&&<div className="error">{error}</div>}<button className="button" disabled={loading}>{loading?"در حال احراز هویت…":"ورود امن به سامانه"}</button></form></main>}
+"use client";
+import { FormEvent, useState } from "react";
+
+export default function LoginPage() {
+  const [code, setCode] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  async function submit(e: FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    try {
+      const r = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_code: code.trim(), password }),
+      });
+      const d = await r.json();
+      if (!r.ok) {
+        setError(d.message ?? "ورود ناموفق بود.");
+        setLoading(false);
+        return;
+      }
+      window.location.href = "/dashboard";
+    } catch {
+      setError("ارتباط با سامانه برقرار نشد. دوباره تلاش کنید.");
+      setLoading(false);
+    }
+  }
+
+  return (
+    <main className="auth">
+      <form className="card" onSubmit={submit}>
+        <div className="brand">راهبرد شوشتر</div>
+        <h1>خوش آمدید</h1>
+        <p>برای ورود به مرکز فرماندهی و مدیریت گزارش‌ها، مشخصات حساب خود را وارد کنید.</p>
+        <label>
+          کد کاربری
+          <input value={code} onChange={(e) => setCode(e.target.value)} autoComplete="username" placeholder="کد کاربری خود را وارد کنید" required />
+        </label>
+        <label>
+          رمز عبور
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" placeholder="رمز عبور خود را وارد کنید" required />
+        </label>
+        {error && <div className="error">{error}</div>}
+        <button className="button" disabled={loading}>
+          {loading ? "در حال احراز هویت…" : "ورود امن به سامانه"}
+        </button>
+      </form>
+    </main>
+  );
+}
