@@ -2258,3 +2258,44 @@ html[data-theme="dark"] .analytics-kpi strong,html[data-theme="dark"] .analytics
 html[data-theme="dark"] .review-ring:before{background:#111d2d}
 html[data-theme="dark"] .range-tabs button,html[data-theme="dark"] .custom-range input{background:#17263a;border-color:#344861;color:#e8f1ff}
 html[data-theme="dark"] .analytics-rank-row{border-color:#293b52}
+
+
+/* Performance ranking workspace */
+.performance-page{max-width:1440px}
+.performance-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}
+.performance-kpis article{min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:17px;box-shadow:var(--shadow)}
+.performance-kpis small,.performance-kpis strong,.performance-kpis span{display:block}
+.performance-kpis small{font-size:10px;color:var(--muted)}
+.performance-kpis strong{font-size:27px;color:var(--ink);margin-top:8px}
+.performance-kpis .top-performer{border-top:3px solid var(--blue)}
+.performance-kpis .top-performer strong{font-size:15px;line-height:1.7}
+.performance-kpis .top-performer span{font-size:11px;color:var(--green);margin-top:4px}
+.performance-ranking{min-height:0}
+.performance-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 16px}
+.performance-toolbar input{width:min(100%,360px);border:1px solid var(--line);background:var(--surface2);color:var(--ink);padding:10px 12px;border-radius:9px;font:inherit;font-size:11px}
+.performance-toolbar span{font-size:10px;color:var(--muted)}
+.performance-table-wrap{width:100%;overflow-x:auto}
+.performance-table{width:100%;border-collapse:collapse;min-width:700px}
+.performance-table th,.performance-table td{text-align:right;padding:14px 10px;border-bottom:1px solid var(--line);font-size:11px;color:var(--ink);white-space:nowrap}
+.performance-table th{font-size:10px;color:var(--muted);font-weight:700;background:var(--surface2)}
+.performance-table td small{color:var(--muted);font-size:9px}
+.performance-rank{width:28px;height:28px;border-radius:9px;background:var(--surface2);display:inline-grid;place-items:center;font-weight:800}
+.performance-rank.rank-1{background:rgba(226,174,57,.17);color:#bd861b}
+.performance-rank.rank-2{background:rgba(130,145,165,.16);color:#8794a6}
+.performance-rank.rank-3{background:rgba(183,117,73,.16);color:#b8794b}
+.performance-score{font-size:14px;color:var(--blue)}
+.performance-meter{height:5px;width:90px;background:var(--surface2);border-radius:8px;overflow:hidden;margin-top:6px}
+.performance-meter i{display:block;height:100%;border-radius:8px;background:linear-gradient(90deg,var(--blue),var(--cyan))}
+.performance-method{margin-top:14px}
+.performance-method h2{font-size:14px;margin:0 0 8px}
+.performance-method p,.performance-method small{font-size:10px;color:var(--muted);line-height:1.9}
+.performance-method>div{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.performance-method>div span{padding:9px 12px;border-radius:9px;background:var(--surface2);font-size:10px;color:var(--ink)}
+.performance-method>div b{color:var(--blue);margin-left:5px}
+html[data-theme="dark"] .performance-kpis,html[data-theme="dark"] .performance-ranking,html[data-theme="dark"] .performance-method{background:#111d2d;border-color:#293b52;color:#edf4ff}
+html[data-theme="dark"] .performance-kpis strong,html[data-theme="dark"] .performance-table td{color:#edf4ff}
+html[data-theme="dark"] .performance-table th{background:#17263a;color:#c3d2e5;border-color:#293b52}
+html[data-theme="dark"] .performance-table td{border-color:#293b52}
+html[data-theme="dark"] .performance-toolbar input{background:#17263a;border-color:#344861;color:#edf4ff}
+@media(max-width:850px){.performance-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.performance-page{padding:16px}.performance-kpis{gap:8px}.performance-kpis article{padding:13px}.performance-kpis strong{font-size:22px}.performance-toolbar{align-items:stretch;flex-direction:column}.performance-toolbar input{width:100%}}
