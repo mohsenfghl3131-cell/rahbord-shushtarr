@@ -365,3 +365,41 @@ body:before{opacity:.24;background-image:linear-gradient(rgba(76,171,221,.07) 1p
 .dashboard-shortcuts b{color:#21466a}.dashboard-shortcuts small{color:#8297ad}
 @media(max-width:1100px){.dashboard-grid-pro{grid-template-columns:1fr 1fr}.dashboard-grid-pro>.panel:nth-child(n){grid-column:auto;grid-row:auto}.dashboard-grid-pro>.panel:nth-child(5){grid-column:1/-1}}
 @media(max-width:700px){.content{padding:12px;background:#f3f7fc}.welcome-pro{min-height:155px;padding:18px}.welcome-pro h1{font-size:21px}.shushtar-visual{grid-template-columns:1fr}.waterfall-photo{min-height:150px}.waterfall-photo img{min-height:150px}.radar-scene{min-height:140px}.dashboard-grid-pro{grid-template-columns:1fr}.dashboard-grid-pro>.panel:nth-child(n){grid-column:1;grid-row:auto}.dashboard-shortcuts{grid-template-columns:1fr 1fr}.stats{grid-template-columns:1fr 1fr}}
+
+
+/* Circular defensive road-guard emblem */
+.guard-emblem-card{position:relative;display:flex;flex-direction:column;justify-content:space-between;gap:10px;padding:13px;border-radius:10px;min-width:0;min-height:190px;overflow:hidden;background:radial-gradient(circle at 50% 26%,rgba(25,191,211,.2),transparent 46%),linear-gradient(145deg,#0b2b43,#07192d);border:1px solid rgba(22,167,202,.28)}
+.guard-emblem-scene{position:relative;display:grid;place-items:center;min-height:128px;overflow:hidden;border-radius:9px;background:radial-gradient(circle,rgba(38,198,199,.1),transparent 68%)}
+.guard-seal{position:relative;width:118px;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;overflow:hidden;border:2px solid rgba(111,230,232,.8);background:radial-gradient(circle at 50% 28%,#1b6070 0,#103b50 54%,#092338 100%);box-shadow:0 0 0 5px rgba(53,216,242,.07),0 0 28px rgba(53,216,242,.2),inset 0 0 22px rgba(0,0,0,.45)}
+.guard-seal:before,.guard-seal:after{content:"";position:absolute;inset:8px;border:1px dashed rgba(142,231,228,.34);border-radius:50%}
+.guard-seal:after{inset:16px;border-style:solid;border-color:rgba(142,231,228,.15)}
+.guard-halo{position:absolute;inset:22px 20px 8px;border-radius:50% 50% 38% 38%;background:linear-gradient(150deg,rgba(63,215,222,.14),rgba(3,24,42,.05))}
+.guard-figure{position:relative;width:82px;height:104px;z-index:2;filter:drop-shadow(0 5px 7px rgba(0,0,0,.35))}
+.guard-helmet{position:absolute;z-index:4;top:4px;left:19px;width:46px;height:24px;border-radius:24px 24px 8px 8px;background:linear-gradient(145deg,#f5d477,#c79532);border:2px solid #ffe9a4;box-shadow:0 3px 9px rgba(0,0,0,.3)}
+.guard-helmet:after{content:"";position:absolute;left:-5px;right:-5px;bottom:-4px;height:6px;border-radius:8px;background:#d7a63f}
+.guard-helmet span{position:absolute;top:4px;left:18px;width:7px;height:7px;border-radius:50%;background:#fff1b7;box-shadow:0 0 8px #fff1b7}
+.guard-face{position:absolute;z-index:3;top:24px;left:25px;width:34px;height:33px;border-radius:9px 9px 15px 15px;background:linear-gradient(145deg,#e8b78d,#a96c4e);border:1px solid rgba(255,226,193,.55)}
+.guard-face:after{content:"";position:absolute;bottom:4px;left:10px;width:14px;height:4px;border-bottom:1.5px solid #633f34;border-radius:50%}
+.guard-eye{position:absolute;top:11px;width:4px;height:3px;border-radius:50%;background:#253b4b}
+.guard-eye-one{left:7px}.guard-eye-two{right:7px}
+.guard-neck{position:absolute;z-index:2;top:52px;left:34px;width:16px;height:12px;background:#bd805c}
+.guard-shoulders{position:absolute;z-index:2;top:59px;left:7px;width:68px;height:43px;border-radius:22px 22px 8px 8px;background:linear-gradient(145deg,#238b91,#12536b 70%,#0b344d);border:2px solid #56d3d0;box-shadow:inset 0 -8px 13px rgba(0,0,0,.24)}
+.guard-shoulder-mark{position:absolute;top:5px;left:7px;width:12px;height:8px;border-radius:3px;background:#e7c65f;transform:rotate(-20deg)}
+.guard-chest-band{position:absolute;top:8px;left:29px;width:7px;height:27px;border-radius:3px;background:linear-gradient(#fff0a1,#d5a83f);transform:rotate(13deg);opacity:.95}
+.guard-radio{position:absolute;top:7px;right:7px;width:8px;height:13px;border-radius:2px;background:#152c3b;border:1px solid #83d6d4}
+.guard-radio:after{content:"";position:absolute;top:-5px;left:3px;width:2px;height:5px;background:#9de8df}
+.guard-badge-mark{position:absolute;bottom:5px;right:8px;width:13px;height:13px;border-radius:50%;display:grid;place-items:center;background:#e6faff;color:#116074;font-size:8px;font-style:normal;font-weight:900}
+.guard-seal-star{position:absolute;z-index:4;bottom:12px;right:15px;color:#f6d77b;font-size:12px;text-shadow:0 0 8px rgba(246,215,123,.6)}
+.guard-orbit{position:absolute;border:1px solid rgba(72,211,220,.13);border-radius:50%;width:148px;aspect-ratio:1;animation:guardOrbit 18s linear infinite}
+.guard-orbit-two{width:174px;border-style:dashed;animation-direction:reverse;animation-duration:28s}
+.guard-signal{position:absolute;width:5px;height:5px;border-radius:50%;background:#6cebd8;box-shadow:0 0 10px #6cebd8;animation:guardPulse 1.8s ease-in-out infinite}
+.signal-one{top:15%;left:25%}.signal-two{top:45%;right:14%;animation-delay:.5s}.signal-three{bottom:13%;left:31%;animation-delay:1s}
+.guard-emblem-copy{position:relative;z-index:2}
+.guard-emblem-copy .panel-eyebrow{display:block;font-size:8px;letter-spacing:1px;color:#69cbd1}
+.guard-emblem-copy h3{font-size:15px;color:#f0fbff;margin:5px 0}
+.guard-emblem-copy p{font-size:10px;line-height:1.8;color:#8daebc;margin:0 0 5px}
+.guard-live{display:inline-flex;align-items:center;gap:6px;font-size:9px;color:#81b6bd}
+.guard-live i{width:6px;height:6px;border-radius:50%;background:#35d69b;box-shadow:0 0 8px #35d69b}
+@keyframes guardOrbit{to{transform:rotate(360deg)}}@keyframes guardPulse{0%,100%{opacity:.35;transform:scale(.7)}50%{opacity:1;transform:scale(1.5)}}
+@media(prefers-reduced-motion:reduce){.guard-orbit,.guard-signal{animation:none}}
+@media(max-width:700px){.guard-emblem-card{min-height:190px}.guard-emblem-scene{min-height:135px}}
