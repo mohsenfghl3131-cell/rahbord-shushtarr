@@ -29,8 +29,8 @@ export async function GET(request:Request){
     .select("id,status,area_id,category_id,created_at,areas(name),categories(name)")
     .is("deleted_at",null);
 
-  if(from && /^\\d{4}-\\d{2}-\\d{2}$/.test(from))base=base.gte("created_at",from+"T00:00:00.000Z");
-  if(to && /^\\d{4}-\\d{2}-\\d{2}$/.test(to))base=base.lt("created_at",new Date(new Date(to+"T00:00:00.000Z").getTime()+86400000).toISOString());
+  if(from && /^\d{4}-\d{2}-\d{2}$/.test(from))base=base.gte("created_at",from+"T00:00:00.000Z");
+  if(to && /^\d{4}-\d{2}-\d{2}$/.test(to))base=base.lt("created_at",new Date(new Date(to+"T00:00:00.000Z").getTime()+86400000).toISOString());
 
   if(!privileged){
     if(areaIds.length&&categoryIds.length){
