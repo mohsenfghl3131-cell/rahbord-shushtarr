@@ -1342,3 +1342,40 @@ img,video,canvas,svg{max-width:100%}
  .unified-shell .header-context b{font-size:10px!important}
 }
 @media(prefers-reduced-motion:reduce){.unified-shell>.sidebar{transition:none!important}}
+
+/* FIX: scoring page must fit phone viewport without horizontal scrolling */
+.scores-page,.scores-page *{box-sizing:border-box}
+.scores-page{width:100%!important;max-width:100%!important;min-width:0!important;overflow-x:clip!important}
+.scores-page>.topbar{width:100%;min-width:0;flex-wrap:wrap;gap:10px}
+.scores-page .score-form,.scores-page .score-results,.scores-page .mission-result{width:100%;max-width:100%;min-width:0}
+.scores-page .score-form-grid{width:100%;grid-template-columns:repeat(2,minmax(0,1fr))}
+.scores-page .score-form-grid label{min-width:0;max-width:100%;overflow-wrap:anywhere}
+.scores-page .score-form-grid input,.scores-page .score-form-grid select,.scores-page .score-form-grid textarea{width:100%;max-width:100%;min-width:0;box-sizing:border-box}
+.scores-page .mission-result-head{min-width:0;flex-wrap:wrap}
+.scores-page .mission-result-head>div{min-width:0;flex:1 1 190px;overflow-wrap:anywhere}
+.scores-page .mission-result-head h3,.scores-page .mission-result-head p{overflow-wrap:anywhere;word-break:normal}
+.scores-page .area-score-grid{width:100%;grid-template-columns:repeat(2,minmax(0,1fr))}
+.scores-page .area-score{min-width:0;max-width:100%;overflow:hidden}
+.scores-page .area-score b,.scores-page .area-score>span{overflow-wrap:anywhere;word-break:normal}
+.scores-page .score-progress{width:100%;max-width:100%}
+@media(max-width:760px){
+ .unified-shell .scores-page{width:100%!important;max-width:100%!important;margin:0!important;padding:12px 9px 25px!important;overflow-x:clip!important}
+ .scores-page .score-form,.scores-page .score-results{padding:12px!important;margin-top:12px!important;border-radius:13px!important}
+ .scores-page .score-form-grid{grid-template-columns:minmax(0,1fr)!important;gap:10px!important;margin:12px 0!important}
+ .scores-page .score-wide{grid-column:auto!important}
+ .scores-page .score-form-grid label{font-size:11px!important}
+ .scores-page .score-form-grid input,.scores-page .score-form-grid select,.scores-page .score-form-grid textarea{padding:10px!important}
+ .scores-page .mission-result{padding:14px 0!important}
+ .scores-page .mission-result-head{align-items:flex-start!important;gap:8px!important}
+ .scores-page .mission-result-head>div{flex:1 1 100%!important;width:100%}
+ .scores-page .mission-result-head>strong{font-size:19px!important;align-self:flex-start}
+ .scores-page .mission-result-head h3{font-size:14px!important;line-height:1.8}
+ .scores-page .mission-result-head p{font-size:10px!important;line-height:1.9}
+ .scores-page .area-score-grid{grid-template-columns:minmax(0,1fr)!important;gap:8px!important}
+ .scores-page .area-score{padding:11px!important}
+ .scores-page .area-score b{font-size:11px!important}
+ .scores-page .area-score>span{font-size:10px!important;white-space:normal}
+ .scores-page .area-score>strong{font-size:13px!important}
+ .scores-page .panel-title{min-width:0;flex-wrap:wrap}
+ .scores-page .panel-title h2{font-size:13px!important;line-height:1.8}
+}
