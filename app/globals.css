@@ -329,3 +329,39 @@ body:before{opacity:.24;background-image:linear-gradient(rgba(76,171,221,.07) 1p
 .radar-copy{position:relative;z-index:2}.radar-copy .panel-eyebrow{display:block;font-size:9px;letter-spacing:1px;color:#69cbd1}.radar-copy h3{font-size:18px;color:#f0fbff;margin:7px 0}.radar-copy p{font-size:11px;line-height:1.9;color:#8daebc;margin:0}
 @keyframes radarRotate{to{transform:rotate(360deg)}}@keyframes radarBlink{0%,100%{opacity:.35;transform:scale(.75)}50%{opacity:1;transform:scale(1.5)}}
 @media(prefers-reduced-motion:reduce){.radar-sweep,.radar-target{animation:none}}
+
+
+/* Dashboard layout inspired by the supplied Shushtar reference */
+.welcome-pro{min-height:166px;padding:26px 30px;border-radius:9px;background:linear-gradient(90deg,rgba(5,25,48,.08),rgba(4,28,58,.92)),url('https://upload.wikimedia.org/wikipedia/commons/1/15/Shushtar_Historical_Hydraulic_System_2.jpg') center 48%/cover no-repeat;color:#fff;border:0;box-shadow:0 8px 24px rgba(16,49,83,.16)}
+.welcome-pro h1{color:#fff;font-size:27px}.welcome-pro p{color:#e4f1ff}.welcome-pro .welcome-kicker,.welcome-pro .welcome-meta{color:#c4e2f7}.welcome-pro .welcome-orbit{background:rgba(6,27,48,.72);border:1px solid rgba(255,255,255,.24);box-shadow:0 8px 28px rgba(0,0,0,.2)}
+.content{max-width:1600px;padding:16px 18px 26px;background:#f3f7fc;min-height:calc(100vh - 72px)}
+.main{background:#f3f7fc}.unified-header{background:#fff;color:#193451;border-bottom:1px solid #dce7f2}
+.shushtar-visual{grid-template-columns:1.45fr .75fr;gap:14px;margin:14px 0}
+.waterfall-photo{min-height:190px;border-radius:10px}.waterfall-photo img{min-height:190px}.roadman-card{display:none}
+.radar-card{min-height:190px;padding:13px;border-radius:10px;background:linear-gradient(145deg,#0b2b43,#07192d);border-color:rgba(22,167,202,.28)}
+.radar-scene{min-height:128px;background:transparent;border:0}.radar-frame{width:118px;padding:5px}.radar-grid{background-size:auto,25% 25%,25% 25%,auto}
+.radar-copy h3{font-size:15px}.radar-copy p{font-size:10px}
+.stats{gap:12px;margin:14px 0}.stat-card{min-height:112px;padding:15px 18px;border-radius:9px;background:#fff;border:1px solid #dce7f2;box-shadow:0 3px 12px rgba(30,74,120,.045)}
+.stat-card span{color:#58718d}.stat-card strong{font-size:26px;color:#15395f}.stat-card small{color:#8095aa}
+.dashboard-grid-pro{grid-template-columns:1.12fr .9fr 1.08fr;gap:12px;align-items:stretch}
+.dashboard-grid-pro>.panel{min-height:220px;padding:16px;border-radius:9px;background:#fff;border:1px solid #dce7f2;box-shadow:0 3px 12px rgba(30,74,120,.045);color:#173654}
+.dashboard-grid-pro>.panel:nth-child(1){grid-column:2;grid-row:1}
+.dashboard-grid-pro>.panel:nth-child(2){grid-column:1;grid-row:1}
+.dashboard-grid-pro>.panel:nth-child(3){grid-column:1;grid-row:2}
+.dashboard-grid-pro>.panel:nth-child(4){grid-column:2;grid-row:2}
+.dashboard-grid-pro>.panel:nth-child(5){grid-column:3;grid-row:1 / span 2}
+.panel-title h2,.area-rank-main strong,.recent-row b{color:#193b60}
+.panel-eyebrow,.panel-title a{color:#347ac0}
+.trend-col small,.trend-col b{color:#607d9a}.trend-chart{min-height:175px}
+.status-ring:after{background:#fff}.status-ring strong{color:#1769ff}.status-ring small,.legend-row{color:#617b98}
+.legend-row,.recent-row,.area-rank{border-color:#e6edf5}
+.recent-row b{color:#193b60}.recent-row small,.recent-row time{color:#7b91a9}
+.activity-pro>div{border-color:#e7eef6}.activity-pro b{color:#294b6e}.activity-pro small{color:#8196ac}
+.area-bar,.bar{background:#e8eff7}.area-bar i,.bar i{background:linear-gradient(90deg,#36b9d9,#3478f6)}
+.quran-card{border-radius:10px;margin:14px 0;background:#fff;color:#183b5c}
+.quran-copy blockquote{color:#183b5c}
+.dashboard-shortcuts{margin-top:14px;grid-template-columns:repeat(4,minmax(0,1fr))}
+.dashboard-shortcuts a{min-height:72px;border-radius:9px;background:#fff;border:1px solid #dce7f2;box-shadow:0 3px 12px rgba(30,74,120,.045)}
+.dashboard-shortcuts b{color:#21466a}.dashboard-shortcuts small{color:#8297ad}
+@media(max-width:1100px){.dashboard-grid-pro{grid-template-columns:1fr 1fr}.dashboard-grid-pro>.panel:nth-child(n){grid-column:auto;grid-row:auto}.dashboard-grid-pro>.panel:nth-child(5){grid-column:1/-1}}
+@media(max-width:700px){.content{padding:12px;background:#f3f7fc}.welcome-pro{min-height:155px;padding:18px}.welcome-pro h1{font-size:21px}.shushtar-visual{grid-template-columns:1fr}.waterfall-photo{min-height:150px}.waterfall-photo img{min-height:150px}.radar-scene{min-height:140px}.dashboard-grid-pro{grid-template-columns:1fr}.dashboard-grid-pro>.panel:nth-child(n){grid-column:1;grid-row:auto}.dashboard-shortcuts{grid-template-columns:1fr 1fr}.stats{grid-template-columns:1fr 1fr}}
