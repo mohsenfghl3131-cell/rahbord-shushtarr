@@ -83,7 +83,7 @@ export default async function Dashboard() {
   const weekStart = new Date(todayStart);
   weekStart.setDate(weekStart.getDate() - 6);
 
-  const [all, pending, approved, rejected, today, week, recent, audit, areaRows] =
+  const [all, pending, approved, rejected, today, week, recent, areaRows] =
     await Promise.all([
       scope(db.from("reports").select("id", { count: "exact", head: true }).is("deleted_at", null)),
       scope(db.from("reports").select("id", { count: "exact", head: true }).eq("status", "pending").is("deleted_at", null)),
@@ -104,7 +104,6 @@ export default async function Dashboard() {
           .order("created_at", { ascending: false })
           .limit(6)
       ),
-      db.from("audit_logs").select("id,action,created_at").order("created_at", { ascending: false }).limit(6),
       scope(db.from("reports").select("area_id,status,areas(name)").is("deleted_at", null)),
     ]);
 
@@ -262,23 +261,7 @@ export default async function Dashboard() {
             </div>
           </section>
 
-          <section className="panel">
-            <div className="panel-title">
-              <div><span className="panel-eyebrow">LIVE FEED</span><h2>آخرین فعالیت‌ها</h2></div>
-              <Link href="/audit">لاگ کامل ←</Link>
-            </div>
-            <div className="activity activity-pro">
-              {(audit.data ?? []).map((item: any) => (
-                <div key={item.id}>
-                  <span className="activity-dot">◈</span>
-                  <div>
-                    <b>{auditLabels[item.action] ?? item.action}</b>
-                    <small>{new Date(item.created_at).toLocaleString("fa-IR")}</small>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
+          
 
           <section className="panel wide">
             <div className="panel-title">
