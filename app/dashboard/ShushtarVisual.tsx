@@ -1,6 +1,6 @@
 "use client";
 
-export default function ShushtarVisual(){
+export default function ShushtarVisual() {
   return (
     <section className="shushtar-visual">
       <div className="waterfall-photo">
@@ -14,35 +14,28 @@ export default function ShushtarVisual(){
         </div>
       </div>
 
-      <div className="roadman-card">
-        <div className="roadman-scene">
-          <div className="roadman" aria-label="راهدار در حال پایش گزارش‌ها">
-            <div className="roadman-head">
-              <span className="helmet">◢</span>
-              <span className="face">◉</span>
+      <div className="radar-card">
+        <div className="radar-scene">
+          <div className="radar-frame">
+            <div className="radar-grid">
+              <span className="radar-cross radar-cross-h" />
+              <span className="radar-cross radar-cross-v" />
+              <span className="radar-ring radar-ring-one" />
+              <span className="radar-ring radar-ring-two" />
+              <span className="radar-ring radar-ring-three" />
+              <span className="radar-sweep" />
+              <i className="radar-target target-a" />
+              <i className="radar-target target-b" />
+              <i className="radar-target target-c" />
+              <span className="radar-center" />
             </div>
-            <div className="roadman-body">
-              <span className="vest-line" />
-              <span className="badge">R</span>
-            </div>
-            <span className="arm arm-back" />
-            <span className="arm arm-front" />
-            <span className="leg leg-left" />
-            <span className="leg leg-right" />
-            <span className="boot boot-left" />
-            <span className="boot boot-right" />
-            <span className="search">⌕</span>
           </div>
-          <div className="roadman-shadow" />
-          <i className="scan-line"/>
-          <span className="scan-dot dot-one"/>
-          <span className="scan-dot dot-two"/>
+          <div className="radar-status"><i /> سامانه پایش فعال</div>
         </div>
-
-        <div className="roadman-copy">
-          <span className="panel-eyebrow">FIELD SCOUT · ONLINE</span>
-          <h3>راهدار در حال پایش</h3>
-          <p>در حال جست‌وجوی گزارش‌های جدید در مناطق عملیاتی…</p>
+        <div className="radar-copy">
+          <span className="panel-eyebrow">AIR DEFENSE · RADAR SYSTEM</span>
+          <h3>مرکز پایش و دیده‌بانی</h3>
+          <p>پایش لحظه‌ای وضعیت و رصد گزارش‌های مناطق تحت پوشش</p>
         </div>
       </div>
     </section>
