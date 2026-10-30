@@ -26,7 +26,8 @@ export async function GET(request:Request){
   const mine=url.searchParams.get("mine")==="1";
 
   const db=admin();
-  const sectionScoped=ctx.responsibleGroupIds.length>0 && !["main_admin","deputy","battalion_commander"].includes(ctx.profile.role);
+  const privileged=["main_admin","deputy","battalion_commander"].includes(ctx.profile.role);
+  const sectionScoped=!privileged && ctx.responsibleGroupIds.length>0;
   let responsibleCategoryIds:string[]=[];
   if(sectionScoped){
     const {data:sectionCategories}=await db.from("categories").select("id").in("group_id",ctx.responsibleGroupIds).eq("is_active",true);
@@ -42,15 +43,27 @@ export async function GET(request:Request){
   if(q)query=query.or("title.ilike.%"+q+"%,body.ilike.%"+q+"%");
   if(status)query=query.eq("status",status);
   if(category)query=query.eq("category_id",category);
-  if(sectionScoped){
-    query=query.in("category_id",responsibleCategoryIds.length?responsibleCategoryIds:["00000000-0000-0000-0000-000000000000"]);
-  }
-  if(area){
-    if(!sectionScoped && !canUseArea(ctx,area) && ctx.profile.role!=="main_admin"&&ctx.profile.role!=="deputy"&&ctx.profile.role!=="battalion_commander")
-      return NextResponse.json({message:"دسترسی به این حوزه مجاز نیست."},{status:403});
-    query=query.eq("area_id",area);
-  }else if(!sectionScoped && (ctx.profile.role==="area_manager"||ctx.profile.role==="area_force")){
-    query=query.in("area_id",ctx.areaIds.length?ctx.areaIds:["00000000-0000-0000-0000-000000000000"]);
+
+  if(!privileged && !mine){
+    if(area){
+      if((ctx.profile.role==="area_manager"||ctx.profile.role==="area_force") && !canUseArea(ctx,area)){
+        return NextResponse.json({message:"دسترسی به این حوزه مجاز نیست."},{status:403});
+      }
+      query=query.eq("area_id",area);
+    }else{
+      const areaScoped=ctx.profile.role==="area_manager"||ctx.profile.role==="area_force";
+      const hasAreas=areaScoped && ctx.areaIds.length>0;
+      const hasGroups=sectionScoped && responsibleCategoryIds.length>0;
+      if(hasAreas && hasGroups){
+        query=query.or(`area_id.in.(${ctx.areaIds.join(",")}),category_id.in.(${responsibleCategoryIds.join(",")})`);
+      }else if(hasAreas){
+        query=query.in("area_id",ctx.areaIds);
+      }else if(hasGroups){
+        query=query.in("category_id",responsibleCategoryIds);
+      }else{
+        query=query.eq("creator_id",ctx.user.id);
+      }
+    }
   }
 
   const {data,error}=await query;
