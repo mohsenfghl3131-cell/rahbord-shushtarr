@@ -35,6 +35,9 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   if (typeof body.display_name === "string" && body.display_name.trim()) patch.display_name = body.display_name.trim();
   if (typeof body.role === "string") {
     if (!roles.includes(body.role)) return NextResponse.json({ message: "نقش انتخاب‌شده معتبر نیست." }, { status: 400 });
+    if ((id === ctx.user.id || target.user_code === "ADMIN001") && body.role !== "main_admin") {
+      return NextResponse.json({ message: "نقش مدیر اصلی برای این حساب قابل تغییر نیست." }, { status: 400 });
+    }
     patch.role = body.role;
   }
 
