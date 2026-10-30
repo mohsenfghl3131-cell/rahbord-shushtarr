@@ -21,6 +21,7 @@ const nav: readonly NavItem[] = [
   { label: "ارسال نامه", href: "/messages", icon: "✉", roles: [] },
   { label: "نمره‌دهی", href: "/scores", icon: "％", roles: ["main_admin", "deputy", "battalion_commander", "area_manager"] },
   { label: "کاربران", href: "/users", icon: "♟", roles: ["main_admin", "deputy", "battalion_commander"] },
+  { label: "چارت سازمانی", href: "/organization", icon: "⌘", roles: [] },
   { label: "حوزه‌ها", href: "/areas", icon: "⌖", roles: ["main_admin", "deputy", "battalion_commander", "area_manager"] },
   { label: "دسته‌بندی‌ها", href: "/categories", icon: "▦", roles: ["main_admin", "deputy", "battalion_commander"] },
   { label: "فایل‌ها", href: "/files", icon: "▣", roles: [] },
@@ -45,6 +46,7 @@ const pageTitles: Record<string, string> = {
   "/messages": "ارسال نامه و صندوق نامه‌ها",
   "/scores": "نمره‌دهی و سهمیه مأموریت‌ها",
   "/users": "مدیریت کاربران",
+  "/organization": "چارت سازمانی",
   "/areas": "مدیریت حوزه‌ها",
   "/categories": "دسته‌بندی‌ها",
   "/files": "فایل‌ها",
@@ -122,7 +124,7 @@ export default function AppShell({ children }: Props) {
     ["/dashboard", "/reports/new", "/reports/mine", "/reports"].includes(item.href)
   );
   const management = visible.filter((item) =>
-    ["/messages", "/scores", "/users", "/areas", "/categories", "/files", "/analytics", "/audit", "/settings"].includes(item.href)
+    ["/messages", "/scores", "/users", "/organization", "/areas", "/categories", "/files", "/analytics", "/audit", "/settings"].includes(item.href)
   );
 
   return (
