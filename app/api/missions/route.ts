@@ -45,7 +45,7 @@ export async function POST(request:Request){
   const fallback=await admin.from("missions").insert({group_id:groupId,title,description,target_value:target,unit,created_by:ctx.user.id}).select("id").single();
   data=fallback.data;error=fallback.error;
  }
- if(error)return NextResponse.json({message:"ثبت مأموریت انجام نشد: "+error.message},{status:500});
+ if(error||!data)return NextResponse.json({message:"ثبت مأموریت انجام نشد: "+(error?.message??"پاسخ پایگاه‌داده خالی بود.")},{status:500});
  await admin.from("audit_logs").insert({user_id:ctx.user.id,action:"mission.create",entity_type:"mission",entity_id:data.id,metadata:{group_id:groupId,title,target_value:target,unit,deadline_at:deadlineAt?.toISOString()??null}});
  return NextResponse.json({id:data.id},{status:201});
 }
