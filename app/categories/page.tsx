@@ -46,8 +46,7 @@ export default function Categories(){
     <div className="section-cats">{cats.filter(c=>c.group_id===g.id&&c.is_active).map(c=><span key={c.id}>{c.name}</span>)}</div>
    </article>)}
   </section>}
-  {canManage&&<form className="form-panel" onSubmit={add}><div className="form-step"><span>＋</span><div><b>افزودن زیرمجموعه</b><small>دسته‌بندی جدید را به یکی از بخش‌ها اضافه کنید.</small></div></div><label>نام زیرمجموعه<input value={form.name} onChange={x=>setForm({...form,name:x.target.value})} required/></label><label>بخش<select value={form.group_id} onChange={x=>setForm({...form,group_id:x.target.value})}>{groups.map(x=><option key={x.id} value={x.id}>{x.name}</option>)}</select></label>{e&&<div className="error">{e}</div>}<button className="button neon-button">افزودن زیرمجموعه</button></form>
-  </form>}
+  {canManage&&<form className="form-panel" onSubmit={add}><div className="form-step"><span>＋</span><div><b>افزودن زیرمجموعه</b><small>دسته‌بندی جدید را به یکی از بخش‌ها اضافه کنید.</small></div></div><label>نام زیرمجموعه<input value={form.name} onChange={x=>setForm({...form,name:x.target.value})} required/></label><label>بخش<select value={form.group_id} onChange={x=>setForm({...form,group_id:x.target.value})}>{groups.map(x=><option key={x.id} value={x.id}>{x.name}</option>)}</select></label>{e&&<div className="error">{e}</div>}<button className="button neon-button">افزودن زیرمجموعه</button></form>}
   <section className="panel" style={{marginTop:18}}>{cats.map(x=><div className="report-row" key={x.id}><div><b>{x.name}</b><small>{x.category_groups?.name}</small></div>{canManage&&<button className="small-btn" onClick={()=>toggle(x)}>{x.is_active?"فعال":"غیرفعال"}</button>}</div>)}</section>
  </main></AppShell>
 }
