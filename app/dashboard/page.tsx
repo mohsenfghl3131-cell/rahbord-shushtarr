@@ -3,7 +3,6 @@ import { createClient } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
 import { getCurrentContext } from "@/lib/auth";
 import AppShell from "@/app/components/AppShell";
-import QuranCard from "./QuranCard";
 
 type AreaStat = {
   name: string;
@@ -308,7 +307,6 @@ export default async function Dashboard() {
             </div>
           </section>
         </section>
-        <QuranCard />
         <section className="quick-actions dashboard-shortcuts">
           <Link href="/users"><span>♟</span><div><b>مدیریت کاربران</b><small>افزودن و مدیریت کاربران</small></div></Link>
           <Link href="/areas"><span>⌖</span><div><b>مدیریت حوزه‌ها</b><small>تعریف و ویرایش حوزه‌ها</small></div></Link>
