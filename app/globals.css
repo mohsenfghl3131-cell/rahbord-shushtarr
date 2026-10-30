@@ -501,3 +501,84 @@ html[data-theme="dark"] .sidebar-profile,html[data-theme="dark"] .sidebar-sectio
 html[data-theme="dark"] .theme-toggle{background:#0b2038;border-color:#12608b;color:#dff8ff;box-shadow:0 0 16px rgba(0,190,255,.12)}
 .header-context b{color:var(--ink);transition:color .2s}
 @media(max-width:700px){.theme-toggle{padding:7px 9px}.theme-toggle small{display:none}.header-context b{font-size:12px}}
+
+
+/* Premium command interface refinement */
+:root{--bg:#f3f7fc;--ink:#172f4b;--muted:#6d8299;--line:#d9e5f1;--blue:#176fd1;--cyan:#08aeea}
+html:not([data-theme="dark"]) .content{background:linear-gradient(180deg,#f3f7fc 0%,#edf3fa 100%)!important}
+html:not([data-theme="dark"]) .panel,html:not([data-theme="dark"]) .stat-card,html:not([data-theme="dark"]) .quick-actions a{border-radius:16px!important;box-shadow:0 8px 24px rgba(23,65,110,.055)!important}
+html:not([data-theme="dark"]) .stat-card{padding:20px 21px!important;transition:transform .2s,box-shadow .2s}
+html:not([data-theme="dark"]) .stat-card:hover,html:not([data-theme="dark"]) .quick-actions a:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(23,65,110,.10)!important}
+.welcome-pro{border-radius:20px!important;min-height:205px!important;padding:28px 32px!important;box-shadow:0 14px 34px rgba(13,48,83,.13)!important}
+.welcome-pro h1{font-size:clamp(22px,2.2vw,30px)!important;line-height:1.55}
+.welcome-pro p{font-size:12px!important;line-height:2}
+.welcome-orbit{width:132px!important;height:132px!important}
+.stat-card{border-radius:15px!important;min-height:130px}
+.stat-card strong{font-size:32px!important;letter-spacing:-.5px}
+.dashboard-grid-pro>.panel{border-radius:16px!important;padding:21px!important}
+.panel-title h2{font-size:15px!important;font-weight:800}
+.panel-eyebrow{font-size:9px;letter-spacing:.3px;color:#5d91bc}
+.trend-chart{border-radius:12px;overflow:hidden}
+.recent-row{border-radius:10px;transition:background .18s;padding:12px 10px!important}
+.recent-row:hover{background:#f0f7ff}
+.theme-toggle{min-width:78px;justify-content:center;box-shadow:0 3px 10px rgba(18,68,112,.06)}
+.theme-toggle span{font-size:18px}
+.header-context b{font-size:14px;font-weight:800}
+.unified-header{box-shadow:0 4px 18px rgba(20,58,98,.045)}
+.sidebar{box-shadow:-12px 0 34px rgba(10,42,76,.12)!important}
+.sidebar nav a{border-radius:11px!important;margin:2px 0}
+.sidebar nav a .nav-icon{border-radius:9px}
+html[data-theme="dark"] .content{background:radial-gradient(ellipse at 50% 0%,rgba(0,139,210,.11),transparent 46%),linear-gradient(180deg,#050c18,#071322 70%,#050b15)!important}
+html[data-theme="dark"] .unified-header{background:rgba(6,16,30,.96)!important;border-color:#123653!important;color:#e7f6ff!important}
+html[data-theme="dark"] .header-context b{color:#f0f9ff!important;text-shadow:0 0 18px rgba(0,190,255,.16)}
+html[data-theme="dark"] .header-context span{color:#83a9c6!important}
+html[data-theme="dark"] .welcome-pro{background:linear-gradient(90deg,rgba(3,15,29,.88),rgba(4,24,43,.58)),url('https://upload.wikimedia.org/wikipedia/commons/1/15/Shushtar_Historical_Hydraulic_System_2.jpg') center 48%/cover no-repeat!important;border:1px solid #087eaf!important;box-shadow:0 0 0 1px rgba(0,217,255,.13),0 14px 40px rgba(0,0,0,.28),0 0 30px rgba(0,153,255,.13)!important}
+html[data-theme="dark"] .stat-card,html[data-theme="dark"] .dashboard-grid-pro>.panel,html[data-theme="dark"] .quick-actions a{background:linear-gradient(145deg,rgba(12,29,50,.98),rgba(7,19,34,.98))!important;border:1px solid #174568!important;border-radius:16px!important;box-shadow:0 10px 28px rgba(0,0,0,.24),inset 0 0 24px rgba(0,169,255,.035)!important}
+html[data-theme="dark"] .stat-card{border-top:2px solid #168bff!important}
+html[data-theme="dark"] .stat-card.green{border-top-color:#00d5a2!important}
+html[data-theme="dark"] .stat-card.orange{border-top-color:#ffb648!important}
+html[data-theme="dark"] .stat-card.cyan{border-top-color:#00d9ff!important}
+html[data-theme="dark"] .stat-card:after{background:radial-gradient(circle,#0d5273,transparent 70%)!important}
+html[data-theme="dark"] .panel-title h2,html[data-theme="dark"] .recent-row b,html[data-theme="dark"] .area-rank-main strong{color:#e9f7ff!important}
+html[data-theme="dark"] .panel-eyebrow{color:#55cfff!important}
+html[data-theme="dark"] .recent-row:hover{background:rgba(0,177,255,.08)!important}
+html[data-theme="dark"] .trend-chart{background:linear-gradient(180deg,rgba(4,18,34,.55),rgba(7,27,46,.75))!important}
+html[data-theme="dark"] .trend-bars small,html[data-theme="dark"] .trend-bars b{color:#8db4d1!important}
+html[data-theme="dark"] .quick-actions a{border-color:#174568!important}
+html[data-theme="dark"] .quick-actions a:hover{border-color:#00bfe9!important;box-shadow:0 0 22px rgba(0,190,255,.13)!important}
+html[data-theme="dark"] .sidebar{background:linear-gradient(180deg,#0a2038,#071629 60%,#050f1d)!important;border-color:#153a58!important}
+html[data-theme="dark"] .sidebar nav a.active{background:linear-gradient(100deg,rgba(0,164,220,.24),rgba(19,87,157,.20))!important;border:1px solid rgba(0,196,255,.16)!important}
+html[data-theme="dark"] .sidebar nav a .nav-icon{background:rgba(0,174,234,.10)!important}
+html[data-theme="dark"] .theme-toggle{border:1px solid #14618b!important;background:linear-gradient(135deg,#0d2945,#0a1c31)!important;color:#e5faff!important;box-shadow:0 0 18px rgba(0,190,255,.12)!important}
+html[data-theme="dark"] .theme-toggle span{color:#ffd76a!important;text-shadow:0 0 12px rgba(255,215,106,.35)}
+html[data-theme="dark"] .status-ring{background:radial-gradient(circle,#0a1b30,#0d2941)!important}
+html[data-theme="dark"] .status-legend,html[data-theme="dark"] .legend-row{color:#bdd5e8!important}
+html[data-theme="dark"] .area-bar{background:#142b43!important}
+html[data-theme="dark"] .form-panel:has(.area-access-options){background:#0b1b30!important;border-color:#174568!important}
+html[data-theme="dark"] .form-panel:has(.area-access-options) .form-step b,html[data-theme="dark"] .form-panel:has(.area-access-options)>label{color:#d9edff!important}
+html[data-theme="dark"] .area-access-option{background:#10253c!important;border-color:#1a4869!important;color:#c5e1f5!important}
+@media(max-width:700px){
+ .unified-header{min-height:68px!important;padding:9px 12px!important;gap:9px!important}
+ .header-context{min-width:0!important}
+ .header-context span{font-size:8px!important}
+ .header-context b{font-size:12px!important;white-space:nowrap}
+ .theme-toggle{min-width:38px!important;width:38px;height:38px;padding:0!important;border-radius:12px!important}
+ .theme-toggle small{display:none!important}
+ .welcome-pro{min-height:180px!important;padding:17px!important;border-radius:15px!important}
+ .welcome-pro h1{font-size:20px!important}
+ .welcome-pro p{font-size:10px!important;max-width:95%}
+ .welcome-meta{gap:8px!important;flex-wrap:wrap;font-size:8px!important}
+ .welcome-orbit{width:86px!important;height:86px!important;flex:0 0 86px}
+ .welcome-orbit strong{font-size:22px!important}
+ .stats{gap:9px!important}
+ .stat-card{min-height:118px;padding:14px!important;border-radius:13px!important}
+ .stat-card span{font-size:10px!important}
+ .stat-card strong{font-size:25px!important}
+ .stat-card small{font-size:8px!important;line-height:1.8}
+ .dashboard-grid-pro{gap:10px!important}
+ .dashboard-grid-pro>.panel{padding:15px!important;border-radius:13px!important}
+ .panel-title h2{font-size:13px!important}
+ .quick-actions{grid-template-columns:1fr 1fr!important;gap:8px!important}
+ .quick-actions a{padding:10px!important}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
