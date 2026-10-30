@@ -582,3 +582,203 @@ html[data-theme="dark"] .area-access-option{background:#10253c!important;border-
  .quick-actions a{padding:10px!important}
 }
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+
+/* Global theme-aware typography and surfaces */
+:root{
+  color-scheme:light;
+  --text-primary:#172f4b;
+  --text-secondary:#526a84;
+  --text-muted:#7c90a6;
+  --text-soft:#94a5b8;
+  --surface:#ffffff;
+  --surface-raised:#f7faff;
+  --surface-muted:#eef4fa;
+  --border-color:#d9e5f1;
+  --field-bg:#fbfdff;
+  --field-text:#172f4b;
+  --link-color:#176fd1;
+  --placeholder:#91a2b5;
+}
+html[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#050d19;
+  --surface:#0b1b2e;
+  --surface2:#10243a;
+  --surface-raised:#0e2137;
+  --surface-muted:#132b43;
+  --ink:#e8f4ff;
+  --muted:#9bb4ca;
+  --line:#1b3c59;
+  --text-primary:#e8f4ff;
+  --text-secondary:#c0d5e8;
+  --text-muted:#9bb4ca;
+  --text-soft:#829fb9;
+  --border-color:#1b3c59;
+  --field-bg:#071629;
+  --field-text:#e8f4ff;
+  --link-color:#59cfff;
+  --placeholder:#7693ad;
+}
+html:not([data-theme="dark"]){
+  --text-primary:#172f4b;
+  --text-secondary:#526a84;
+  --text-muted:#7c90a6;
+  --text-soft:#94a5b8;
+}
+body,.app-shell,.main,.content,.shell{color:var(--text-primary)}
+h1,h2,h3,h4,h5,h6,b,strong{color:inherit}
+p,li,dt,dd,figcaption,blockquote{color:var(--text-secondary)}
+small,.muted,.helper-text,.description,.meta,.subtitle{color:var(--text-muted)}
+a{color:inherit}
+input,select,textarea{color:var(--field-text)}
+input::placeholder,textarea::placeholder{color:var(--placeholder);opacity:1}
+button{color:inherit}
+.panel,.form-panel,.stat-card,.user-card,.area-card,.quick-actions a,
+.private-file,.selected-files div,.setting-card,.report-card,.audit-row,
+.profile-layout .panel,.users-grid .user-card{
+  border-color:var(--border-color);
+}
+.form-panel,.panel,.stat-card,.user-card,.area-card,.setting-card,
+.private-file,.selected-files div,.quick-actions a{
+  color:var(--text-primary);
+}
+.form-panel label,.auth label,.field,.setting-card .field,
+.area-access-list label{color:var(--text-secondary)}
+.form-panel input,.form-panel select,.form-panel textarea,
+.field input,.auth input,.reason-input,select,input,textarea{
+  background:var(--field-bg);
+  color:var(--field-text);
+  border-color:var(--border-color);
+}
+.topbar p,.report-card p,.report-card small,.user-info small,
+.user-info span,.area-card small,.rank-row,.audit-row small,
+.audit-row time,.private-file-info small,.profile-meta small,
+.profile-meta b,.profile-card h2,.profile-role,.auth p,
+.auth label,.sidebar-footer,.sidebar-profile,.head-actions{
+  color:var(--text-secondary);
+}
+.eyebrow,.panel-title a,.area-card>span,.rank-row>b,
+.audit-icon,.file-icon{color:var(--link-color)}
+/* Dark theme: remove hard-coded dark text and pale surfaces across every page */
+html[data-theme="dark"] body{background:var(--bg);color:var(--text-primary)}
+html[data-theme="dark"] .main,
+html[data-theme="dark"] .content,
+html[data-theme="dark"] .shell{color:var(--text-primary)}
+html[data-theme="dark"] :is(h1,h2,h3,h4,h5,h6,b,strong,label,legend,th,td,li,dt,dd,figcaption,blockquote){
+  color:var(--text-primary);
+}
+html[data-theme="dark"] :is(p,small,.muted,.helper-text,.description,.meta,.subtitle,
+.topbar p,.report-card p,.report-card small,.user-info small,.area-card small,
+.rank-row,.audit-row small,.audit-row time,.private-file-info small,
+.profile-meta small,.profile-meta b,.auth p,.auth label,.head-actions){
+  color:var(--text-secondary);
+}
+html[data-theme="dark"] .sidebar,
+html[data-theme="dark"] .header,
+html[data-theme="dark"] .unified-header{
+  color:var(--text-primary);
+  border-color:var(--border-color);
+}
+html[data-theme="dark"] .sidebar nav a{color:var(--text-secondary)}
+html[data-theme="dark"] .sidebar nav a.active,
+html[data-theme="dark"] .sidebar nav a:hover{color:#70dcff}
+html[data-theme="dark"] .brand small,
+html[data-theme="dark"] .sidebar-section>span,
+html[data-theme="dark"] .sidebar-profile small{color:var(--text-muted)}
+html[data-theme="dark"] .panel,
+html[data-theme="dark"] .form-panel,
+html[data-theme="dark"] .stat-card,
+html[data-theme="dark"] .user-card,
+html[data-theme="dark"] .area-card,
+html[data-theme="dark"] .setting-card,
+html[data-theme="dark"] .private-file,
+html[data-theme="dark"] .selected-files div,
+html[data-theme="dark"] .quick-actions a,
+html[data-theme="dark"] .report-card{
+  background-color:var(--surface);
+  border-color:var(--border-color);
+  color:var(--text-primary);
+}
+html[data-theme="dark"] .form-panel input,
+html[data-theme="dark"] .form-panel select,
+html[data-theme="dark"] .form-panel textarea,
+html[data-theme="dark"] .field input,
+html[data-theme="dark"] .auth input,
+html[data-theme="dark"] .reason-input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] input,
+html[data-theme="dark"] textarea{
+  background:var(--field-bg);
+  color:var(--field-text);
+  border-color:var(--border-color);
+}
+html[data-theme="dark"] .area-access-list label,
+html[data-theme="dark"] .area-access-list span,
+html[data-theme="dark"] .activity div,
+html[data-theme="dark"] .activity b,
+html[data-theme="dark"] .activity small,
+html[data-theme="dark"] .profile-role,
+html[data-theme="dark"] .toggle{
+  background-color:var(--surface-muted);
+  color:var(--text-secondary);
+  border-color:var(--border-color);
+}
+html[data-theme="dark"] .small-btn{color:var(--text-primary);background:var(--surface-muted);border:1px solid var(--border-color)}
+html[data-theme="dark"] .green-btn{background:#103c32;color:#75edbd;border-color:#1b6b54}
+html[data-theme="dark"] .red-btn{background:#421e2b;color:#ffabb4;border-color:#713747}
+html[data-theme="dark"] .notice{background:#0d3048;color:#8cddff;border:1px solid #185477}
+html[data-theme="dark"] .error{background:#3b1b29;color:#ffabb6;border-color:#71384b}
+html[data-theme="dark"] .status.approved{background:#103b30;color:#75e8b7}
+html[data-theme="dark"] .status.pending{background:#44351b;color:#ffd27c}
+html[data-theme="dark"] .status.rejected{background:#421e2b;color:#ffabb4}
+html[data-theme="dark"] .empty-state{color:var(--text-muted)}
+html[data-theme="dark"] .bar{background:#18344f}
+html[data-theme="dark"] .chart{background:repeating-linear-gradient(to bottom,transparent 0,transparent 47px,#1a3854 48px)}
+html[data-theme="dark"] .report-row,
+html[data-theme="dark"] .report-card,
+html[data-theme="dark"] .rank-row,
+html[data-theme="dark"] .audit-row,
+html[data-theme="dark"] .profile-meta{border-color:var(--border-color)}
+html[data-theme="dark"] .auth{color:var(--text-primary)}
+html[data-theme="dark"] .card{color:var(--text-primary);border-color:var(--border-color)}
+html[data-theme="dark"] .card h1,
+html[data-theme="dark"] .card h2{color:var(--text-primary)}
+html[data-theme="dark"] .card p,
+html[data-theme="dark"] .card label{color:var(--text-secondary)}
+html[data-theme="dark"] .welcome,
+html[data-theme="dark"] .welcome-pro{color:#eff9ff}
+html[data-theme="dark"] .welcome p,
+html[data-theme="dark"] .welcome small,
+html[data-theme="dark"] .welcome-meta{color:#b8d5e9}
+html[data-theme="dark"] .welcome h1{color:#f2faff}
+html[data-theme="dark"] .quick-actions b{color:var(--text-primary)}
+html[data-theme="dark"] .quick-actions small{color:var(--text-muted)}
+html[data-theme="dark"] .stat-card span,
+html[data-theme="dark"] .stat-card small{color:var(--text-secondary)}
+html[data-theme="dark"] .donut:after,
+html[data-theme="dark"] .status-ring:after{background:#0b1b2e}
+html[data-theme="dark"] .donut small{color:var(--text-muted)}
+html[data-theme="dark"] .trend-grid span{border-color:#1b3c59}
+html[data-theme="dark"] .trend-col small,
+html[data-theme="dark"] .trend-col b{color:var(--text-muted)}
+html[data-theme="dark"] .profile-role{background:#122e49;color:#79d7ff}
+html[data-theme="dark"] .toggle.on{background:#103b30;color:#75e8b7;border-color:#1b6b54}
+html[data-theme="dark"] .avatar-upload{background:#12314c;color:#7bdcff}
+html[data-theme="dark"] .avatar-remove{background:#421e2b;color:#ffabb4}
+html[data-theme="dark"] .search{color:var(--text-secondary)}
+html[data-theme="dark"] .search span{color:var(--text-muted)}
+html[data-theme="dark"] .button{color:#fff}
+html[data-theme="dark"] .theme-toggle{color:var(--text-primary)}
+html[data-theme="dark"] :is(input,select,textarea,button,a):focus-visible{
+  outline:2px solid #26caff;
+  outline-offset:2px;
+}
+html[data-theme="dark"] .report-card h3,
+html[data-theme="dark"] .user-info b,
+html[data-theme="dark"] .area-card b,
+html[data-theme="dark"] .private-file-info b{color:var(--text-primary)}
+html[data-theme="dark"] .area-access-list label{background:var(--surface-muted)}
+@media(prefers-color-scheme:dark){
+  html:not([data-theme]){color-scheme:light}
+}
