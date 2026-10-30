@@ -116,6 +116,9 @@ export default async function Dashboard() {
   const reviewRate = total
     ? Math.round(((approvedCount + rejectedCount) / total) * 100)
     : 0;
+  const approvedRate = total ? Math.round((approvedCount / total) * 100) : 0;
+  const pendingRate = total ? Math.round((pendingCount / total) * 100) : 0;
+  const rejectedRate = total ? Math.round((rejectedCount / total) * 100) : 0;
 
   const days = Array.from({ length: 7 }, (_, index) => {
     const date = new Date(weekStart);
@@ -220,16 +223,20 @@ export default async function Dashboard() {
             <div className="panel-title">
               <div><span className="panel-eyebrow">وضعیت فعلی</span><h2>توزیع گزارش‌ها</h2></div>
             </div>
-            <div className="status-overview">
-              <div className="status-ring">
-                <strong>{approvalRate}٪</strong>
-                <small>نرخ تأیید</small>
+            <div className="report-status-dashboard">
+              <div className="report-status-summary">
+                <div className="report-status-total"><span>مجموع گزارش‌های ثبت‌شده</span><strong>{total.toLocaleString("fa-IR")}</strong><small>بر اساس گزارش‌های فعال سامانه</small></div>
+                <div className="report-status-rate" style={{background:"conic-gradient(#239b79 0% "+approvedRate+"%, #e5a13c "+approvedRate+"% "+(approvedRate+pendingRate)+"%, #d36c79 "+(approvedRate+pendingRate)+"% 100%)"}}><div><strong>{reviewRate}٪</strong><small>نرخ بررسی</small></div></div>
               </div>
-              <div className="status-legend">
-                <Legend label="تأیید شده" value={approvedCount} cls="approved" />
-                <Legend label="در انتظار" value={pendingCount} cls="pending" />
-                <Legend label="رد شده" value={rejectedCount} cls="rejected" />
+              <div className="report-status-stack" role="img" aria-label={"تأیید "+approvedRate+" درصد، در انتظار "+pendingRate+" درصد، رد شده "+rejectedRate+" درصد"}>
+                {total>0&&<><i className="approved" style={{width:approvedRate+"%"}}/><i className="pending" style={{width:pendingRate+"%"}}/><i className="rejected" style={{width:rejectedRate+"%"}}/></>}
               </div>
+              <div className="report-status-items">
+                <div className="report-status-item approved"><span className="report-status-item-top"><i/><b>تأیید شده</b><strong>{approvedCount.toLocaleString("fa-IR")}</strong></span><span className="report-status-item-bottom"><small>از کل گزارش‌ها</small><b>{approvedRate}٪</b></span></div>
+                <div className="report-status-item pending"><span className="report-status-item-top"><i/><b>در انتظار بررسی</b><strong>{pendingCount.toLocaleString("fa-IR")}</strong></span><span className="report-status-item-bottom"><small>نیازمند اقدام</small><b>{pendingRate}٪</b></span></div>
+                <div className="report-status-item rejected"><span className="report-status-item-top"><i/><b>رد شده</b><strong>{rejectedCount.toLocaleString("fa-IR")}</strong></span><span className="report-status-item-bottom"><small>از کل گزارش‌ها</small><b>{rejectedRate}٪</b></span></div>
+              </div>
+              <div className="report-status-footer"><span><i/> وضعیت‌ها بر اساس گزارش‌های فعال</span><Link href="/reports">مدیریت گزارش‌ها ←</Link></div>
             </div>
           </section>
 
