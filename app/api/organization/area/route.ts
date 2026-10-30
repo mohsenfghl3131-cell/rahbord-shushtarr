@@ -26,7 +26,7 @@ export async function GET(req:Request){
    area=locate(chart,dbArea.name);
  }
  if(!area)return NextResponse.json({message:"حوزه موردنظر در چارت پیدا نشد."},{status:404});
- return NextResponse.json({area:shape(area),can_edit:ctx.profile.role==="area_manager"||privileged,db_area_id:dbArea?.id||id});
+ return NextResponse.json({area:shape(area),can_edit:ctx.profile.role==="area_manager",db_area_id:dbArea?.id||id});
 }
 export async function PATCH(req:Request){
  const ctx=await getCurrentContext();if(!ctx)return NextResponse.json({message:"ابتدا وارد سامانه شوید."},{status:401});
