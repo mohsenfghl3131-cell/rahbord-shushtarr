@@ -7,7 +7,10 @@ const EMPTY_ID="00000000-0000-0000-0000-000000000000";
 export async function GET(request:Request){
   const ctx=await getCurrentContext();
   if(!ctx)return NextResponse.json({message:"احراز هویت لازم است."},{status:401});
-  const db=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.SUPABASE_SERVICE_ROLE_KEY!);\n  const url=new URL(request.url);\n  const from=url.searchParams.get("from");\n  const to=url.searchParams.get("to");
+  const db=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.SUPABASE_SERVICE_ROLE_KEY!);
+  const url=new URL(request.url);
+  const from=url.searchParams.get("from");
+  const to=url.searchParams.get("to");
   const privileged=["main_admin","deputy","battalion_commander"].includes(ctx.profile.role);
   let areaIds:string[]=[];
   let categoryIds:string[]=[];
@@ -24,7 +27,10 @@ export async function GET(request:Request){
 
   let base=db.from("reports")
     .select("id,status,area_id,category_id,created_at,areas(name),categories(name)")
-    .is("deleted_at",null);\n\n  if(from && /^\\d{4}-\\d{2}-\\d{2}$/.test(from))base=base.gte("created_at",from+"T00:00:00.000Z");\n  if(to && /^\\d{4}-\\d{2}-\\d{2}$/.test(to))base=base.lt("created_at",new Date(new Date(to+"T00:00:00.000Z").getTime()+86400000).toISOString());
+    .is("deleted_at",null);
+
+  if(from && /^\\d{4}-\\d{2}-\\d{2}$/.test(from))base=base.gte("created_at",from+"T00:00:00.000Z");
+  if(to && /^\\d{4}-\\d{2}-\\d{2}$/.test(to))base=base.lt("created_at",new Date(new Date(to+"T00:00:00.000Z").getTime()+86400000).toISOString());
 
   if(!privileged){
     if(areaIds.length&&categoryIds.length){
