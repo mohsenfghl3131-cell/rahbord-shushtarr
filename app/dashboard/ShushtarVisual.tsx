@@ -14,28 +14,37 @@ export default function ShushtarVisual() {
         </div>
       </div>
 
-      <div className="radar-card">
-        <div className="radar-scene">
-          <div className="radar-frame">
-            <div className="radar-grid">
-              <span className="radar-cross radar-cross-h" />
-              <span className="radar-cross radar-cross-v" />
-              <span className="radar-ring radar-ring-one" />
-              <span className="radar-ring radar-ring-two" />
-              <span className="radar-ring radar-ring-three" />
-              <span className="radar-sweep" />
-              <i className="radar-target target-a" />
-              <i className="radar-target target-b" />
-              <i className="radar-target target-c" />
-              <span className="radar-center" />
+      <div className="guard-emblem-card" aria-label="راهدار پدافندی">
+        <div className="guard-emblem-scene">
+          <div className="guard-orbit guard-orbit-one" />
+          <div className="guard-orbit guard-orbit-two" />
+          <div className="guard-seal">
+            <div className="guard-halo" />
+            <div className="guard-figure">
+              <div className="guard-helmet"><span /></div>
+              <div className="guard-face">
+                <i className="guard-eye guard-eye-one" />
+                <i className="guard-eye guard-eye-two" />
+              </div>
+              <div className="guard-neck" />
+              <div className="guard-shoulders">
+                <i className="guard-shoulder-mark" />
+                <i className="guard-chest-band" />
+                <i className="guard-radio" />
+                <i className="guard-badge-mark">ر</i>
+              </div>
             </div>
+            <span className="guard-seal-star">✦</span>
           </div>
-          <div className="radar-status"><i /> سامانه پایش فعال</div>
+          <div className="guard-signal signal-one" />
+          <div className="guard-signal signal-two" />
+          <div className="guard-signal signal-three" />
         </div>
-        <div className="radar-copy">
-          <span className="panel-eyebrow">AIR DEFENSE · RADAR SYSTEM</span>
-          <h3>مرکز پایش و دیده‌بانی</h3>
-          <p>پایش لحظه‌ای وضعیت و رصد گزارش‌های مناطق تحت پوشش</p>
+        <div className="guard-emblem-copy">
+          <span className="panel-eyebrow">RAHBORD · SHUSHTAR</span>
+          <h3>راهدار پدافندی</h3>
+          <p>آماده‌باش، پایش و هماهنگی حوزه‌ها</p>
+          <span className="guard-live"><i /> سامانه فعال</span>
         </div>
       </div>
     </section>
