@@ -19,7 +19,7 @@ const nav: readonly NavItem[] = [
   { label: "گزارش‌های من", href: "/reports/mine", icon: "▤", roles: [] },
   { label: "همه گزارش‌ها", href: "/reports", icon: "☷", roles: ["main_admin", "deputy", "battalion_commander", "area_manager"] },
   { label: "ارسال نامه", href: "/messages", icon: "✉", roles: [] },
-  { label: "نمره‌دهی", href: "/scores", icon: "％", roles: ["main_admin", "deputy", "battalion_commander", "area_manager"] },
+  { label: "نمره‌دهی", href: "/scores", icon: "％", roles: ["main_admin", "deputy", "battalion_commander", "area_manager"] },\n  { label: "ارزیابی عملکرد", href: "/performance", icon: "★", roles: ["main_admin", "deputy", "battalion_commander", "area_manager", "area_force"] },
   { label: "کاربران", href: "/users", icon: "♟", roles: ["main_admin", "deputy", "battalion_commander"] },
   { label: "چارت سازمانی", href: "/organization", icon: "⌘", roles: [] },
   { label: "حوزه‌ها", href: "/areas", icon: "⌖", roles: ["main_admin", "deputy", "battalion_commander", "area_manager"] },
@@ -44,7 +44,7 @@ const pageTitles: Record<string, string> = {
   "/reports/mine": "گزارش‌های من",
   "/reports": "همه گزارش‌ها",
   "/messages": "ارسال نامه و صندوق نامه‌ها",
-  "/scores": "نمره‌دهی و سهمیه مأموریت‌ها",
+  "/scores": "نمره‌دهی و سهمیه مأموریت‌ها",\n  "/performance": "ارزیابی و رتبه‌بندی عملکرد",
   "/users": "مدیریت کاربران",
   "/organization": "چارت سازمانی",
   "/areas": "مدیریت حوزه‌ها",
@@ -124,7 +124,7 @@ export default function AppShell({ children }: Props) {
     ["/dashboard", "/reports/new", "/reports/mine", "/reports"].includes(item.href)
   );
   const management = visible.filter((item) =>
-    ["/messages", "/scores", "/users", "/organization", "/areas", "/categories", "/files", "/analytics", "/audit", "/settings"].includes(item.href)
+    ["/messages", "/scores", "/performance", "/users", "/organization", "/areas", "/categories", "/files", "/analytics", "/audit", "/settings"].includes(item.href)
   );
 
   return (
