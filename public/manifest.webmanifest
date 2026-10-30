@@ -1,0 +1,22 @@
+{
+  "id": "/",
+  "name": "راهبرد شوشتر",
+  "short_name": "راهبرد",
+  "description": "سامانه مدیریت و پایش راهبرد شوشتر",
+  "lang": "fa",
+  "dir": "rtl",
+  "start_url": "/dashboard",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#071827",
+  "theme_color": "#102d45",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
