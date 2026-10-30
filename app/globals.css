@@ -1765,3 +1765,14 @@ html:not([data-theme="dark"]) .org-editor select{
 .org-area-poster-card small{color:#8395a6;font-size:10px}
 @media(max-width:650px){.org-area-edit-card>.org-card-heading,.org-base-edit-row{grid-template-columns:minmax(0,1fr)}.org-area-poster-grid{grid-template-columns:1fr}.org-area-poster-card h4{font-size:12px}}
 @media print{.org-areas-poster{background:#eef4f8!important;print-color-adjust:exact;-webkit-print-color-adjust:exact}.org-area-poster-card{background:#fff!important;print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+
+.org-area-select{display:flex;flex-direction:column;align-items:stretch;text-align:right;width:100%;cursor:pointer;font:inherit;color:inherit;transition:border-color .18s,box-shadow .18s}
+.org-area-select.active{border:2px solid #3686bd;box-shadow:0 0 0 3px rgba(54,134,189,.12);background:#fff}
+.org-area-select small{display:block;margin-top:4px;text-align:right;color:#627d94}
+.org-selected-area{margin-top:16px;padding:16px;border:1px solid #cbdce9;border-radius:14px;background:rgba(255,255,255,.85);color:#244967}
+.org-selected-area h3{margin:0 0 8px;font-size:16px}
+.org-selected-area p{margin:0 0 12px;font-size:13px}
+.org-selected-bases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.org-selected-base{display:flex;flex-direction:column;gap:5px;padding:12px;border:1px solid #d5e2ec;border-radius:10px;background:#f7fafc;font-size:13px}
+.org-selected-base span{font-size:11px;color:#617b91}
+@media(max-width:650px){.org-selected-bases{grid-template-columns:1fr}}
