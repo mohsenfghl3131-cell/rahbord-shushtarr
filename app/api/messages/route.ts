@@ -3,7 +3,7 @@ import{createClient}from"@supabase/supabase-js";
 import{getCurrentContext}from"@/lib/auth";
 
 const db=()=>createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.SUPABASE_SERVICE_ROLE_KEY!);
-const canWrite=(c:Awaited<ReturnType<typeof getCurrentContext>>)=>!!c&&(["main_admin","area_manager"].includes(c.profile.role)||c.responsibleGroupIds.length>0);
+const canWrite=(c:Awaited<ReturnType<typeof getCurrentContext>>)=>!!c&&(["main_admin","deputy","battalion_commander","area_manager"].includes(c.profile.role)||c.responsibleGroupIds.length>0);
 
 export async function GET(){
  const c=await getCurrentContext();if(!c)return NextResponse.json({message:"احراز هویت لازم است."},{status:401});
@@ -17,7 +17,7 @@ export async function GET(){
 
 export async function POST(req:Request){
  const c=await getCurrentContext();if(!c)return NextResponse.json({message:"احراز هویت لازم است."},{status:401});
- if(!canWrite(c))return NextResponse.json({message:"فقط مسئول حوزه و مسئول بخش می‌توانند پیام ارسال کنند."},{status:403});
+ if(!canWrite(c))return NextResponse.json({message:"فقط مدیران، مسئولان حوزه و مسئولان بخش می‌توانند پیام ارسال کنند."},{status:403});
  let b:any;try{b=await req.json()}catch{return NextResponse.json({message:"اطلاعات پیام معتبر نیست."},{status:400})}
  const recipientId=String(b.recipient_id??"");const subject=String(b.subject??"").trim();const body=String(b.body??"").trim();const parentId=b.parent_id?String(b.parent_id):null;
  if(!recipientId||!subject||!body)return NextResponse.json({message:"گیرنده، موضوع و متن پیام الزامی است."},{status:400});
