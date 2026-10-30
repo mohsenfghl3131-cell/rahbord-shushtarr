@@ -21,7 +21,7 @@ const nav: readonly NavItem[] = [
   { label: "ارسال نامه", href: "/messages", icon: "✉", roles: [] },
   { label: "نمره‌دهی", href: "/scores", icon: "％", roles: ["main_admin", "deputy", "battalion_commander", "area_manager"] },\n  { label: "ارزیابی عملکرد", href: "/performance", icon: "★", roles: ["main_admin", "deputy", "battalion_commander", "area_manager", "area_force"] },
   { label: "کاربران", href: "/users", icon: "♟", roles: ["main_admin", "deputy", "battalion_commander"] },
-  { label: "چارت سازمانی", href: "/organization", icon: "⌘", roles: [] },
+  { label: "چارت سازمانی", href: "/organization", icon: "⌘", roles: ["main_admin", "deputy", "battalion_commander"] },
   { label: "حوزه‌ها", href: "/areas", icon: "⌖", roles: ["main_admin", "deputy", "battalion_commander", "area_manager"] },
   { label: "دسته‌بندی‌ها", href: "/categories", icon: "▦", roles: ["main_admin", "deputy", "battalion_commander"] },
   { label: "فایل‌ها", href: "/files", icon: "▣", roles: [] },
