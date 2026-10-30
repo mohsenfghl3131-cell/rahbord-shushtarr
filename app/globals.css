@@ -2299,3 +2299,80 @@ html[data-theme="dark"] .performance-table td{border-color:#293b52}
 html[data-theme="dark"] .performance-toolbar input{background:#17263a;border-color:#344861;color:#edf4ff}
 @media(max-width:850px){.performance-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.performance-page{padding:16px}.performance-kpis{gap:8px}.performance-kpis article{padding:13px}.performance-kpis strong{font-size:22px}.performance-toolbar{align-items:stretch;flex-direction:column}.performance-toolbar input{width:100%}}
+
+
+/* Layout safety pass: prevent text collisions and badge/icon overlap in chart and scoring */
+.org-poster,.org-tree,.org-commanders,.org-branch,.org-sections,
+.org-areas-poster,.org-area-poster-grid,.org-area-poster-card,
+.org-node,.org-section-node{min-width:0;max-width:100%;box-sizing:border-box}
+.org-node,.org-section-node,.org-area-poster-card,
+.org-area-poster-card h4,.org-area-poster-card small,
+.org-poster-head h2,.org-poster-head p{
+  overflow-wrap:anywhere;
+  word-break:normal;
+}
+.org-node{min-height:0;align-content:center;gap:6px;padding:13px 12px}
+.org-node b,.org-node strong,.org-section-node span,.org-section-node b{
+  display:block;max-width:100%;line-height:1.65;white-space:normal;
+}
+.org-commanders{align-items:start}
+.org-branch{width:100%;gap:0}
+.org-sections{align-items:stretch}
+.org-section-node{min-height:58px;display:flex;flex-direction:column;justify-content:center;gap:3px}
+.org-area-poster-card{display:flex;flex-direction:column;align-items:flex-start;gap:7px}
+.org-area-poster-card h4{margin:0;line-height:1.75}
+.org-area-poster-card small{display:block;max-width:100%;line-height:1.7}
+.org-area-open-hint{display:inline-block;max-width:100%;white-space:normal;line-height:1.7}
+.org-card-heading{flex-wrap:wrap}
+.org-card-heading>*{min-width:0}
+.org-field{min-width:0;overflow-wrap:anywhere}
+.org-field input{max-width:100%;min-width:0}
+.scores-page .mission-tile-main{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto auto;
+  align-items:start!important;
+  gap:10px!important;
+}
+.scores-page .mission-tile-title{min-width:0;overflow-wrap:anywhere}
+.scores-page .mission-tile-title h3,
+.scores-page .mission-tile-title p{white-space:normal;overflow-wrap:anywhere;line-height:1.75}
+.scores-page .mission-tile-meta{
+  min-width:0;max-width:140px;white-space:normal;
+  align-content:start;justify-items:end;gap:5px;
+}
+.scores-page .mission-tile-meta strong,
+.scores-page .mission-tile-meta span,
+.scores-page .mission-tile-meta small{
+  max-width:100%;white-space:normal;overflow-wrap:anywhere;line-height:1.6;
+}
+.scores-page .mission-chevron{align-self:start;line-height:1.4}
+.scores-page .panel-title>div{min-width:0;max-width:100%}
+.scores-page .panel-title h2,
+.scores-page .panel-title p,
+.scores-page .area-score>*{overflow-wrap:anywhere;white-space:normal}
+.scores-page .area-score{min-width:0}
+.scores-page .score-form-grid>*{min-width:0;max-width:100%}
+.scores-page .score-form-grid label{line-height:1.7;overflow-wrap:anywhere}
+.scores-page .score-form-grid input,
+.scores-page .score-form-grid select,
+.scores-page .score-form-grid textarea{box-sizing:border-box;max-width:100%;min-width:0}
+@media(max-width:700px){
+  .org-commanders{grid-template-columns:minmax(0,1fr)!important;gap:14px}
+  .org-sections{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px}
+  .org-node{width:100%;max-width:100%;padding:12px 10px}
+  .org-poster-head{padding:8px 5px 20px}
+  .org-poster-head h2{font-size:18px;line-height:1.7}
+  .scores-page .mission-tile-main{grid-template-columns:minmax(0,1fr) auto!important;gap:8px!important}
+  .scores-page .mission-tile-meta{
+    grid-column:1;grid-row:2;
+    display:flex;flex-direction:row;align-items:center;justify-content:flex-start;
+    flex-wrap:wrap;gap:7px 12px;max-width:100%;text-align:right;justify-items:start;
+  }
+  .scores-page .mission-chevron{grid-column:2;grid-row:1}
+}
+@media(max-width:390px){
+  .org-sections{grid-template-columns:minmax(0,1fr)!important}
+  .scores-page .mission-tile{padding:10px}
+  .scores-page .mission-tile-meta{gap:5px 9px}
+  .scores-page .mission-tile-meta small{max-width:none}
+}
