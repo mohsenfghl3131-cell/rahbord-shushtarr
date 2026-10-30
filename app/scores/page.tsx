@@ -83,7 +83,7 @@ export default function ScoresPage(){
      <div className="mission-result-head"><div><span className="panel-eyebrow">{mission.category_groups?.name}</span><h3>{mission.title}</h3><p>{mission.description||"بدون توضیحات"} · سهمیه هر حوزه: {mission.target_value} {mission.unit}</p></div><strong>{overall.toLocaleString("fa-IR")}٪</strong></div>
      <div className="score-progress"><span style={{width:Math.min(overall,100)+"%"}}/></div>
      <div className="area-score-grid">{data.areas.map((area:any)=>{
-      const score=scoreMap.get(mission.id+"_"+area.id);
+      const score:any=scoreMap.get(mission.id+"_"+area.id);
       const actual=Number(score?.actual_value??0);const percent=pct(actual,Number(mission.target_value));
       return <div className="area-score" key={area.id}><b>{area.name}</b><span>{actual.toLocaleString("fa-IR")} / {Number(mission.target_value).toLocaleString("fa-IR")} {mission.unit}</span><strong>{percent.toLocaleString("fa-IR")}٪</strong><div className="score-progress"><span style={{width:Math.min(percent,100)+"%"}}/></div></div>;
      })}</div>
