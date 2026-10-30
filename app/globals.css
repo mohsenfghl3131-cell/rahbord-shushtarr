@@ -2395,3 +2395,8 @@ html[data-theme="dark"] .performance-toolbar input{background:#17263a;border-col
 html[data-theme="dark"] .org-main-base-summary{background:rgba(7,24,40,.45);border-color:#34546b}
 html[data-theme="dark"] .org-main-base-summary>b{color:#8cddff}
 @media(max-width:600px){.org-subunit-grid{grid-template-columns:minmax(0,1fr)}.org-subunit-view>div{flex-direction:column;gap:1px}.org-main-base-summary{padding:8px}}
+
+.org-metna-personnel{grid-column:1/-1;display:grid;gap:10px;padding:14px;border:1px solid var(--line,rgba(120,150,180,.25));border-radius:14px;background:rgba(40,110,150,.06)}
+.org-metna-person-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:10px}
+.org-metna-person-chip{display:block;margin-top:7px;padding:5px 9px;border-radius:8px;background:rgba(30,130,170,.1);overflow-wrap:anywhere}
+@media(max-width:640px){.org-metna-person-row{grid-template-columns:1fr}.org-metna-person-row .org-remove{justify-self:start}}
