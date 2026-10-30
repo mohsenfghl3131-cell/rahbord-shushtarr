@@ -1991,3 +1991,159 @@ html[data-theme="dark"] .report-status-item-top b{color:#b9cddd}
 html[data-theme="dark"] .report-status-stack{background:#304558}
 html[data-theme="dark"] .report-status-footer{border-color:#344e62}
 @media(max-width:520px){.report-status-total strong{font-size:26px}.report-status-rate{width:80px;height:80px;flex-basis:80px}.report-status-footer{align-items:flex-start;flex-direction:column}.report-status-item{padding:9px 10px}}
+
+
+/* RAHBORD — complete dark theme surface pass (all modules + organization chart) */
+html[data-theme="dark"]{
+  --surface-raised:#14283d;
+  --surface-muted:#1a344c;
+  --border-color:#29465e;
+  --text-primary:#edf6ff;
+  --text-secondary:#c0d2e1;
+  --text-muted:#91a9bd;
+  --text-soft:#7893aa;
+  --field-bg:#10243a;
+  --field-text:#edf6ff;
+  --link-color:#79d7ff;
+  --placeholder:#829bb0;
+}
+html[data-theme="dark"] .shell,
+html[data-theme="dark"] .content{color:var(--text-primary)}
+html[data-theme="dark"] :is(.org-editor,.org-edit-commander,.org-area-edit-card,.org-area-poster-card,.org-selected-area,.org-selected-base,.org-detail-section,.org-detail-base-card){
+  background:linear-gradient(145deg,#142a40,#102237)!important;
+  border-color:#2b4b64!important;
+  color:#e4f1fb!important;
+  box-shadow:0 10px 28px rgba(0,0,0,.18)!important;
+}
+html[data-theme="dark"] .org-poster{
+  background:
+    radial-gradient(circle at 10% 8%,rgba(0,190,235,.12),transparent 28%),
+    radial-gradient(circle at 90% 92%,rgba(117,99,255,.12),transparent 30%),
+    linear-gradient(145deg,#0d1e31,#112940 58%,#171f3b)!important;
+  border-color:#31536d!important;
+  box-shadow:0 22px 60px rgba(0,0,0,.3),0 0 28px rgba(0,174,234,.06)!important;
+}
+html[data-theme="dark"] .org-poster:before{border-color:rgba(103,185,220,.18)!important}
+html[data-theme="dark"] .org-poster-head>span{color:#78cbed!important}
+html[data-theme="dark"] .org-poster-head h2{color:#f0f7ff!important}
+html[data-theme="dark"] .org-poster-head p,
+html[data-theme="dark"] .org-poster-foot{color:#91a9bd!important}
+html[data-theme="dark"] .org-node{
+  background:linear-gradient(145deg,#1a354d,#142b40)!important;
+  border-color:#35566e!important;
+  box-shadow:0 8px 22px rgba(0,0,0,.22)!important;
+}
+html[data-theme="dark"] .org-node small{color:#8eabc2!important}
+html[data-theme="dark"] .org-node b,
+html[data-theme="dark"] .org-section-node span{color:#78d8ff!important}
+html[data-theme="dark"] .org-node strong,
+html[data-theme="dark"] .org-section-node b{color:#e0edf8!important}
+html[data-theme="dark"] .org-section-node{
+  background:linear-gradient(145deg,#1a344b,#142a3e)!important;
+  border-color:#304e66!important;
+  box-shadow:0 5px 15px rgba(0,0,0,.16)!important;
+}
+html[data-theme="dark"] .org-connector{background:linear-gradient(#3e9bbd,#647fb0)!important}
+html[data-theme="dark"] .org-connector:after{border-top-color:#5b9fbd!important}
+html[data-theme="dark"] .org-editor label,
+html[data-theme="dark"] .org-field,
+html[data-theme="dark"] .org-edit-sections>b,
+html[data-theme="dark"] .org-area-editor>h3,
+html[data-theme="dark"] .org-edit-commander h3,
+html[data-theme="dark"] .org-editor h2,
+html[data-theme="dark"] .org-card-heading h3{color:#dceaf5!important}
+html[data-theme="dark"] .org-hint,
+html[data-theme="dark"] .org-editor p{color:#9bb2c6!important}
+html[data-theme="dark"] .org-field input,
+html[data-theme="dark"] .org-editor input,
+html[data-theme="dark"] .org-editor select,
+html[data-theme="dark"] .org-editor textarea{
+  color:#edf6ff!important;
+  background:#0b1c2e!important;
+  border-color:#34536b!important;
+}
+html[data-theme="dark"] .org-field input::placeholder{color:#829bb0!important}
+html[data-theme="dark"] .org-add{
+  color:#8edfff!important;background:#17364e!important;border-color:#35617c!important;
+}
+html[data-theme="dark"] .org-remove{
+  color:#ffabb4!important;background:#3b202d!important;border-color:#714052!important;
+}
+html[data-theme="dark"] .org-edit-section,
+html[data-theme="dark"] .org-area-editor{border-color:#2c4961!important}
+html[data-theme="dark"] .org-areas-poster{
+  background:linear-gradient(145deg,#142b40,#102338)!important;
+  border-color:#31536b!important;
+}
+html[data-theme="dark"] .org-areas-poster>h3,
+html[data-theme="dark"] .org-area-poster-card h4,
+html[data-theme="dark"] .org-selected-area h3,
+html[data-theme="dark"] .org-selected-area p,
+html[data-theme="dark"] .org-selected-base b{color:#e3f1fb!important}
+html[data-theme="dark"] .org-area-poster-card{
+  background:rgba(25,51,72,.88)!important;border-color:#35546b!important;color:#dceaf5!important;
+}
+html[data-theme="dark"] .org-area-poster-card small,
+html[data-theme="dark"] .org-selected-base span{color:#a6bed0!important}
+html[data-theme="dark"] .org-area-select.active{background:#1d4059!important;border-color:#53bde5!important}
+html[data-theme="dark"] .org-area-open-hint{color:#80d9fa!important;border-color:#34536b!important}
+html[data-theme="dark"] .org-selected-area{background:#142c42!important;border-color:#35546b!important;color:#e3f1fb!important}
+html[data-theme="dark"] .org-selected-base{background:#1a354c!important;border-color:#34536b!important}
+html[data-theme="dark"] .org-detail-toolbar,
+html[data-theme="dark"] .org-detail-footer{color:#91a9bd!important}
+html[data-theme="dark"] .org-detail-hero{
+  background:radial-gradient(circle at 88% 12%,rgba(0,190,235,.14),transparent 30%),linear-gradient(125deg,#142a40,#1a354b 58%,#202b46)!important;
+  border-color:#35546b!important;color:#e5f1fb!important;
+}
+html[data-theme="dark"] .org-detail-kicker,
+html[data-theme="dark"] .org-detail-section-head span{color:#80d9fa!important}
+html[data-theme="dark"] .org-detail-hero>p,
+html[data-theme="dark"] .org-detail-section-head small,
+html[data-theme="dark"] .org-detail-leader span,
+html[data-theme="dark"] .org-base-leader-label{color:#9bb2c6!important}
+html[data-theme="dark"] .org-detail-mark,
+html[data-theme="dark"] .org-base-icon,
+html[data-theme="dark"] .org-detail-empty>div{
+  background:linear-gradient(145deg,#1b3b54,#142b40)!important;
+  border-color:#355a73!important;color:#8edfff!important;
+}
+html[data-theme="dark"] .org-detail-stats>div,
+html[data-theme="dark"] .org-detail-leader{
+  background:#1a354b!important;border-color:#35546b!important;
+}
+html[data-theme="dark"] .org-detail-stats strong,
+html[data-theme="dark"] .org-detail-leader strong,
+html[data-theme="dark"] .org-base-leader-name{color:#8edfff!important}
+html[data-theme="dark"] .org-detail-section-head{border-color:#304c63!important}
+html[data-theme="dark"] .org-base-number{color:#7392aa!important}
+html[data-theme="dark"] .org-base-leader-name{border-color:#35546b!important}
+html[data-theme="dark"] .org-detail-empty h3{color:#e3f1fb!important}
+html[data-theme="dark"] .org-detail-empty p,
+html[data-theme="dark"] .org-detail-error p{color:#a6bed0!important}
+html[data-theme="dark"] .org-back-link{background:#18364e!important;border-color:#355a73!important;color:#9ce2ff!important}
+html[data-theme="dark"] .org-detail-loading,
+html[data-theme="dark"] .org-detail-error{background:#142a40!important;color:#e3f1fb!important;border-color:#35546b!important}
+
+/* Shared controls and tables used throughout the application */
+html[data-theme="dark"] :is(.report-table,.recent-table,.private-file-list,.settings-grid,.users-grid,.area-grid) :is(th,td),
+html[data-theme="dark"] :is(.report-row,.recent-row,.report-card,.private-file,.selected-files div,.audit-row,.rank-row){
+  border-color:#29465e!important;
+}
+html[data-theme="dark"] :is(.report-card p,.report-card small,.user-info small,.private-file-info small,.profile-meta small,.topbar p,.eyebrow,.org-print-row){
+  color:#91a9bd!important;
+}
+html[data-theme="dark"] :is(.reason-input,.area-access-list label,.activity div,.selected-files div,.private-file){
+  background:#142a40!important;border-color:#2b4b64!important;color:#dceaf5!important;
+}
+html[data-theme="dark"] :is(.profile-role,.toggle){background:#17334a!important;border-color:#31536b!important;color:#b8d8eb!important}
+html[data-theme="dark"] :is(.form-panel label,.auth label,.setting-card label){color:#c8dbea!important}
+html[data-theme="dark"] :is(.button,.small-btn):focus-visible,
+html[data-theme="dark"] :is(input,select,textarea,a,button):focus-visible{
+  outline:2px solid #58c9f1!important;outline-offset:2px;
+}
+@media(max-width:650px){
+ html[data-theme="dark"] .org-area-poster-grid,
+ html[data-theme="dark"] .org-selected-bases{grid-template-columns:1fr}
+ html[data-theme="dark"] .org-edit-grid,
+ html[data-theme="dark"] .org-edit-commanders{grid-template-columns:1fr}
+}
