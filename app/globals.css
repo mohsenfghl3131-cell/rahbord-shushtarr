@@ -832,3 +832,34 @@ html[data-theme="dark"] .unified-page .area-ranking .bar{background:rgba(180,210
  .unified-page .area-ranking .rank-row>.bar{grid-column:2;grid-row:2;width:100%;margin-top:5px}
  .unified-page .area-ranking .rank-row>strong{grid-column:3;grid-row:1;font-size:11px}
 }
+
+
+/* Quran card contrast: explicit readable colors in both themes */
+html:not([data-theme="dark"]) .quran-card,
+html[data-theme="light"] .quran-card{
+  background:linear-gradient(120deg,#ffffff 0%,#f3f8ff 100%) !important;
+  color:#173653 !important;
+  border:1px solid #d6e5f2 !important;
+  box-shadow:0 12px 30px rgba(27,75,120,.10) !important;
+}
+html:not([data-theme="dark"]) .quran-card .quran-copy>span,
+html[data-theme="light"] .quran-card .quran-copy>span{color:#54718c !important;opacity:1 !important}
+html:not([data-theme="dark"]) .quran-card .quran-copy blockquote,
+html[data-theme="light"] .quran-card .quran-copy blockquote{color:#123653 !important;opacity:1 !important}
+html:not([data-theme="dark"]) .quran-card .quran-copy p,
+html[data-theme="light"] .quran-card .quran-copy p{color:#365b7c !important;opacity:1 !important}
+html:not([data-theme="dark"]) .quran-card .quran-copy small,
+html[data-theme="light"] .quran-card .quran-copy small{color:#647f98 !important;opacity:1 !important}
+html:not([data-theme="dark"]) .quran-card .quran-symbol,
+html[data-theme="light"] .quran-card .quran-symbol{color:#2785bd !important;opacity:.8 !important}
+html:not([data-theme="dark"]) .quran-card .quran-edit-btn,
+html[data-theme="light"] .quran-card .quran-edit-btn{color:#173653 !important;background:#edf5fc !important;border-color:#cbddeb !important}
+html[data-theme="dark"] .quran-card{
+  background:linear-gradient(120deg,#10243a 0%,#0b1b2d 100%) !important;
+  color:#eaf4ff !important;border-color:#29445f !important;
+}
+html[data-theme="dark"] .quran-card .quran-copy>span{color:#a8c3da !important;opacity:1 !important}
+html[data-theme="dark"] .quran-card .quran-copy blockquote{color:#f1f7ff !important;opacity:1 !important}
+html[data-theme="dark"] .quran-card .quran-copy p{color:#c7d9e9 !important;opacity:1 !important}
+html[data-theme="dark"] .quran-card .quran-copy small{color:#9fb8ce !important;opacity:1 !important}
+html[data-theme="dark"] .quran-card .quran-symbol{color:#65c9ef !important;opacity:.85 !important}
