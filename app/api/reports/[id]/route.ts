@@ -26,3 +26,38 @@ export async function GET(_request:Request,{params}:{params:Promise<{id:string}>
   const{data:files}=await admin.from("report_files").select("id,storage_bucket,storage_path,original_name,mime_type,size_bytes,created_at").eq("report_id",id).order("created_at");
   return NextResponse.json({report,files:files??[]});
 }
+
+function isTestReportTitle(title:string){
+  return /(^|[\\sـ])(?:تست|آزمایشی|test)(?:$|[\\sـ])/i.test(title.trim());
+}
+
+export async function DELETE(_request:Request,{params}:{params:Promise<{id:string}>}){
+  const ctx=await getCurrentContext();
+  if(!ctx)return NextResponse.json({message:"احراز هویت لازم است."},{status:401});
+  if(ctx.profile.role!=="main_admin")
+    return NextResponse.json({message:"فقط مدیر اصلی اجازه حذف گزارش تست را دارد."},{status:403});
+
+  const {id}=await params;
+  const admin=db();
+  const {data:report,error:readError}=await admin.from("reports")
+    .select("id,title")
+    .eq("id",id)
+    .is("deleted_at",null)
+    .maybeSingle();
+  if(readError||!report)return NextResponse.json({message:"گزارش پیدا نشد یا قبلاً حذف شده است."},{status:404});
+  if(!isTestReportTitle(report.title))
+    return NextResponse.json({message:"حذف فقط برای گزارش‌هایی مجاز است که عنوان آن‌ها با «تست»، «آزمایشی» یا «test» مشخص شده باشد."},{status:400});
+
+  const now=new Date().toISOString();
+  const {error}=await admin.from("reports").update({deleted_at:now,updated_at:now}).eq("id",id).is("deleted_at",null);
+  if(error)return NextResponse.json({message:"حذف گزارش انجام نشد."},{status:500});
+
+  await admin.from("audit_logs").insert({
+    user_id:ctx.user.id,
+    action:"report.test_delete",
+    entity_type:"report",
+    entity_id:id,
+    metadata:{title:report.title,soft_delete:true}
+  });
+  return NextResponse.json({ok:true,message:"گزارش تست از فهرست گزارش‌ها حذف شد."});
+}
