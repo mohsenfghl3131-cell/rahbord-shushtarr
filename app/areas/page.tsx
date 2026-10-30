@@ -1,6 +1,7 @@
 "use client";
 
 import AppShell from "@/app/components/AppShell";
+import Link from "next/link";
 import {useEffect,useState} from "react";
 
 type Area={id:string;name:string;code:string|null;description:string|null;is_active:boolean};
@@ -64,7 +65,7 @@ export default function Areas(){
     </form>}
     <section className="area-grid" style={{marginTop:20}}>
       {loading?<div className="panel">در حال دریافت حوزه‌ها…</div>:areas.length===0?<div className="panel empty-state">حوزه‌ای برای نمایش وجود ندارد.</div>:areas.map((a,i)=><article className="area-card" key={a.id}>
-        <span>{String(i+1).padStart(2,"0")}</span><div style={{minWidth:0,flex:1}}><b>{a.name}</b><small>{a.code||"بدون کد"} · {a.is_active?"فعال":"غیرفعال"}</small>{a.description&&<small>{a.description}</small>}</div>
+        <span>{String(i+1).padStart(2,"0")}</span><div style={{minWidth:0,flex:1}}><b>{a.name}</b><small>{a.code||"بدون کد"} · {a.is_active?"فعال":"غیرفعال"}</small>{a.description&&<small>{a.description}</small>}<Link className="area-subchart-link" href={"/organization/"+a.id}>مدیریت چارت فرعی و مسئولان پایگاه‌ها ←</Link></div>
         {canManage&&<div className="user-actions"><button className="small-btn" onClick={()=>startEdit(a)}>ویرایش</button><button className="small-btn" onClick={()=>toggle(a)}>{a.is_active?"غیرفعال‌سازی":"فعال‌سازی"}</button></div>}
       </article>)}
     </section>
