@@ -3,7 +3,7 @@ import {createClient} from "@supabase/supabase-js";
 import {getCurrentContext} from "@/lib/auth";
 const db=()=>createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.SUPABASE_SERVICE_ROLE_KEY!);
 const areaNames=["حوزه یک شهری محمد رسول الله (ص)","حوزه دو شهری امام حسین (ع)","حوزه سه شهری امام رضا (ع)","حوزه یک روستایی امام باقر (ع)","حوزه دو روستایی امام سجاد (ع)","حوزه سه روستایی علی بن ابی طالب (ع)","حوزه چهار روستایی امام جعفر صادق (ع)","حوزه پنج روستایی امام موسی کاظم (ع)","حوزه حضرت زینب (س)","حوزه حضرت فاطمه (س)"];
-const empty=()=>({version:3,deputy_title:"معاونت",deputy_name:"",successor_title:"جانشین معاونت",successor_name:"",commanders:[{id:"c1",title:"فرمانده گردان ۱",name:"",sections:["شمسا","متنا","مپتا","نسرا"].map((title,i)=>({id:"s"+i,title,name:"",...(title==="متنا"?{personnel:[]}: {})}))},{id:"c2",title:"فرمانده گردان ۲",name:"",sections:["شمسا","متنا","مپتا","نسرا"].map((title,i)=>({id:"t"+i,title,name:""}))}],areas:areaNames.map((title,i)=>({id:"a"+i,title,leader_name:"",bases:[]}))});
+const empty=()=>({version:3,deputy_title:"معاونت",deputy_name:"",successor_title:"جانشین معاونت",successor_name:"",commanders:[{id:"c1",title:"فرمانده گردان ۱",name:"",sections:["شمسا","متنا","مپتا","نسرا"].map((title,i)=>({id:"s"+i,title,name:"",...(title==="متنا"?{personnel:[]}: {})}))},{id:"c2",title:"فرمانده گردان ۲",name:"",sections:["شمسا","متنا","مپتا","نسرا"].map((title,i)=>({id:"t"+i,title,name:"",...(title==="متنا"?{personnel:[]}: {})}))}],areas:areaNames.map((title,i)=>({id:"a"+i,title,leader_name:"",bases:[]}))});
 export async function GET(){
  const ctx=await getCurrentContext();if(!ctx)return NextResponse.json({message:"ابتدا وارد سامانه شوید."},{status:401});
  if(!["main_admin","deputy","battalion_commander"].includes(ctx.profile.role))return NextResponse.json({message:"شما دسترسی مشاهده چارت سازمانی را ندارید."},{status:403});
@@ -11,7 +11,7 @@ export async function GET(){
  if(error)return NextResponse.json({message:"دریافت چارت انجام نشد."},{status:500});
  let chart=setting?.value;if(!chart||chart.version!==2&&chart.version!==3)chart=empty();
  if(!Array.isArray(chart.areas))chart={...chart,version:3,areas:areaNames.map((title,i)=>({id:"a"+i,title,leader_name:"",bases:[]}))};
- chart={...chart,version:3,areas:chart.areas.map((a:any)=>({...a,leader_name:typeof a.leader_name==="string"?a.leader_name:"",bases:(Array.isArray(a.bases)?a.bases:[]).map((v:any)=>({...v,leader_name:typeof v.leader_name==="string"?v.leader_name:""}))}))};
+ chart={...chart,version:3,commanders:(Array.isArray(chart.commanders)?chart.commanders:empty().commanders).map((x:any)=>({...x,sections:(Array.isArray(x.sections)?x.sections:[]).map((section:any)=>({...section,...(String(section.title||"").trim()==="متنا"?{personnel:Array.isArray(section.personnel)?section.personnel.filter((p:any)=>typeof p==="string"):[]}:{})}))})),areas:chart.areas.map((a:any)=>({...a,leader_name:typeof a.leader_name==="string"?a.leader_name:"",bases:(Array.isArray(a.bases)?a.bases:[]).map((v:any)=>({...v,leader_name:typeof v.leader_name==="string"?v.leader_name:""}))}))};
  return NextResponse.json({chart,can_edit:ctx.profile.role==="main_admin"});
 }
 export async function PATCH(req:Request){
