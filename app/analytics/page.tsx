@@ -51,7 +51,7 @@ export default function AnalyticsPage() {
   return (
     <AppShell>
       <main className="shell unified-page">
-        <div className="unified-header">
+        <div className="analytics-heading">
           <div>
             <span className="eyebrow">راهبرد شوشتر</span>
             <h1>گزارش‌های تحلیلی</h1>
