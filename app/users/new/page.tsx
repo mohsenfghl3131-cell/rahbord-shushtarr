@@ -1,1 +1,169 @@
-"use client";import AppShell from "@/app/components/AppShell";import{useEffect,useState}from"react";import{useRouter}from"next/navigation";const roles=[["area_force","نیروی حوزه"],["area_manager","مدیر حوزه"],["battalion_commander","فرمانده گردان"],["deputy","معاون"],["main_admin","مدیر اصلی"]];export default function NewUser(){const r=useRouter();const[d,setD]=useState<any[]>([]);const[f,setF]=useState({user_code:"",display_name:"",password:"",role:"area_force",area_ids:[] as string[]});const[e,setE]=useState("");const[loading,setLoading]=useState(false);useEffect(()=>{fetch("/api/areas").then(x=>x.json()).then(x=>setD(x.areas||[]))},[]);function toggle(id:string){setF(x=>({...x,area_ids:x.area_ids.includes(id)?x.area_ids.filter(a=>a!==id):[...x.area_ids,id]}))}async function submit(ev:any){ev.preventDefault();setLoading(true);setE("");const q=await fetch("/api/users",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(f)});const x=await q.json();if(!q.ok){setE(x.message||"ایجاد کاربر انجام نشد.");setLoading(false);return}r.push("/users")}return <AppShell><main className="shell unified-page"><div className="topbar"><div><span className="eyebrow">راهبرد شوشتر</span><h1>ایجاد کاربر</h1><p>حساب کاربری، نقش و دسترسی حوزه‌ای</p></div></div><form className="form-panel" onSubmit={submit}><label>کد کاربری<input value={f.user_code} onChange={x=>setF({...f,user_code:x.target.value})} required/></label><label>نام و نام خانوادگی<input value={f.display_name} onChange={x=>setF({...f,display_name:x.target.value})} required/></label><label>رمز عبور<input type="password" minLength={8} value={f.password} onChange={x=>setF({...f,password:x.target.value})} required/><small>حداقل ۸ کاراکتر</small></label><label>نقش<select value={f.role} onChange={x=>setF({...f,role:x.target.value})}>{roles.map(x=><option key={x[0]} value={x[0]}>{x[1]}</option>)}</select></label><label>حوزه‌های مجاز</label><div className="area-access-list">{d.map(a=><label key={a.id}><input type="checkbox" checked={f.area_ids.includes(a.id)} onChange={()=>toggle(a.id)}/><span>{a.name}</span></label>)}</div>{e&&<div className="error">{e}</div>}<button className="button" disabled={loading}>{loading?"در حال ایجاد…":"ایجاد کاربر"}</button></form></main></AppShell>}
+"use client";
+
+import AppShell from "@/app/components/AppShell";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
+const roleOptions = [
+  ["area_force", "نیروی حوزه"],
+  ["area_manager", "مدیر حوزه"],
+  ["battalion_commander", "فرمانده گردان"],
+  ["deputy", "معاون"],
+  ["main_admin", "مدیر اصلی"],
+];
+
+export default function NewUser() {
+  const router = useRouter();
+  const [areas, setAreas] = useState<any[]>([]);
+  const [roles, setRoles] = useState(roleOptions.slice(0, 4));
+  const [form, setForm] = useState({
+    user_code: "",
+    display_name: "",
+    password: "",
+    role: "area_force",
+    area_ids: [] as string[],
+  });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [loadingPage, setLoadingPage] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    async function load() {
+      try {
+        const [meResponse, areasResponse] = await Promise.all([
+          fetch("/api/me", { cache: "no-store" }),
+          fetch("/api/areas", { cache: "no-store" }),
+        ]);
+        const me = await meResponse.json();
+        const areaData = await areasResponse.json();
+        if (!meResponse.ok) throw new Error(me.message || "احراز هویت لازم است.");
+        if (!areasResponse.ok) throw new Error(areaData.message || "دریافت حوزه‌ها انجام نشد.");
+        if (!["main_admin", "deputy", "battalion_commander"].includes(me.profile?.role)) {
+          throw new Error("شما مجاز به ایجاد کاربر نیستید.");
+        }
+        if (!active) return;
+        const allowedRoles = me.profile.role === "main_admin" ? roleOptions : roleOptions.slice(0, 4);
+        setRoles(allowedRoles);
+        setForm(current => ({ ...current, role: allowedRoles[0][0] }));
+        setAreas(areaData.areas ?? []);
+      } catch (e: any) {
+        if (active) setError(e.message || "بارگذاری صفحه انجام نشد.");
+      } finally {
+        if (active) setLoadingPage(false);
+      }
+    }
+    load();
+    return () => { active = false; };
+  }, []);
+
+  function toggleArea(id: string) {
+    setForm(current => ({
+      ...current,
+      area_ids: current.area_ids.includes(id)
+        ? current.area_ids.filter(areaId => areaId !== id)
+        : [...current.area_ids, id],
+    }));
+  }
+
+  async function submit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (loading) return;
+    setLoading(true);
+    setError("");
+    try {
+      const response = await fetch("/api/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...form,
+          user_code: form.user_code.trim(),
+          display_name: form.display_name.trim(),
+        }),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.message || "ایجاد کاربر انجام نشد.");
+      router.push("/users");
+    } catch (e: any) {
+      setError(e.message || "ایجاد کاربر انجام نشد.");
+      setLoading(false);
+    }
+  }
+
+  return (
+    <AppShell>
+      <main className="shell unified-page">
+        <div className="topbar">
+          <div>
+            <span className="eyebrow">راهبرد شوشتر</span>
+            <h1>ایجاد کاربر</h1>
+            <p>حساب کاربری، نقش و دسترسی حوزه‌ای</p>
+          </div>
+        </div>
+        {loadingPage ? (
+          <section className="panel"><p>در حال دریافت اطلاعات…</p></section>
+        ) : (
+          <form className="form-panel" onSubmit={submit}>
+            <label>
+              کد کاربری
+              <input
+                value={form.user_code}
+                onChange={event => setForm(current => ({ ...current, user_code: event.target.value }))}
+                autoComplete="off"
+                required
+              />
+              <small>فقط حروف انگلیسی، عدد، نقطه، خط تیره و زیرخط</small>
+            </label>
+            <label>
+              نام و نام خانوادگی
+              <input
+                value={form.display_name}
+                onChange={event => setForm(current => ({ ...current, display_name: event.target.value }))}
+                required
+              />
+            </label>
+            <label>
+              رمز عبور
+              <input
+                type="password"
+                minLength={8}
+                value={form.password}
+                onChange={event => setForm(current => ({ ...current, password: event.target.value }))}
+                autoComplete="new-password"
+                required
+              />
+              <small>حداقل ۸ کاراکتر</small>
+            </label>
+            <label>
+              نقش
+              <select
+                value={form.role}
+                onChange={event => setForm(current => ({ ...current, role: event.target.value }))}
+              >
+                {roles.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+              </select>
+            </label>
+            <div className="area-access-list">
+              <b>حوزه‌های مجاز</b>
+              <small>برای مدیران و معاونان نیز می‌توانید حوزه مشخص کنید؛ انتخاب حوزه برای نقش‌های حوزه‌ای ضروری است.</small>
+              {areas.length ? areas.map(area => (
+                <label key={area.id}>
+                  <input
+                    type="checkbox"
+                    checked={form.area_ids.includes(area.id)}
+                    onChange={() => toggleArea(area.id)}
+                  />
+                  <span>{area.name}</span>
+                </label>
+              )) : <p>حوزه فعالی برای تخصیص وجود ندارد.</p>}
+            </div>
+            {error && <div className="error">{error}</div>}
+            <button className="button" disabled={loading || !form.user_code.trim() || !form.display_name.trim() || form.password.length < 8}>
+              {loading ? "در حال ایجاد…" : "ایجاد کاربر"}
+            </button>
+          </form>
+        )}
+      </main>
+    </AppShell>
+  );
+}
