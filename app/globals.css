@@ -1948,3 +1948,46 @@ html[data-theme="dark"] .org-detail-section,html[data-theme="dark"] .org-detail-
 html[data-theme="dark"] .org-detail-leader,html[data-theme="dark"] .org-detail-stats>div{background:#20394d;border-color:#3b586e}
 html[data-theme="dark"] .org-detail-leader strong,html[data-theme="dark"] .org-base-leader-name{color:#8ed3ed}
 html[data-theme="dark"] .org-back-link{background:#1c3448;border-color:#36556c;color:#9bd4ed}
+
+
+/* Premium dashboard report-status distribution */
+.report-status-dashboard{display:flex;flex-direction:column;gap:17px;padding-top:4px}
+.report-status-summary{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.report-status-total{display:flex;flex-direction:column;gap:5px;min-width:0}
+.report-status-total span{color:#71879a;font-size:11px;font-weight:700}
+.report-status-total strong{color:#1d4969;font-size:30px;line-height:1.35;font-weight:900;letter-spacing:-.04em}
+.report-status-total small{color:#91a2b1;font-size:9px}
+.report-status-rate{flex:0 0 91px;width:91px;height:91px;display:grid;place-items:center;border-radius:50%;position:relative;box-shadow:0 6px 17px rgba(39,83,115,.09)}
+.report-status-rate:before{content:"";position:absolute;inset:7px;border-radius:50%;background:#f8fbfd}
+.report-status-rate>div{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px}
+.report-status-rate strong{color:#254e6a;font-size:18px;font-weight:900}
+.report-status-rate small{color:#8195a7;font-size:9px}
+.report-status-stack{display:flex;overflow:hidden;gap:3px;height:10px;padding:2px;border-radius:20px;background:#e8eef3}
+.report-status-stack i{display:block;height:6px;min-width:0;border-radius:10px;transition:width .3s ease}
+.report-status-stack .approved{background:#239b79}
+.report-status-stack .pending{background:#e5a13c}
+.report-status-stack .rejected{background:#d36c79}
+.report-status-items{display:grid;grid-template-columns:1fr;gap:8px}
+.report-status-item{padding:10px 12px;border:1px solid #e0e9f0;border-radius:12px;background:linear-gradient(110deg,#fff,#f7fafc)}
+.report-status-item-top,.report-status-item-bottom{display:flex;align-items:center;gap:8px}
+.report-status-item-top{min-width:0}
+.report-status-item-top i{width:8px;height:8px;flex:0 0 8px;border-radius:50%}
+.report-status-item.approved .report-status-item-top i{background:#239b79;box-shadow:0 0 0 3px rgba(35,155,121,.1)}
+.report-status-item.pending .report-status-item-top i{background:#e5a13c;box-shadow:0 0 0 3px rgba(229,161,60,.12)}
+.report-status-item.rejected .report-status-item-top i{background:#d36c79;box-shadow:0 0 0 3px rgba(211,108,121,.1)}
+.report-status-item-top b{flex:1;min-width:0;color:#526d82;font-size:11px}
+.report-status-item-top strong{color:#25465f;font-size:14px;font-weight:900}
+.report-status-item-bottom{justify-content:space-between;margin-top:6px;padding-right:16px}
+.report-status-item-bottom small{color:#91a1af;font-size:9px}
+.report-status-item-bottom b{color:#668197;font-size:10px}
+.report-status-footer{display:flex;justify-content:space-between;align-items:center;gap:8px;padding-top:10px;border-top:1px solid #e5edf3}
+.report-status-footer span{display:flex;align-items:center;gap:6px;color:#8498a9;font-size:9px}
+.report-status-footer span i{width:6px;height:6px;border-radius:50%;background:#39a77f;box-shadow:0 0 0 3px rgba(57,167,127,.1)}
+.report-status-footer a{white-space:nowrap;color:#327da4;text-decoration:none;font-size:10px;font-weight:800}
+html[data-theme="dark"] .report-status-total strong,html[data-theme="dark"] .report-status-rate strong,html[data-theme="dark"] .report-status-item-top strong{color:#e1eff8}
+html[data-theme="dark"] .report-status-rate:before{background:#1b3042}
+html[data-theme="dark"] .report-status-item{background:linear-gradient(110deg,#20384b,#1b3042);border-color:#344e62}
+html[data-theme="dark"] .report-status-item-top b{color:#b9cddd}
+html[data-theme="dark"] .report-status-stack{background:#304558}
+html[data-theme="dark"] .report-status-footer{border-color:#344e62}
+@media(max-width:520px){.report-status-total strong{font-size:26px}.report-status-rate{width:80px;height:80px;flex-basis:80px}.report-status-footer{align-items:flex-start;flex-direction:column}.report-status-item{padding:9px 10px}}
