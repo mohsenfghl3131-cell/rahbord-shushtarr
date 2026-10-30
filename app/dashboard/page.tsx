@@ -192,31 +192,6 @@ export default async function Dashboard() {
           </div>
         </section>
 
-        <section className="quick-actions">
-          <Link href="/reports/new">
-            <span>＋</span>
-            <div><b>ثبت گزارش جدید</b><small>ارسال گزارش به حوزه</small></div>
-          </Link>
-          <Link href="/reports/mine">
-            <span>▤</span>
-            <div><b>گزارش‌های من</b><small>پیگیری وضعیت ارسال‌ها</small></div>
-          </Link>
-          <Link href="/reports">
-            <span>☷</span>
-            <div><b>گزارش‌ها</b><small>{pendingCount.toLocaleString("fa-IR")} مورد در انتظار</small></div>
-          </Link>
-          <Link href="/analytics">
-            <span>⌁</span>
-            <div><b>مرکز تحلیل</b><small>روندها و رتبه‌بندی حوزه‌ها</small></div>
-          </Link>
-          {(ctx.profile.role === "main_admin" || ctx.profile.role === "area_manager" || ctx.responsibleGroupIds.length > 0) && (
-            <Link href="/messages">
-              <span>✉</span>
-              <div><b>مرکز پیام</b><small>ارتباط با مدیریت و مسئولان</small></div>
-            </Link>
-          )}
-        </section>
-        <QuranCard />
         <ShushtarVisual />
 
         <section className="stats">
@@ -335,6 +310,13 @@ export default async function Dashboard() {
               )}
             </div>
           </section>
+        <QuranCard />
+        <section className="quick-actions dashboard-shortcuts">
+          <Link href="/users"><span>♟</span><div><b>مدیریت کاربران</b><small>افزودن و مدیریت کاربران</small></div></Link>
+          <Link href="/areas"><span>⌖</span><div><b>مدیریت حوزه‌ها</b><small>تعریف و ویرایش حوزه‌ها</small></div></Link>
+          <Link href="/categories"><span>▦</span><div><b>مدیریت دسته‌بندی‌ها</b><small>مدیریت گروه‌ها و دسته‌بندی‌ها</small></div></Link>
+          <Link href="/settings"><span>⚙</span><div><b>تنظیمات سیستم</b><small>پیکربندی و تنظیمات سامانه</small></div></Link>
+        </section>
         </section>
       </main>
     </AppShell>
