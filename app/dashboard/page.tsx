@@ -310,13 +310,13 @@ export default async function Dashboard() {
               )}
             </div>
           </section>
+        </section>
         <QuranCard />
         <section className="quick-actions dashboard-shortcuts">
           <Link href="/users"><span>♟</span><div><b>مدیریت کاربران</b><small>افزودن و مدیریت کاربران</small></div></Link>
           <Link href="/areas"><span>⌖</span><div><b>مدیریت حوزه‌ها</b><small>تعریف و ویرایش حوزه‌ها</small></div></Link>
           <Link href="/categories"><span>▦</span><div><b>مدیریت دسته‌بندی‌ها</b><small>مدیریت گروه‌ها و دسته‌بندی‌ها</small></div></Link>
           <Link href="/settings"><span>⚙</span><div><b>تنظیمات سیستم</b><small>پیکربندی و تنظیمات سامانه</small></div></Link>
-        </section>
         </section>
       </main>
     </AppShell>
