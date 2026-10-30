@@ -14,8 +14,13 @@ export async function GET(){
  let q=admin.from("missions").select("id,group_id,title,description,target_value,unit,is_active,created_at,deadline_at,category_groups(id,name,responsible_user_id)").order("created_at",{ascending:false});
  if(!isLeader&&groupIds.length)q=q.in("group_id",groupIds);
  else if(!isLeader&&!groupIds.length&&ctx.profile.role!=="area_manager")return NextResponse.json({message:"دسترسی به بخش نمره‌دهی ندارید."},{status:403});
- const {data:missions,error}=await q;
- if(error)return NextResponse.json({message:"دریافت مأموریت‌ها ناموفق بود."},{status:500});
+ let {data:missions,error}=await q;
+ // سازگاری موقت با دیتابیسی که هنوز ستون deadline_at در آن ایجاد نشده است
+ if(error&&String(error.message??"").includes("deadline_at")){
+  const fallback=await admin.from("missions").select("id,group_id,title,description,target_value,unit,is_active,created_at,category_groups(id,name,responsible_user_id)").order("created_at",{ascending:false});
+  missions=(fallback.data??[]).map((m:any)=>({...m,deadline_at:null}));error=fallback.error;
+ }
+ if(error)return NextResponse.json({message:"دریافت مأموریت‌ها ناموفق بود: "+error.message},{status:500});
  const {data:allAreas}=await admin.from("areas").select("id,name").eq("is_active",true).order("name");
  const areas=(allAreas??[]).filter((a:any)=>isLeader||ctx.profile.role!=="area_manager"||ctx.areaIds.includes(a.id));
  const {data:scores}=await admin.from("mission_scores").select("id,mission_id,area_id,actual_value,notes,entered_by,updated_at,areas(name),profiles:profiles!mission_scores_entered_by_fkey(display_name)");
@@ -34,8 +39,13 @@ export async function POST(request:Request){
  const admin=db(),{data:group}=await admin.from("category_groups").select("id,name").eq("id",groupId).eq("is_active",true).maybeSingle();
  if(!group)return NextResponse.json({message:"بخش انتخاب‌شده معتبر نیست."},{status:400});
  if(!canManage(ctx,groupId))return NextResponse.json({message:"فقط مسئول همان بخش یا مدیران ارشد می‌توانند سهمیه تعیین کنند."},{status:403});
- const {data,error}=await admin.from("missions").insert({group_id:groupId,title,description,target_value:target,unit,deadline_at:deadlineAt?.toISOString()??null,created_by:ctx.user.id}).select("id").single();
- if(error)return NextResponse.json({message:"ثبت مأموریت انجام نشد. اگر ستون مهلت تازه اضافه شده، ابتدا مهاجرت پایگاه‌داده را اجرا کنید."},{status:500});
+ let {data,error}=await admin.from("missions").insert({group_id:groupId,title,description,target_value:target,unit,deadline_at:deadlineAt?.toISOString()??null,created_by:ctx.user.id}).select("id").single();
+ if(error&&String(error.message??"").includes("deadline_at")){
+  if(deadlineAt)return NextResponse.json({message:"برای ثبت مأموریت دارای مهلت، ابتدا ستون مهلت در پایگاه‌داده باید فعال شود. فعلاً مهلت را خالی بگذارید."},{status:503});
+  const fallback=await admin.from("missions").insert({group_id:groupId,title,description,target_value:target,unit,created_by:ctx.user.id}).select("id").single();
+  data=fallback.data;error=fallback.error;
+ }
+ if(error)return NextResponse.json({message:"ثبت مأموریت انجام نشد: "+error.message},{status:500});
  await admin.from("audit_logs").insert({user_id:ctx.user.id,action:"mission.create",entity_type:"mission",entity_id:data.id,metadata:{group_id:groupId,title,target_value:target,unit,deadline_at:deadlineAt?.toISOString()??null}});
  return NextResponse.json({id:data.id},{status:201});
 }
