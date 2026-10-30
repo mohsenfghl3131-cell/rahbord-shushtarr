@@ -10,7 +10,7 @@ export async function GET(){
  d.from("category_groups").select("id,name,sort_order,is_active").eq("is_active",true).order("sort_order"),
  d.from("site_settings").select("value").eq("key","organization_chart").maybeSingle()]);
  if(u||g)return NextResponse.json({message:"دریافت اطلاعات چارت انجام نشد."},{status:500});
- return NextResponse.json({users:users??[],groups:groups??[],chart:setting?.value??empty,can_edit:ctx.profile.role==="main_admin"});
+ const activeUsers=users??[];const initial=setting?.value??{...empty,deputy_user_id:activeUsers.find((u:any)=>u.role==="deputy")?.id??"",commanders:[{user_id:activeUsers.find((u:any)=>u.role==="battalion_commander")?.id??"",sections:[]},{user_id:"",sections:[]}]};\n return NextResponse.json({users:activeUsers,groups:groups??[],chart:initial,can_edit:ctx.profile.role==="main_admin"});
 }
 export async function PATCH(req:Request){
  const ctx=await getCurrentContext();if(!ctx)return NextResponse.json({message:"ابتدا وارد سامانه شوید."},{status:401});
