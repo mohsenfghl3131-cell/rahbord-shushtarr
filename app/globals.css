@@ -1379,3 +1379,38 @@ img,video,canvas,svg{max-width:100%}
  .scores-page .panel-title{min-width:0;flex-wrap:wrap}
  .scores-page .panel-title h2{font-size:13px!important;line-height:1.8}
 }
+
+/* Mission center and deadline management */
+.scores-page .score-count{font-size:11px;color:var(--text-muted)}
+.scores-page .mission-list{display:grid;gap:12px}
+.scores-page .mission-tile{position:relative;min-width:0;padding:13px;border:1px solid var(--border-color);border-radius:14px;background:var(--surface);transition:border-color .2s,background .2s}
+.scores-page .mission-tile.selected{border-color:#279fce;background:rgba(39,159,206,.045)}
+.scores-page .mission-tile-main{display:flex;align-items:center;gap:13px;width:100%;padding:0 0 9px;border:0;background:transparent;color:var(--text-primary);text-align:right;cursor:pointer}
+.scores-page .mission-tile-title{flex:1;min-width:0}
+.scores-page .mission-tile-title h3{margin:4px 0;font-size:14px;overflow-wrap:anywhere}
+.scores-page .mission-tile-title p{margin:0;color:var(--text-muted);font-size:10px;line-height:1.8}
+.scores-page .mission-tile-meta{display:grid;gap:4px;text-align:left;justify-items:end;flex:0 0 auto}
+.scores-page .mission-tile-meta strong{font-size:19px;color:var(--link-color)}
+.scores-page .mission-tile-meta small{font-size:9px;color:var(--text-muted)}
+.scores-page .deadline-open,.scores-page .deadline-closed{font-size:10px;padding:4px 9px;border-radius:99px;white-space:nowrap}
+.scores-page .deadline-open{color:#07875b;background:rgba(22,185,120,.11)}
+.scores-page .deadline-closed{color:#d34b57;background:rgba(238,82,96,.11)}
+.scores-page .mission-chevron{font-size:21px;color:var(--link-color);flex:0 0 auto}
+.scores-page .mission-delete{margin-top:8px;border:1px solid rgba(238,82,96,.35);border-radius:9px;background:rgba(238,82,96,.07);color:#d34b57;padding:7px 12px;font:inherit;font-size:10px;cursor:pointer}
+.scores-page .mission-delete:disabled{opacity:.5}
+.scores-page .mission-detail{margin-top:15px}
+.scores-page .mission-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:15px}
+.scores-page .mission-detail-grid .area-score small{display:block;margin-top:6px;color:var(--text-muted);font-size:9px}
+.scores-page .score-entry-form{margin-top:20px;padding-top:16px;border-top:1px solid var(--border-color)}
+.scores-page .score-entry-form h3{font-size:14px;color:var(--text-primary)}
+.scores-page .score-closed-note{padding:12px;border-radius:10px;background:rgba(238,82,96,.08);color:#d34b57;font-size:11px}
+.scores-page input[type=datetime-local]{direction:ltr;text-align:right}
+@media(max-width:760px){
+ .scores-page .mission-tile{padding:10px}
+ .scores-page .mission-tile-main{gap:7px;align-items:flex-start}
+ .scores-page .mission-tile-title h3{font-size:12px;line-height:1.8}
+ .scores-page .mission-tile-meta strong{font-size:16px}
+ .scores-page .mission-tile-meta small{font-size:8px;white-space:normal;max-width:100px}
+ .scores-page .mission-detail-grid{grid-template-columns:minmax(0,1fr)}
+ .scores-page .score-entry-form .score-form-grid{grid-template-columns:minmax(0,1fr)!important}
+}
