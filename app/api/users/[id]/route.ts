@@ -79,3 +79,47 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
   return NextResponse.json({ ok: true });
 }
+
+
+export async function DELETE(_request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const ctx = await getCurrentContext();
+  if (!ctx) return NextResponse.json({ message: "احراز هویت لازم است." }, { status: 401 });
+  if (ctx.profile.role !== "main_admin") {
+    return NextResponse.json({ message: "فقط مدیر اصلی می‌تواند کاربران را حذف کند." }, { status: 403 });
+  }
+
+  const { id } = await params;
+  if (id === ctx.user.id) {
+    return NextResponse.json({ message: "نمی‌توانید حساب کاربری خودتان را حذف کنید." }, { status: 400 });
+  }
+
+  const admin = db();
+  const { data: target, error: lookupError } = await admin
+    .from("profiles")
+    .select("id,user_code,display_name")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (lookupError) return NextResponse.json({ message: "بررسی حساب کاربر انجام نشد." }, { status: 500 });
+  if (!target) return NextResponse.json({ message: "کاربر پیدا نشد." }, { status: 404 });
+  if (target.user_code === "ADMIN001") {
+    return NextResponse.json({ message: "حساب اصلی پشتیبان سامانه قابل حذف نیست." }, { status: 400 });
+  }
+
+  const { error: auditError } = await admin.from("audit_logs").insert({
+    user_id: ctx.user.id,
+    action: "user.delete",
+    entity_type: "profile",
+    entity_id: id,
+    metadata: { user_code: target.user_code, display_name: target.display_name },
+  });
+  if (auditError) return NextResponse.json({ message: "ثبت رویداد امنیتی حذف انجام نشد؛ حساب حذف نشد." }, { status: 500 });
+
+  const { error: authError } = await admin.auth.admin.deleteUser(id);
+  if (authError) return NextResponse.json({ message: "حذف حساب ورود کاربر انجام نشد؛ " + authError.message }, { status: 500 });
+
+  await admin.from("user_area_access").delete().eq("user_id", id);
+  await admin.from("profiles").delete().eq("id", id);
+
+  return NextResponse.json({ ok: true });
+}
