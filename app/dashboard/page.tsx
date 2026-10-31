@@ -217,7 +217,7 @@ export default async function Dashboard() {
             </div>
           </div>
         </section>
-        <DailyMessage />
+        <DailyMessage canEdit={["main_admin", "deputy", "battalion_commander"].includes(ctx.profile.role)} />
         <section className="stats">
           <Stat label="کل گزارش‌ها" value={total} tone="blue" note="تمام گزارش‌های فعال" />
           <Stat label="گزارش‌های امروز" value={todayCount} tone="cyan" note="ثبت‌شده از ابتدای امروز" />
