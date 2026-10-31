@@ -229,7 +229,7 @@ export default function AppShell({ children }: Props) {
 
           <div className="notification-wrap">
             <button className={"notification-bell" + (notificationsOpen ? " active" : "")} type="button" aria-label="اعلان‌ها" aria-expanded={notificationsOpen} title="اعلان‌ها" onClick={() => setNotificationsOpen((value) => !value)}>
-              <span aria-hidden="true">♧</span>
+              <span aria-hidden="true">🔔</span>
               {notificationData.unread_count > 0 && <i>{notificationData.unread_count > 99 ? "۹۹+" : notificationData.unread_count}</i>}
             </button>
             {notificationsOpen && (
