@@ -2897,3 +2897,57 @@ html[data-theme="light"] .unified-shell :is(button,input[type="button"],input[ty
  .unified-shell .notification-scroll{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;overscroll-behavior:contain}
  .unified-shell .notification-head,.unified-shell .notification-foot{flex:0 0 auto!important}
 }
+
+
+/* Daily message — Shushtar blue-waterfall glass feature */
+.daily-message-card{
+  position:relative;isolation:isolate;display:flex;align-items:center;justify-content:space-between;
+  min-height:158px;margin:16px 0 18px;padding:24px 30px;overflow:hidden;border-radius:20px;
+  border:1px solid rgba(91,205,245,.38);
+  background:
+    radial-gradient(ellipse at 78% 45%,rgba(0,190,255,.24),transparent 38%),
+    linear-gradient(112deg,rgba(4,27,54,.97),rgba(5,65,103,.94) 52%,rgba(4,35,72,.98));
+  box-shadow:0 16px 38px rgba(0,75,130,.16),inset 0 1px 0 rgba(255,255,255,.12);
+}
+.daily-message-card:before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.9;
+  background:
+    linear-gradient(180deg,transparent 0 66%,rgba(49,202,255,.12) 84%,rgba(115,226,255,.2) 100%),
+    repeating-linear-gradient(90deg,transparent 0 8%,rgba(106,221,255,.09) 8.15%,transparent 8.5% 13%),
+    linear-gradient(180deg,rgba(2,20,44,.05),rgba(2,20,44,.35));
+  mask-image:linear-gradient(90deg,transparent 0%,#000 36%,#000 100%);
+}
+.daily-message-card:after{
+  content:"";position:absolute;z-index:-1;pointer-events:none;inset:-35% -5% -45% 38%;
+  background:
+    radial-gradient(ellipse at 50% 0%,rgba(105,224,255,.35),transparent 38%),
+    repeating-linear-gradient(90deg,transparent 0 22px,rgba(141,231,255,.16) 23px,transparent 25px 46px);
+  filter:blur(8px);opacity:.75;transform:skewX(-9deg);
+}
+.daily-message-content{position:relative;z-index:2;max-width:760px;color:#effaff}
+.daily-message-kicker{display:flex;align-items:center;gap:8px;color:#8ceaff;font-size:11px;font-weight:900;letter-spacing:.3px}
+.daily-message-kicker span{font-size:17px;color:#b9f4ff;text-shadow:0 0 14px rgba(96,224,255,.8)}
+.daily-message-content h2{margin:10px 0 7px;font-size:clamp(17px,2vw,23px);line-height:1.8;color:#fff;font-weight:900;text-shadow:0 2px 18px rgba(0,15,35,.35)}
+.daily-message-content p{margin:0;color:#c0e5f5;font-size:11px;line-height:2.1}
+.daily-message-signature{display:flex;align-items:center;gap:8px;margin-top:14px;color:#8bc9e3;font-size:9px;font-weight:700}
+.daily-message-signature i{width:22px;height:1px;background:#55d9ff;box-shadow:0 0 9px #55d9ff}
+.daily-message-signature span{opacity:.55}
+.daily-message-mark{position:relative;z-index:2;align-self:flex-start;margin:0 20px 0 4px;color:rgba(154,231,255,.26);font-family:Georgia,serif;font-size:112px;line-height:.9}
+.daily-message-art{position:absolute;inset:0 0 0 auto;width:43%;z-index:1;pointer-events:none;overflow:hidden;opacity:.9}
+.daily-message-art span{position:absolute;top:-18%;height:145%;width:17%;border-radius:0 0 48% 48%;
+  background:linear-gradient(180deg,transparent,rgba(81,205,255,.05) 15%,rgba(97,218,255,.26) 53%,rgba(184,246,255,.62) 82%,rgba(54,185,240,.08));
+  filter:blur(7px);transform:skewX(-7deg);animation:daily-waterfall 8s ease-in-out infinite alternate}
+.daily-message-art span:nth-child(1){right:17%;height:125%;width:13%;opacity:.75}
+.daily-message-art span:nth-child(2){right:43%;top:-28%;height:150%;width:19%;animation-delay:-3s;opacity:.55}
+.daily-message-art span:nth-child(3){right:68%;top:-12%;height:130%;width:11%;animation-delay:-5s;opacity:.42}
+@keyframes daily-waterfall{from{transform:translateY(-5px) skewX(-7deg);opacity:.42}to{transform:translateY(9px) skewX(-3deg);opacity:.8}}
+html[data-theme="light"] .daily-message-card{background:radial-gradient(ellipse at 78% 45%,rgba(0,190,255,.2),transparent 38%),linear-gradient(112deg,#0b3154,#075d86 55%,#103c69);box-shadow:0 14px 34px rgba(0,105,160,.17),inset 0 1px 0 rgba(255,255,255,.18)}
+@media(max-width:760px){
+ .daily-message-card{min-height:150px;margin:12px 0 15px;padding:20px 18px;border-radius:16px}
+ .daily-message-content{max-width:100%;padding-left:4px}
+ .daily-message-content h2{font-size:16px;line-height:1.9}
+ .daily-message-content p{font-size:10px;max-width:95%}
+ .daily-message-mark{font-size:74px;margin:0 0 0 2px}
+ .daily-message-art{width:55%;opacity:.55}
+}
+@media(prefers-reduced-motion:reduce){.daily-message-art span{animation:none}}
