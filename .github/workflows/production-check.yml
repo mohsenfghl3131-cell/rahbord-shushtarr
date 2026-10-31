@@ -1,20 +1,26 @@
-name: Production Check
+name: Production Check and Deploy
 on:
   push:
     branches: [main]
 jobs:
-  check:
+  check-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
       - run: npm install
       - run: npm audit --audit-level=high
         continue-on-error: true
       - run: npm run typecheck
-      - run: npm run build
+      - name: Deploy to Cloudflare Pages
+        if: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+        run: npm run deploy
         env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: 0da2b460d6c2756f2fcc5cbfeb9e01ca
+      - name: Explain missing Cloudflare token
+        if: ${{ secrets.CLOUDFLARE_API_TOKEN == '' }}
+        run: echo "Deployment skipped. Add CLOUDFLARE_API_TOKEN in GitHub repository Actions secrets."
