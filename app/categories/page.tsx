@@ -9,8 +9,10 @@ export default function Categories(){
  const[e,setE]=useState("");
  const[form,setForm]=useState({name:"",group_id:"",sort_order:0});
  const[canManage,setCanManage]=useState(false);
+ const[busy,setBusy]=useState("");
 
  async function load(){
+  setE("");
   const [r,me]=await Promise.all([fetch("/api/categories"),fetch("/api/me")]);const d=await r.json();const md=await me.json();
   setCanManage(["main_admin","deputy","battalion_commander"].includes(md.profile?.role));
   if(!r.ok){setE(d.message||"دسترسی ندارید.");return}
@@ -30,19 +32,32 @@ export default function Categories(){
   const r=await fetch("/api/categories/"+x.id,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({is_active:!x.is_active})});
   if(!r.ok){const d=await r.json();setE(d.message||"عملیات انجام نشد.");return}load();
  }
- async function assign(groupId:string,userId:string){
-  setE("");
-  const r=await fetch("/api/category-groups/"+groupId,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({responsible_user_id:userId||null})});
-  const d=await r.json();if(!r.ok){setE(d.message||"تعیین مسئول انجام نشد.");return}load();
+ async function assign(groupId:string,userIds:string[]){
+  setE("");setBusy(groupId);
+  const r=await fetch("/api/category-groups/"+groupId,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({responsible_user_ids:userIds})});
+  const d=await r.json();if(!r.ok){setE(d.message||"تعیین مسئولان انجام نشد.");setBusy("");return}
+  setGroups(old=>old.map(g=>g.id===groupId?{...g,responsible_user_ids:d.responsible_user_ids}:g));
+  setBusy("");
+ }
+ function toggleResponsible(g:any,userId:string){
+  const current:string[]=g.responsible_user_ids||[];
+  const next=current.includes(userId)?current.filter(x=>x!==userId):[...current,userId];
+  assign(g.id,next);
  }
 
  return <AppShell><main className="shell unified-page">
-  <div className="topbar"><div><span className="eyebrow">ساختار گزارش‌دهی</span><h1>بخش‌ها و زیرمجموعه‌ها</h1><p>مسئول هر بخش می‌تواند گزارش‌های همان بخش را از تمام حوزه‌ها مشاهده و بررسی کند.</p></div></div>
+  <div className="topbar"><div><span className="eyebrow">ساختار گزارش‌دهی</span><h1>بخش‌ها و زیرمجموعه‌ها</h1><p>برای هر مسئولیت می‌توانید چند کاربر فعال تعیین کنید؛ همه مسئولان انتخاب‌شده گزارش‌های همان بخش را می‌بینند و بررسی می‌کنند.</p></div></div>
   {e&&<div className="error">{e}</div>}
   {canManage&&<section className="section-manager-grid">
    {groups.map(g=><article className="section-manager-card" key={g.id}>
     <div><span className="section-glow">◈</span><div><small>بخش گزارش</small><h2>{g.name}</h2></div></div>
-    <label>مسئول بخش<select value={g.responsible_user_id??""} onChange={ev=>assign(g.id,ev.target.value)}><option value="">بدون مسئول</option>{users.filter(u=>u.is_active).map(u=><option key={u.id} value={u.id}>{u.display_name} · {u.user_code}</option>)}</select></label>
+    <div className="responsible-multi-picker"><b>مسئولان این بخش</b><small>هر تعداد مسئول لازم است انتخاب کنید.</small>
+     <div className="area-access-options">{users.filter(u=>u.is_active).map(u=><label key={u.id} className="area-access-option">
+      <input type="checkbox" checked={(g.responsible_user_ids||[]).includes(u.id)} disabled={busy===g.id} onChange={()=>toggleResponsible(g,u.id)}/>
+      <span>{u.display_name} · {u.user_code}</span>
+     </label>)}</div>
+     <small>{(g.responsible_user_ids||[]).length.toLocaleString("fa-IR")} مسئول انتخاب شده</small>
+    </div>
     <div className="section-cats">{cats.filter(c=>c.group_id===g.id&&c.is_active).map(c=><span key={c.id}>{c.name}</span>)}</div>
    </article>)}
   </section>}
