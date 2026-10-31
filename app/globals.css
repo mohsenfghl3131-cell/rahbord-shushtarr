@@ -3624,3 +3624,40 @@ html[data-theme="dark"] .daily-message-card{
 @media print{
   :where(button,input[type="button"],input[type="submit"],input[type="reset"],.button,.small-btn,.toggle,.avatar-upload,.avatar-remove){display:none!important}
 }
+
+
+/* Extend the glass finish to custom button components and button-like links */
+:where(
+  [role="button"],
+  a.btn,
+  a.button,
+  a.small-btn,
+  [class~="btn"],
+  [class*="btn-"],
+  [class*="-btn"],
+  summary[ role="button" ]
+){
+  -webkit-backdrop-filter:blur(14px) saturate(155%);
+  backdrop-filter:blur(14px) saturate(155%);
+  background:var(--glass-button-bg,linear-gradient(135deg,rgba(37,157,235,.22),rgba(104,112,255,.16)))!important;
+  border:1px solid var(--glass-button-border,rgba(75,177,235,.48))!important;
+  border-radius:11px;
+  box-shadow:var(--glass-button-shadow,0 8px 22px rgba(25,105,170,.14),inset 0 1px 0 rgba(255,255,255,.62))!important;
+  transition:background .2s ease,border-color .2s ease,box-shadow .2s ease,transform .2s ease,color .2s ease;
+}
+:where([role="button"],a.btn,a.button,a.small-btn,[class~="btn"],[class*="btn-"],[class*="-btn"]):not(:disabled):not([disabled]):hover{
+  background:linear-gradient(135deg,rgba(42,177,242,.34),rgba(112,105,255,.27))!important;
+  border-color:rgba(65,183,244,.78)!important;
+  box-shadow:0 10px 26px rgba(20,126,194,.2),inset 0 1px 0 rgba(255,255,255,.78)!important;
+  transform:translateY(-1px);
+}
+:where([role="button"],a.btn,a.button,a.small-btn,[class~="btn"],[class*="btn-"],[class*="-btn"]):focus-visible{
+  outline:2px solid rgba(8,174,234,.72);
+  outline-offset:3px;
+}
+@media(prefers-reduced-motion:reduce){
+  :where([role="button"],a.btn,a.button,a.small-btn,[class~="btn"],[class*="btn-"],[class*="-btn"]){transition:none}
+}
+@media print{
+  :where([role="button"],a.btn,a.button,a.small-btn,[class~="btn"],[class*="btn-"],[class*="-btn"]){display:none!important}
+}
