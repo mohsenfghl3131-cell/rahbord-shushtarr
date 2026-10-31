@@ -1,0 +1,14 @@
+"use client";
+import {useEffect,useState} from "react";
+import AppShell from "@/app/components/AppShell";
+export default function DailyMessageAdmin(){
+ const [title,setTitle]=useState("");const [body,setBody]=useState("");const [loading,setLoading]=useState(true);const [saving,setSaving]=useState(false);const [notice,setNotice]=useState("");const [error,setError]=useState(false);
+ useEffect(()=>{fetch("/api/daily-message",{cache:"no-store"}).then(async r=>{const d=await r.json();if(!r.ok)throw new Error(d.message||"دریافت پیام ناموفق بود.");setTitle(d.title||"");setBody(d.body||"");}).catch(e=>{setNotice(e.message);setError(true)}).finally(()=>setLoading(false));},[]);
+ async function save(){setSaving(true);setNotice("");setError(false);try{const r=await fetch("/api/daily-message",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({title,body})});const d=await r.json();if(!r.ok)throw new Error(d.message||"ذخیره انجام نشد.");setTitle(d.title);setBody(d.body);setNotice("پیام روز با موفقیت ذخیره شد و برای همه کاربران نمایش داده می‌شود.");}catch(e:any){setNotice(e.message);setError(true)}finally{setSaving(false)}}
+ return <AppShell><main className="shell daily-admin-page"><div className="topbar"><div><span className="eyebrow">مدیریت محتوای داشبورد</span><h1>مدیریت پیام روز</h1><p>عنوان و متن پیام نمایشی داشبورد را تغییر دهید.</p></div></div>
+ {loading?<section className="panel">در حال دریافت پیام…</section>:<><section className="panel daily-admin-panel"><div className="daily-admin-preview"><span>✦ پیام روز</span><b>{title||"پیش‌نمایش عنوان پیام"}</b><p>{body||"پیش‌نمایش متن پیام"}</p></div>
+ <label className="daily-admin-field">عنوان پیام<textarea value={title} maxLength={180} rows={2} onChange={e=>setTitle(e.target.value)} placeholder="عنوان پیام روز را بنویسید"/></label><small className="daily-admin-count">{title.length} از ۱۸۰ نویسه</small>
+ <label className="daily-admin-field">متن پیام<textarea value={body} maxLength={400} rows={5} onChange={e=>setBody(e.target.value)} placeholder="متن پیام روز را بنویسید"/></label><small className="daily-admin-count">{body.length} از ۴۰۰ نویسه</small>
+ {notice&&<div className={error?"error":"notice"} role="status">{notice}</div>}
+ <div className="daily-admin-actions"><button className="button" type="button" onClick={save} disabled={saving||!title.trim()}>{saving?"در حال ذخیره…":"ذخیره و انتشار پیام"}</button><button className="button daily-admin-reset" type="button" onClick={()=>{setTitle("قدم‌های کوچک و پیوسته، مسیرهای بزرگ را می‌سازند.");setBody("با دقت، همدلی و مسئولیت‌پذیری، هر روز می‌توانیم یک گام بهتر از دیروز باشیم.");}}>بازگردانی متن پیش‌فرض</button></div></section><p className="daily-admin-hint">با زدن دکمه ذخیره، پیام جدید در داشبورد همه کاربران جایگزین می‌شود.</p></>}</main></AppShell>;
+}
