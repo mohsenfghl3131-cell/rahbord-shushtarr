@@ -3895,3 +3895,66 @@ html[data-theme="dark"] .daily-message-card{
  .content:has(.welcome-pro) .quick-actions small{font-size:8px;line-height:1.7}
 }
 @media(prefers-reduced-motion:reduce){.content:has(.welcome-pro) .stat-card{transition:none}}
+
+
+
+/* PHASE 2 — unified command-center shell and sign-in experience */
+.unified-shell .sidebar{
+  background:linear-gradient(180deg,#071522 0%,#0a1d30 48%,#071522 100%)!important;
+  border-left:1px solid rgba(65,211,245,.2)!important;
+  box-shadow:-20px 0 60px rgba(0,0,0,.28),inset -1px 0 rgba(255,255,255,.025)!important;
+}
+.unified-shell .brand{border-bottom:1px solid rgba(108,193,226,.15)!important;padding-bottom:19px}
+.unified-shell .brand-mark{border-radius:14px;background:linear-gradient(140deg,#08cce5,#246cff 65%,#765cff)!important;box-shadow:0 0 24px rgba(0,195,255,.3),inset 0 1px rgba(255,255,255,.4)}
+.unified-shell .brand-copy b{color:#effaff;font-size:15px}
+.unified-shell .brand-copy small{color:#7195af}
+.unified-shell .brand-status{width:7px;height:7px;border-radius:50%;background:#39e7ae;box-shadow:0 0 0 5px rgba(57,231,174,.1),0 0 14px #39e7ae}
+.unified-shell .sidebar-section>span{color:#5e8aa8!important;font-size:9px;letter-spacing:.8px}
+.unified-shell .sidebar nav{gap:6px}
+.unified-shell .sidebar nav a{min-height:42px;padding:8px 10px;border:1px solid transparent;border-radius:12px;color:#9bb8ce!important;font-size:10px;transition:background .18s,border-color .18s,transform .18s}
+.unified-shell .sidebar nav a .nav-icon{width:29px;height:29px;display:grid;place-items:center;border-radius:9px;background:rgba(95,174,213,.09);border:1px solid rgba(100,190,230,.08);color:#71d9f4;font-size:15px}
+.unified-shell .sidebar nav a:hover{background:rgba(24,139,185,.12)!important;border-color:rgba(49,197,233,.16);transform:translateX(-2px);color:#e9faff!important}
+.unified-shell .sidebar nav a.active{background:linear-gradient(100deg,rgba(0,193,229,.2),rgba(43,101,221,.16))!important;border-color:rgba(52,207,239,.28);box-shadow:inset -3px 0 #39dff5,0 5px 18px rgba(0,0,0,.12)!important;color:#f1fcff!important}
+.unified-shell .sidebar nav a.active .nav-icon{background:rgba(0,203,236,.2);border-color:rgba(64,218,246,.28);color:#7cecff;box-shadow:0 0 14px rgba(0,200,240,.12)}
+.unified-shell .sidebar-profile{border-color:rgba(120,190,220,.14)!important}
+.unified-shell .sidebar-user{background:rgba(29,69,96,.25)!important;border-color:rgba(112,194,227,.12)!important}
+.unified-shell .sidebar-user b{color:#e9f7ff!important;font-size:10px}
+.unified-shell .sidebar-user small{color:#82a7c0!important}
+.unified-shell .sidebar-logout{border-radius:10px;color:#ff9da9!important}
+.unified-shell .unified-header{position:sticky;top:0;z-index:8;background:rgba(5,19,33,.84)!important;border-bottom:1px solid rgba(86,183,221,.16)!important;backdrop-filter:blur(20px) saturate(150%);box-shadow:0 8px 28px rgba(0,0,0,.14)}
+.unified-shell .header-context b{font-size:13px;letter-spacing:.1px}
+.unified-shell .header-profile{border-radius:999px;background:rgba(17,48,70,.75)!important;border-color:rgba(90,187,225,.2)!important;color:#dff6ff!important;padding:8px 13px}
+.unified-shell .theme-toggle,.unified-shell .notification-bell{border-radius:12px!important}
+.unified-shell .notification-panel{border:1px solid rgba(69,190,228,.22)!important;background:linear-gradient(150deg,#10283e,#091a2b)!important;box-shadow:0 24px 70px rgba(0,0,0,.4)!important;color:#e9f7ff}
+.unified-shell .notification-head,.unified-shell .notification-foot{border-color:rgba(125,190,220,.14)!important}
+.unified-shell .notification-head b,.unified-shell .notification-row b{color:#e9f7ff}
+.unified-shell .notification-head small,.unified-shell .notification-row span,.unified-shell .notification-empty{color:#8eabc1}
+.unified-shell .notification-row{border-color:rgba(125,190,220,.1)!important}
+.unified-shell .sidebar-collapse{border-radius:10px!important}
+.unified-shell .sidebar-backdrop{background:rgba(0,7,18,.7)!important;backdrop-filter:blur(5px)}
+.auth{background-color:#061525!important;background-image:radial-gradient(ellipse at 18% 15%,rgba(0,204,242,.22),transparent 34%),radial-gradient(ellipse at 88% 85%,rgba(105,89,255,.2),transparent 35%),linear-gradient(120deg,rgba(3,15,30,.88),rgba(5,28,51,.78)),url('/images/shushtar.jpg')!important;background-position:center!important;background-size:cover!important}
+.auth:before{inset:0!important;width:auto!important;height:auto!important;border:0!important;border-radius:0!important;background:linear-gradient(90deg,rgba(3,13,26,.34),rgba(3,15,31,.72)),repeating-linear-gradient(0deg,rgba(65,188,230,.035) 0 1px,transparent 1px 34px),repeating-linear-gradient(90deg,rgba(65,188,230,.035) 0 1px,transparent 1px 34px)!important;backdrop-filter:none!important}
+.auth:after{inset:0!important;background:radial-gradient(ellipse at 50% 45%,rgba(0,195,255,.16),transparent 58%)!important}
+.auth .card{width:min(470px,100%)!important;padding:clamp(24px,4vw,40px)!important;border-radius:25px!important;border-color:rgba(77,218,247,.34)!important;background:linear-gradient(145deg,rgba(8,29,49,.96),rgba(5,19,36,.96))!important;box-shadow:0 30px 100px rgba(0,0,0,.48),0 0 45px rgba(0,175,230,.12),inset 0 1px rgba(255,255,255,.07)!important}
+.auth .brand{font-size:19px!important;color:#f2fbff!important}
+.auth .brand:before{box-shadow:0 0 26px rgba(0,208,239,.34)!important}
+.auth h1{font-size:27px!important;letter-spacing:-.4px}
+.auth p{max-width:370px;color:#a5c1d7!important}
+.auth label{font-size:11px!important}
+.auth input{min-height:48px!important;border-radius:13px!important;background:rgba(2,13,27,.78)!important;border-color:rgba(102,193,229,.22)!important;transition:border-color .18s,box-shadow .18s}
+.auth input:focus{border-color:#43d8f4!important;box-shadow:0 0 0 3px rgba(36,205,239,.13),0 0 20px rgba(0,190,240,.08)!important}
+.auth .button{min-height:49px!important;border-radius:13px!important;font-weight:800!important;letter-spacing:.1px;box-shadow:0 10px 28px rgba(0,155,220,.24),0 0 18px rgba(0,192,235,.12)!important}
+.auth .button:disabled{opacity:.62;cursor:wait}
+.auth .error{line-height:1.9}
+@media(max-width:700px){
+ .unified-shell .sidebar{background:linear-gradient(180deg,#061321,#0b2033 55%,#071522)!important}
+ .unified-shell .unified-header{height:62px!important;padding-inline:11px!important;gap:7px!important}
+ .unified-shell .header-context b{font-size:10px}
+ .unified-shell .header-profile{max-width:105px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:7px 9px;font-size:8px}
+ .unified-shell .theme-toggle{padding:7px 9px!important}
+ .unified-shell .theme-toggle small{font-size:8px}
+ .auth{min-height:100svh!important;padding:14px!important}
+ .auth .card{padding:25px 20px!important;border-radius:20px!important}
+ .auth h1{font-size:23px!important}
+}
+@media(prefers-reduced-motion:reduce){.unified-shell .sidebar nav a{transition:none}}
