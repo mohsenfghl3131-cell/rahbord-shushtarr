@@ -10,7 +10,7 @@ export default function AreaDetailPage({params}:{params:Promise<{areaId:string}>
  useEffect(()=>{if(!areaId)return;let active=true;load(areaId).catch(e=>{if(active)setError(e.message||"خطا در دریافت اطلاعات")}).finally(()=>{if(active)setLoading(false)});return()=>{active=false}},[areaId]);
  const patch=(fn:(a:Area)=>Area)=>setArea(a=>a?fn({...a,bases:a.bases.map(b=>({...b,units:b.units.map(u=>({...u}))}))}):a);
  const setBase=(i:number,k:"title"|"leader_name",v:string)=>patch(a=>({...a,bases:a.bases.map((b,n)=>n===i?{...b,[k]:v}:b)}));
- const splitNames=(v:string)=>Array.from(new Set(v.split(/[،,؛;\\n]/).map(x=>x.trim()).filter(Boolean))).slice(0,20);
+ const splitNames=(v:string)=>Array.from(new Set(v.split(/[،,؛;\n]/).map(x=>x.trim()).filter(Boolean))).slice(0,20);
  const setBaseLeaders=(i:number,v:string)=>patch(a=>({...a,bases:a.bases.map((b,n)=>n===i?{...b,leader_names:splitNames(v),leader_name:splitNames(v)[0]||""}:b)}));
  const setUnit=(i:number,j:number,v:string)=>patch(a=>({...a,bases:a.bases.map((b,n)=>n!==i?b:{...b,units:b.units.map((u,k)=>k===j?{...u,leader_names:splitNames(v),leader_name:splitNames(v)[0]||""}:u)})}));
  const setPersonnel=(i:number,j:number,v:string)=>patch(a=>({...a,bases:a.bases.map((b,n)=>n!==i?b:{...b,personnel:(b.personnel||[]).map((p,k)=>k===j?v:p)})}));
