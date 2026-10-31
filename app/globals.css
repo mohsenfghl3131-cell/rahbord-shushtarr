@@ -2810,3 +2810,21 @@ html[data-theme="dark"] :where(button,input[type="button"],input[type="submit"],
 @media(prefers-reduced-motion:reduce){
   :where(button,input[type="button"],input[type="submit"],input[type="reset"],a.button,[role="button"],.small-btn,.toggle,.avatar-upload,.avatar-remove,.mission-export-button,.force-area-card){transition:none}
 }
+
+
+/* Glass notification center */
+.notification-wrap{position:relative;z-index:80;flex:0 0 auto}
+.notification-bell{position:relative!important;width:42px;height:42px;padding:0!important;border-radius:14px!important;display:grid;place-items:center;font-size:24px!important;color:#c9f5ff!important}
+.notification-bell.active{border-color:rgba(90,225,255,.9)!important;box-shadow:0 0 22px rgba(0,205,255,.28)!important}
+.notification-bell i{position:absolute;top:-6px;left:-6px;min-width:19px;height:19px;padding:0 4px;border-radius:20px;background:#ff5578;color:white;font-size:10px;font-style:normal;font-weight:800;display:grid;place-items:center;border:2px solid #10263b}
+.notification-panel{position:absolute;top:calc(100% + 12px);left:0;width:min(390px,calc(100vw - 28px));max-height:min(76vh,650px);display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(89,213,245,.35);border-radius:20px;background:rgba(7,24,41,.94);color:#e8f7ff;box-shadow:0 18px 60px rgba(0,0,0,.42),0 0 28px rgba(0,178,255,.12);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+.notification-head,.notification-foot{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid rgba(160,215,240,.12)}
+.notification-head b{display:block;font-size:14px}.notification-head small{display:block;color:#92b5ca;font-size:10px;margin-top:4px}.notification-head button{font-size:20px!important;width:30px;height:30px;padding:0!important}
+.notification-scroll{overflow:auto;padding:10px;min-height:80px}
+.notification-summary,.notification-row{display:flex;flex-direction:column;gap:5px;padding:11px 12px;margin-bottom:7px;border:1px solid rgba(117,199,226,.13);border-radius:13px;background:rgba(255,255,255,.045);color:#e8f7ff;text-decoration:none}
+.notification-summary{flex-direction:row;align-items:center;background:linear-gradient(120deg,rgba(0,186,220,.15),rgba(94,89,220,.12))}
+.notification-summary>span:nth-child(2){flex:1}.notification-icon{font-size:22px;color:#7ce8f2}.notification-summary b,.notification-row b{font-size:12px}.notification-summary small,.notification-row small{font-size:10px;color:#91b3c8}.notification-row span{font-size:11px;color:#c1d7e5;overflow-wrap:anywhere}.notification-section-title{padding:12px 5px 8px;color:#79dce9;font-size:11px;font-weight:800}.notification-empty{padding:18px 8px;text-align:center;color:#91adbf;font-size:11px}.notification-foot{border-top:1px solid rgba(160,215,240,.12);border-bottom:0}.notification-foot a{color:#83deed;font-size:10px;text-decoration:none}
+html[data-theme="light"] .notification-panel{background:rgba(246,252,255,.97);color:#17324a;border-color:rgba(24,145,178,.28)}
+html[data-theme="light"] .notification-row,html[data-theme="light"] .notification-summary{color:#17324a;background:rgba(20,130,160,.055);border-color:rgba(30,120,150,.15)}
+html[data-theme="light"] .notification-row span{color:#49677d}
+@media(max-width:600px){.notification-panel{position:fixed;top:76px;left:12px;right:12px;width:auto;max-height:calc(100vh - 100px)}.notification-bell{width:38px;height:38px}.notification-head,.notification-foot{padding:12px}}
