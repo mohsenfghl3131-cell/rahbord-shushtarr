@@ -22,6 +22,7 @@ const nav: readonly NavItem[] = [
   { label: "نمره‌دهی", href: "/scores", icon: "％", roles: ["main_admin", "deputy", "battalion_commander", "area_manager"] },
   { label: "ارزیابی عملکرد", href: "/performance", icon: "★", roles: ["main_admin", "deputy", "battalion_commander", "area_manager", "area_force"] },
   { label: "کاربران", href: "/users", icon: "♟", roles: ["main_admin", "deputy", "battalion_commander"] },
+  { label: "نیروها", href: "/forces", icon: "♟", roles: ["main_admin", "deputy", "battalion_commander", "area_manager"] },
   { label: "چارت سازمانی", href: "/organization", icon: "⌘", roles: ["main_admin", "deputy", "battalion_commander"] },
   { label: "حوزه‌ها", href: "/areas", icon: "⌖", roles: ["main_admin", "deputy", "battalion_commander", "area_manager"] },
   { label: "دسته‌بندی‌ها", href: "/categories", icon: "▦", roles: ["main_admin", "deputy", "battalion_commander"] },
@@ -48,6 +49,7 @@ const pageTitles: Record<string, string> = {
   "/scores": "نمره‌دهی و سهمیه مأموریت‌ها",
   "/performance": "ارزیابی و رتبه‌بندی عملکرد",
   "/users": "مدیریت کاربران",
+  "/forces": "نیروهای حوزه‌ها",
   "/organization": "چارت سازمانی",
   "/areas": "مدیریت حوزه‌ها",
   "/categories": "دسته‌بندی‌ها",
@@ -126,7 +128,7 @@ export default function AppShell({ children }: Props) {
     ["/dashboard", "/reports/new", "/reports/mine", "/reports"].includes(item.href)
   );
   const management = visible.filter((item) =>
-    ["/messages", "/scores", "/performance", "/users", "/organization", "/areas", "/categories", "/files", "/analytics", "/audit", "/settings"].includes(item.href)
+    ["/messages", "/scores", "/performance", "/users", "/forces", "/organization", "/areas", "/categories", "/files", "/analytics", "/audit", "/settings"].includes(item.href)
   );
 
   return (
