@@ -4219,7 +4219,15 @@ html:not([data-theme="dark"]) .main,
 html:not([data-theme="dark"]) .content,
 html:not([data-theme="dark"]) .shell{background:transparent!important}
 @media(max-width:700px){
-  html[data-theme="dark"] .app-shell{background:linear-gradient(180deg,#071729,#0a1b2d 55%,#071321)!important}
+  html[data-theme="dark"] .app-shell{
+    background:
+      linear-gradient(180deg,rgba(3,13,27,.66),rgba(3,13,27,.78)),
+      url("https://commons.wikimedia.org/wiki/Special:FilePath/Shushtar_Historical_Hydraulic_System_Darafsh_(55).jpg") center 42%/cover fixed no-repeat!important;
+  }
   html[data-theme="light"] .app-shell,
-  html:not([data-theme="dark"]) .app-shell{background:linear-gradient(180deg,#eaf2f8,#f3f7fb 55%,#eaf1f7)!important}
+  html:not([data-theme="dark"]) .app-shell{
+    background:
+      linear-gradient(180deg,rgba(231,243,251,.62),rgba(235,244,250,.76)),
+      url("https://commons.wikimedia.org/wiki/Special:FilePath/Shushtar_Historical_Hydraulic_System_Darafsh_(55).jpg") center 42%/cover fixed no-repeat!important;
+  }
 }
