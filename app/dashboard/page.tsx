@@ -235,19 +235,19 @@ export default async function Dashboard() {
             <div>
               <span className="panel-eyebrow">نقشه جغرافیایی شوشتر</span>
               <h2>نقشه شوشتر</h2>
-              <small>تصویر ثابت نقشه تاریخی شوشتر، منتشرشده در ویکی‌مدیا کامنز</small>
+              <small>نقشه خیابانی سیاه‌وسفید شوشتر</small>
             </div>
-            <a href="https://commons.wikimedia.org/wiki/File:ShushtarMAP.jpg" target="_blank" rel="noreferrer">منبع تصویر ↗</a>
+            <a href="https://mapmory.com/shushtar-iran-map-poster-shushtar-city-road-wall-art-print/" target="_blank" rel="noreferrer">منبع نقشه ↗</a>
           </div>
           <div className="shushtar-map-image-wrap">
             <img
               className="shushtar-map-image"
-              src="https://commons.wikimedia.org/wiki/Special:FilePath/ShushtarMAP.jpg"
-              alt="نقشه تاریخی شوشتر و سازه‌های آبی تاریخی"
+              src="https://images.mapmory.com/w2-white-black/d3a65522112480a974b2a3a1100255c8.jpg"
+              alt="نقشه خیابانی سیاه‌وسفید شهر شوشتر"
               loading="lazy"
             />
           </div>
-          <p className="shushtar-map-note">منبع: نقشه عمومی یونسکو، سال ۲۰۰۸؛ تصویر صرفاً جهت نمایش است و تعاملی نیست.</p>
+          <p className="shushtar-map-note">نقشه ثابت خیابان‌ها و بافت شهری شوشتر؛ بدون قابلیت حرکت یا بزرگ‌نمایی.</p>
         </section>
         <section className="stats">
           <Stat label="کل گزارش‌ها" value={total} tone="blue" note="تمام گزارش‌های فعال" />
