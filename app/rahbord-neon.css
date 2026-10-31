@@ -213,3 +213,24 @@ body:before{
  body:before{background-position:54% center}
  .unified-shell .sidebar{background:rgba(4,19,35,.94)!important}
 }
+
+
+/* Keep the Shushtar waterfall photos visible in LIGHT theme too */
+html[data-theme="light"] .unified-shell .content>.welcome-pro{
+ position:relative!important;isolation:isolate;overflow:hidden!important;
+ background-image:linear-gradient(100deg,rgba(3,20,36,.78),rgba(3,28,47,.48)),url("https://upload.wikimedia.org/wikipedia/commons/1/15/Shushtar_Historical_Hydraulic_System_2.jpg")!important;
+ background-size:cover!important;background-position:center 48%!important;
+ color:#f1fbff!important;border:1px solid rgba(93,204,235,.48)!important;
+}
+html[data-theme="light"] .unified-shell .content>.welcome-pro :is(h1,p,span,b,strong,small){color:#f1fbff!important}
+html[data-theme="light"] .unified-shell .content>.quran-card{
+ position:relative!important;isolation:isolate;overflow:hidden!important;
+ background-image:linear-gradient(100deg,rgba(3,20,36,.80),rgba(3,28,47,.55)),url("https://upload.wikimedia.org/wikipedia/commons/1/15/Shushtar_Historical_Hydraulic_System_2.jpg")!important;
+ background-size:cover!important;background-position:center 53%!important;
+ border:1px solid rgba(93,204,235,.48)!important;color:#f1fbff!important;
+}
+html[data-theme="light"] .unified-shell .content>.quran-card :is(span,blockquote,p,small,b,strong){color:#f1fbff!important}
+html[data-theme="light"] .unified-shell .content>.quran-card .quran-edit-btn{color:#16445d!important}
+html[data-theme="light"] body:before{
+ background:linear-gradient(180deg,rgba(4,20,35,.55),rgba(5,27,45,.58) 48%,rgba(4,18,32,.66)),url("https://upload.wikimedia.org/wikipedia/commons/1/15/Shushtar_Historical_Hydraulic_System_2.jpg") center center/cover no-repeat!important;
+}
