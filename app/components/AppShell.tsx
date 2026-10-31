@@ -25,6 +25,7 @@ const nav: readonly NavItem[] = [
   { label: "نیروها", href: "/forces", icon: "♟", roles: ["main_admin", "deputy", "battalion_commander", "area_manager"] },
   { label: "چارت سازمانی", href: "/organization", icon: "⌘", roles: ["main_admin", "deputy", "battalion_commander"] },
   { label: "حوزه‌ها", href: "/areas", icon: "⌖", roles: ["main_admin", "deputy", "battalion_commander", "area_manager"] },
+  { label: "پایگاه‌ها", href: "/bases", icon: "⌂", roles: [] },
   { label: "دسته‌بندی‌ها", href: "/categories", icon: "▦", roles: ["main_admin", "deputy", "battalion_commander"] },
   { label: "فایل‌ها", href: "/files", icon: "▣", roles: [] },
   { label: "گزارش‌های تحلیلی", href: "/analytics", icon: "⌁", roles: ["main_admin", "deputy", "battalion_commander", "area_manager"] },
@@ -53,6 +54,7 @@ const pageTitles: Record<string, string> = {
   "/forces": "نیروهای حوزه‌ها",
   "/organization": "چارت سازمانی",
   "/areas": "مدیریت حوزه‌ها",
+  "/bases": "پایگاه‌ها و چارت حوزه‌ها",
   "/categories": "دسته‌بندی‌ها",
   "/files": "فایل‌ها",
   "/analytics": "گزارش‌های تحلیلی",
@@ -150,7 +152,7 @@ export default function AppShell({ children }: Props) {
     ["/dashboard", "/reports/new", "/reports/mine", "/reports"].includes(item.href)
   );
   const management = visible.filter((item) =>
-    ["/messages", "/scores", "/performance", "/users", "/forces", "/organization", "/areas", "/categories", "/files", "/analytics", "/audit", "/daily-message", "/settings"].includes(item.href)
+    ["/messages", "/scores", "/performance", "/users", "/forces", "/organization", "/areas", "/bases", "/categories", "/files", "/analytics", "/audit", "/daily-message", "/settings"].includes(item.href)
   );
 
   return (
