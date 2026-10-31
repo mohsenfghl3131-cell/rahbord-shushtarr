@@ -209,7 +209,8 @@ export default async function Dashboard() {
               سامانه عملیاتی فعال
             </div>
             <h1>سامانه راهبرد شوشتر</h1>
-            <p>نمای کلی عملکرد، گزارش‌ها و فعالیت‌های سامانه در یک نگاه.</p>
+            <p>مرکز یکپارچه مدیریت، فرماندهی و پایش عملکرد حوزه‌ها و پایگاه‌ها</p>
+            <div className="welcome-motto"><span>✦</span> هم‌افزایی، مسئولیت‌پذیری و خدمت هوشمندانه <span>✦</span></div>
             <div className="welcome-meta">
               <span>
                 امروز {now.toLocaleDateString("fa-IR", {
