@@ -2400,3 +2400,26 @@ html[data-theme="dark"] .org-main-base-summary>b{color:#8cddff}
 .org-metna-person-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:10px}
 .org-metna-person-chip{display:block;margin-top:7px;padding:5px 9px;border-radius:8px;background:rgba(30,130,170,.1);overflow-wrap:anywhere}
 @media(max-width:640px){.org-metna-person-row{grid-template-columns:1fr}.org-metna-person-row .org-remove{justify-self:start}}
+
+
+/* Organization chart — slightly larger names for better readability */
+.org-node b{font-size:14px}
+.org-node strong{font-size:13px}
+.org-node small{font-size:9px}
+.org-section-node span{font-size:11px}
+.org-section-node b{font-size:10px}
+.org-metna-person-chip{font-size:11px}
+
+@media(max-width:850px){
+  .org-node b{font-size:13px}
+  .org-node strong{font-size:12px}
+  .org-section-node span{font-size:10px}
+  .org-section-node b{font-size:9px}
+  .org-metna-person-chip{font-size:10px}
+}
+@media(max-width:390px){
+  .org-node b{font-size:12px}
+  .org-node strong{font-size:11px}
+  .org-section-node span{font-size:10px}
+  .org-section-node b{font-size:9px}
+}
