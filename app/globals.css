@@ -2595,3 +2595,13 @@ html[data-theme="dark"] .dashboard-trend-delta.negative{color:#ff9eae;background
 .scores-page .mission-export-button{min-height:38px;padding:8px 14px;font-size:12px}
 .scores-page .mission-poster-button{background:rgba(74,160,190,.12);border:1px solid rgba(74,160,190,.35);color:var(--text-primary,#dceaf5)}
 @media(max-width:520px){.scores-page .mission-export-actions{display:grid;grid-template-columns:1fr 1fr}.scores-page .mission-export-button{width:100%;padding:8px 6px;font-size:11px}}
+
+/* Mailbox per-user delete and report leadership editor */
+.correspondence-row{display:flex;align-items:center;gap:10px}
+.correspondence-row-open{display:flex;align-items:center;gap:12px;flex:1;min-width:0;text-align:right;background:transparent;border:0;color:inherit;padding:10px;cursor:pointer}
+.correspondence-delete{flex:0 0 auto;align-self:center}
+.report-edit-modal{max-height:90vh;overflow:auto}
+.report-edit-modal label{display:block;margin:14px 0;color:var(--text-primary,#dceaf5)}
+.report-edit-modal input,.report-edit-modal textarea{display:block;width:100%;margin-top:7px;padding:12px;border-radius:10px;border:1px solid rgba(110,180,210,.3);background:rgba(7,25,43,.7);color:inherit;font:inherit}
+.report-edit-modal textarea{resize:vertical;line-height:1.9}
+@media(max-width:520px){.correspondence-row{gap:5px}.correspondence-row-open{gap:8px;padding:8px 4px}.correspondence-delete{font-size:11px;padding:6px 8px}}
