@@ -28,11 +28,12 @@ export async function getCurrentContext(){
     ? await admin.from("category_groups").select("id,name").in("id",groupIds).eq("is_active",true).order("sort_order")
     : {data:[]};
 
+  const activeGroupIds=(responsibleGroups??[]).map((x:{id:string})=>x.id);
   return{
     user:{id:userId},
     profile:profile as Profile,
     areaIds:(access??[]).map((x:{area_id:string})=>x.area_id),
-    responsibleGroupIds:groupIds,
+    responsibleGroupIds:activeGroupIds,
     responsibleGroups:responsibleGroups??[],
     canReview:reviewRoles.includes(profile.role as AppRole)||groupIds.length>0
   };
