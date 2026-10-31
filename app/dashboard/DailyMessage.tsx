@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 const DEFAULT_TITLE = "قدم‌های کوچک و پیوسته، مسیرهای بزرگ را می‌سازند.";
 const DEFAULT_BODY = "با دقت، همدلی و مسئولیت‌پذیری، هر روز می‌توانیم یک گام بهتر از دیروز باشیم.";
 const STORAGE_KEY = "rahbord-daily-message-v1";
-export default function DailyMessage() {
+export default function DailyMessage({ canEdit = false }: { canEdit?: boolean }) {
   const [title,setTitle] = useState(DEFAULT_TITLE);
   const [body,setBody] = useState(DEFAULT_BODY);
   const [editTitle,setEditTitle] = useState(DEFAULT_TITLE);
@@ -32,7 +32,7 @@ export default function DailyMessage() {
         <div className="daily-message-actions"><button type="button" onClick={save} disabled={!editTitle.trim()}>ذخیره پیام</button><button type="button" onClick={()=>setEditing(false)}>انصراف</button></div>
       </div> : <><h2>{title}</h2><p>{body}</p><div className="daily-message-signature"><i/> راهبرد شوشتر <span>•</span> اندیشه امروز</div></>}
     </div>
-    {!editing && <button className="daily-message-edit" type="button" onClick={startEdit}>✎ ویرایش پیام</button>}
+    {canEdit && !editing && <button className="daily-message-edit" type="button" onClick={startEdit} aria-label="ویرایش پیام روز" title="ویرایش پیام">✎</button>}
     <div className="daily-message-mark" aria-hidden="true">〝</div>
   </section>;
 }
