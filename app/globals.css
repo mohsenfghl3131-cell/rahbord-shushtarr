@@ -2631,3 +2631,77 @@ html[data-theme="dark"] .dashboard-trend-delta.negative{color:#ff9eae;background
 .force-person-number{font-size:12px;color:var(--muted)}
 @media(max-width:700px){.force-create-form{grid-template-columns:1fr}.force-create-form .form-step,.force-create-form button{grid-column:auto}.force-area-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.force-area-card{min-height:140px;padding:13px}.force-detail-panel{padding:14px}}
 @media(max-width:420px){.force-area-grid{grid-template-columns:1fr}}
+
+
+/* COMMAND CENTER — operational dashboard and unified dark shell */
+.command-status-strip{
+  display:grid;grid-template-columns:1fr;gap:12px;margin:15px 0 13px;
+  padding:15px 18px;border:1px solid rgba(66,174,218,.28);border-radius:17px;
+  background:linear-gradient(115deg,rgba(9,29,51,.96),rgba(8,47,72,.92));
+  box-shadow:inset 0 1px 0 rgba(180,235,255,.08),0 12px 28px rgba(0,18,38,.13);
+  color:#e5f6ff;
+}
+.command-status-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.command-status-heading>span{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:900;letter-spacing:.1px}
+.command-status-heading small{font-size:9px;color:#8eb5cf}
+.command-pulse{width:8px;height:8px;border-radius:50%;background:#19dfae;box-shadow:0 0 0 5px rgba(25,223,174,.11),0 0 15px rgba(25,223,174,.55)}
+.command-status-items{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.command-status-items>div{min-width:0;display:grid;grid-template-columns:30px minmax(0,1fr) auto;align-items:center;gap:8px;padding:10px 11px;border:1px solid rgba(105,190,224,.16);border-radius:12px;background:rgba(3,18,34,.43)}
+.command-status-icon{width:29px;height:29px;display:grid;place-items:center;border-radius:9px;background:rgba(0,194,239,.12);color:#56ddff;font-size:15px}
+.command-status-items>div>span:nth-child(2){font-size:9px;color:#a9c7dc;line-height:1.7}
+.command-status-items b{font-size:16px;color:#f0fbff;font-variant-numeric:tabular-nums}
+.content>.welcome-pro{border-color:rgba(61,187,235,.35);box-shadow:inset 0 1px 0 rgba(210,245,255,.12),0 18px 48px rgba(0,16,34,.22),0 0 32px rgba(0,180,255,.08)}
+.content>.welcome-pro h1{color:#f0faff;text-shadow:0 3px 22px rgba(0,195,255,.18)}
+.content>.welcome-pro p{color:#b3cfe1}
+.content>.welcome-pro .welcome-meta span{background:rgba(4,23,42,.48);border-color:rgba(115,197,231,.22);color:#a8c9df}
+.content>.stats .stat-card{min-height:128px}
+.dashboard-grid-pro .panel{border-color:rgba(80,175,218,.25)}
+.dashboard-grid-pro .panel-title{padding-bottom:12px}
+.dashboard-grid-pro .panel-eyebrow{color:#61c9ed}
+.dashboard-grid-pro .trend-chart{border-radius:13px;background:linear-gradient(180deg,rgba(0,173,226,.045),rgba(0,173,226,0));}
+.dashboard-grid-pro .trend-col b{color:#d8efff}
+.dashboard-grid-pro .trend-col small{color:#91b0c8}
+.dashboard-grid-pro .area-rank{border-bottom:1px solid rgba(105,170,205,.10)}
+.dashboard-grid-pro .rank-number{color:#58b9df}
+.dashboard-grid-pro .area-rank-main strong{color:#e5f5ff}
+.dashboard-grid-pro .area-rank-main small{color:#8daec6}
+.dashboard-grid-pro .area-rank-main>b{color:#52d7ff}
+.dashboard-grid-pro .area-bar{background:#122c43}
+.dashboard-grid-pro .recent-row{border-color:rgba(105,170,205,.13)}
+.dashboard-grid-pro .recent-row b{color:#e5f5ff}
+.dashboard-grid-pro .recent-row small,.dashboard-grid-pro .recent-row time{color:#8daec6}
+.dashboard-grid-pro .recent-row:hover{background:rgba(0,190,255,.06)}
+.dashboard-grid-pro .report-status-total span,.dashboard-grid-pro .report-status-total small{color:#91b0c8}
+.dashboard-grid-pro .report-status-total strong{color:#f0faff}
+.dashboard-grid-pro .report-status-rate>div strong{color:#e9f8ff}
+.dashboard-grid-pro .report-status-rate>div small{color:#8eabc4}
+html[data-theme="dark"] .command-status-strip{border-color:rgba(66,174,218,.28)}
+html[data-theme="dark"] .unified-shell .sidebar{background:linear-gradient(180deg,#071729,#061221 75%,#050f1d);border-left-color:#17415d;box-shadow:-18px 0 48px rgba(0,0,0,.28)}
+html[data-theme="dark"] .unified-shell .brand{border-color:#173b56}
+html[data-theme="dark"] .unified-shell .brand-copy b{color:#e5f6ff}
+html[data-theme="dark"] .unified-shell .brand-copy small{color:#82a8c2}
+html[data-theme="dark"] .unified-shell .sidebar-section>span{color:#6f9ab8}
+html[data-theme="dark"] .unified-shell .sidebar nav a{color:#a4c0d5}
+html[data-theme="dark"] .unified-shell .sidebar nav a .nav-icon{background:#102b43;color:#80cde9;border:1px solid rgba(90,177,215,.12)}
+html[data-theme="dark"] .unified-shell .sidebar nav a:hover{background:rgba(0,183,232,.10);border-color:rgba(62,184,226,.2);color:#72e2ff}
+html[data-theme="dark"] .unified-shell .sidebar nav a.active{background:linear-gradient(100deg,rgba(0,190,255,.18),rgba(26,95,165,.16));border-color:rgba(53,185,231,.28);color:#70e4ff;box-shadow:inset -3px 0 0 #00d9ff}
+html[data-theme="dark"] .unified-shell .sidebar nav a.active .nav-icon{background:linear-gradient(145deg,#087cbd,#05a9c8);color:#fff}
+html[data-theme="dark"] .unified-shell .sidebar-profile{border-color:#173b56}
+html[data-theme="dark"] .unified-shell .sidebar-user{background:rgba(10,34,55,.7);border-color:#1a4562;color:#e5f6ff}
+html[data-theme="dark"] .unified-shell .sidebar-user small{color:#8daec6}
+html[data-theme="dark"] .unified-shell .sidebar-logout{background:rgba(108,30,49,.32)!important;border-color:rgba(255,112,133,.22)!important;color:#ffb5c0!important}
+html[data-theme="dark"] .unified-shell .unified-header{background:rgba(5,17,31,.94);border-color:#173b56;box-shadow:0 8px 26px rgba(0,0,0,.2)}
+html[data-theme="dark"] .unified-shell .header-context span{color:#7298b4}
+html[data-theme="dark"] .unified-shell .header-context b{color:#e5f6ff}
+html[data-theme="dark"] .unified-shell .theme-toggle,html[data-theme="dark"] .unified-shell .header-profile{background:#0d2942;border-color:#1b4c6b;color:#c4e5f6}
+@media(max-width:900px){.command-status-items{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){
+ .command-status-strip{padding:12px;gap:10px}
+ .command-status-heading{align-items:flex-start;flex-direction:column}
+ .command-status-items{grid-template-columns:1fr 1fr;gap:7px}
+ .command-status-items>div{grid-template-columns:25px minmax(0,1fr);gap:7px;padding:9px}
+ .command-status-items b{grid-column:2;font-size:15px}
+ .command-status-icon{width:25px;height:25px}
+ .command-status-items>div>span:nth-child(2){font-size:8px}
+}
+@media(max-width:360px){.command-status-items{grid-template-columns:1fr}}
