@@ -3740,3 +3740,69 @@ html[data-theme="dark"] .daily-message-card{
  body:has(.bases-hub) .bases-print-document.bases-print-single>header{display:none!important}
  body:has(.bases-hub) .bases-print-document.bases-print-single .bases-print-area{break-before:auto!important;page-break-before:auto!important;margin-top:0!important}
 }
+
+
+/* GLOBAL NEON BUTTON SYSTEM — consistent cyan/blue/violet glow */
+:where(.unified-shell,body) :is(
+  button,input[type="button"],input[type="submit"],input[type="reset"],
+  a.button,a.btn,a.small-btn,[role="button"],
+  .small-btn,.org-add,.org-remove,.mission-export-button,.force-area-card,
+  .theme-toggle,.notification-bell,.sidebar-collapse,.menu-toggle,
+  .header-back-button,.sidebar-logout,.avatar-upload,.avatar-remove,.toggle,
+  .bases-pdf-button,.bases-open-button
+){
+  position:relative;
+  isolation:isolate;
+  color:var(--text-primary,#eaf8ff)!important;
+  background:linear-gradient(115deg,rgba(0,225,255,.22),rgba(42,112,255,.24) 52%,rgba(157,72,255,.22))!important;
+  border:1px solid rgba(68,225,255,.82)!important;
+  box-shadow:
+    0 0 5px rgba(0,220,255,.58),
+    0 0 13px rgba(0,190,255,.38),
+    0 0 25px rgba(74,89,255,.2),
+    inset 0 0 9px rgba(0,220,255,.13),
+    inset 0 1px 0 rgba(255,255,255,.42)!important;
+  text-shadow:0 0 7px rgba(74,224,255,.42);
+  -webkit-backdrop-filter:blur(14px) saturate(170%)!important;
+  backdrop-filter:blur(14px) saturate(170%)!important;
+  transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease,filter .2s ease!important;
+}
+:where(.unified-shell,body) :is(
+  button,input[type="button"],input[type="submit"],input[type="reset"],
+  a.button,a.btn,a.small-btn,[role="button"],
+  .small-btn,.org-add,.org-remove,.mission-export-button,.force-area-card,
+  .theme-toggle,.notification-bell,.sidebar-collapse,.menu-toggle,
+  .header-back-button,.sidebar-logout,.avatar-upload,.avatar-remove,.toggle,
+  .bases-pdf-button,.bases-open-button
+):not(:disabled):not([disabled]):not([aria-disabled="true"]):hover{
+  transform:translateY(-2px) scale(1.015)!important;
+  filter:brightness(1.2)!important;
+  border-color:rgba(105,246,255,.98)!important;
+  box-shadow:
+    0 0 8px rgba(0,238,255,.82),
+    0 0 20px rgba(0,205,255,.62),
+    0 0 38px rgba(100,93,255,.42),
+    inset 0 0 13px rgba(0,230,255,.2),
+    inset 0 1px 0 rgba(255,255,255,.65)!important;
+}
+:where(.unified-shell,body) :is(
+  button,input[type="button"],input[type="submit"],input[type="reset"],
+  a.button,a.btn,a.small-btn,[role="button"],.org-add,.org-remove
+):focus-visible{
+  outline:2px solid #45f3ff!important;
+  outline-offset:3px!important;
+  box-shadow:0 0 0 5px rgba(0,220,255,.18),0 0 22px rgba(0,220,255,.65)!important;
+}
+:where(.unified-shell,body) :is(button,input[type="button"],input[type="submit"],input[type="reset"]):disabled,
+:where(.unified-shell,body) :is([aria-disabled="true"]){
+  opacity:.42!important;
+  filter:saturate(.55);
+  box-shadow:0 0 5px rgba(0,190,255,.12)!important;
+  transform:none!important;
+}
+@media(prefers-reduced-motion:reduce){
+  :where(.unified-shell,body) :is(button,input[type="button"],input[type="submit"],input[type="reset"],a.button,a.btn,a.small-btn,[role="button"]){transition:none!important}
+}
+@media print{
+  :where(.unified-shell,body) :is(button,input[type="button"],input[type="submit"],input[type="reset"],a.button,a.btn,[role="button"]){box-shadow:none!important;text-shadow:none!important;filter:none!important}
+}
