@@ -34,6 +34,7 @@ export default function Categories(){
  }
  async function assign(groupId:string,userIds:string[]){
   setE("");setBusy(groupId);
+  setGroups(old=>old.map(g=>g.id===groupId?{...g,responsible_user_ids:userIds}:g));
   const r=await fetch("/api/category-groups/"+groupId,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({responsible_user_ids:userIds})});
   const d=await r.json();if(!r.ok){setE(d.message||"تعیین مسئولان انجام نشد.");setBusy("");return}
   setGroups(old=>old.map(g=>g.id===groupId?{...g,responsible_user_ids:d.responsible_user_ids}:g));
