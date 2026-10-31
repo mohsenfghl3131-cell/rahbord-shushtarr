@@ -230,6 +230,26 @@ export default async function Dashboard() {
           </div>
         </section>
         <DailyMessage canEdit={["main_admin", "deputy", "battalion_commander"].includes(ctx.profile.role)} />
+        <section className="panel shushtar-map-panel">
+          <div className="panel-title">
+            <div>
+              <span className="panel-eyebrow">نقشه جغرافیایی شهر</span>
+              <h2>نقشه واقعی شوشتر</h2>
+              <small>نمای خیابان‌ها و محدوده شهری بر پایه نقشه OpenStreetMap</small>
+            </div>
+            <a href="https://www.openstreetmap.org/?mlat=32.0497&mlon=48.8484#map=13/32.0497/48.8484" target="_blank" rel="noreferrer">نمایش در نقشه کامل ↗</a>
+          </div>
+          <div className="shushtar-map-frame">
+            <iframe
+              title="نقشه واقعی شهر شوشتر"
+              src="https://www.openstreetmap.org/export/embed.html?bbox=48.7900%2C32.0050%2C48.9100%2C32.0950&layer=mapnik&marker=32.0497%2C48.8484"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+            <div className="shushtar-map-caption"><span><i /> مرکز شهر شوشتر</span><span>نقشه تعاملی · قابلیت بزرگ‌نمایی و جابه‌جایی</span></div>
+          </div>
+          <p className="shushtar-map-note">این نقشه، نقشه جغرافیایی واقعی شهر است؛ مرزبندی حوزه‌ها تا زمان تأیید محدوده‌های رسمی روی آن نمایش داده نمی‌شود.</p>
+        </section>
         <section className="stats">
           <Stat label="کل گزارش‌ها" value={total} tone="blue" note="تمام گزارش‌های فعال" />
           <Stat label="گزارش‌های امروز" value={todayCount} tone="cyan" note="ثبت‌شده از ابتدای امروز" />
