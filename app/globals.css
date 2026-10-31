@@ -2589,3 +2589,9 @@ html[data-theme="dark"] .dashboard-trend-delta.negative{color:#ff9eae;background
   .org-section-node span{font-size:12.5px!important}
   .org-section-node b{font-size:12.5px!important}
 }
+
+/* Per-mission export actions */
+.scores-page .mission-export-actions{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0 8px;align-items:center}
+.scores-page .mission-export-button{min-height:38px;padding:8px 14px;font-size:12px}
+.scores-page .mission-poster-button{background:rgba(74,160,190,.12);border:1px solid rgba(74,160,190,.35);color:var(--text-primary,#dceaf5)}
+@media(max-width:520px){.scores-page .mission-export-actions{display:grid;grid-template-columns:1fr 1fr}.scores-page .mission-export-button{width:100%;padding:8px 6px;font-size:11px}}
