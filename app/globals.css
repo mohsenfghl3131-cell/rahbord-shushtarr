@@ -2984,6 +2984,29 @@ html[data-theme="dark"] .daily-message-editor textarea{background:rgba(4,20,36,.
 @media(max-width:760px){.daily-message-edit{top:10px;left:10px;padding:6px 8px!important;font-size:9px!important}.daily-message-content{padding-top:22px}}
 
 
+/* Match daily message height exactly to the dashboard hero; prevent content from stretching the card */
+.daily-message-card{
+  height:190px!important;
+  min-height:190px!important;
+  max-height:190px!important;
+  box-sizing:border-box!important;
+  padding:22px 30px!important;
+}
+.daily-message-content{min-width:0!important;max-height:100%;overflow:hidden}
+.daily-message-content h2{margin:6px 0!important}
+.daily-message-content p{line-height:1.7!important}
+.daily-message-signature{margin-top:8px!important}
+.daily-message-mark{font-size:88px!important}
+@media(max-width:760px){
+  .daily-message-card{
+    height:190px!important;
+    min-height:190px!important;
+    max-height:190px!important;
+    padding:16px 14px!important;
+  }
+  .daily-message-content{padding-top:20px!important}
+  .daily-message-mark{font-size:64px!important}
+}
 /* Match the daily message card to the dashboard hero: same dimensions and Shushtar waterfall backdrop */
 .daily-message-card{
   box-sizing:border-box!important;
