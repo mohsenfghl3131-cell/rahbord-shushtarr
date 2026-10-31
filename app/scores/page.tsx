@@ -125,16 +125,16 @@ export default function ScoresPage(){
    <div className="panel-title"><div><span className="panel-eyebrow">MISSION DETAILS</span><h2>{selectedMission.title}</h2><p>{selectedMission.category_groups?.name} · هدف هر حوزه: {selectedMission.target_value} {selectedMission.unit}</p></div><span className={isClosed(selectedMission)?"deadline-closed":"deadline-open"}>{isClosed(selectedMission)?"بسته شده":"فعال"}</span></div>
    <div className="mission-detail-grid">{data.areas.map((area:any)=>{
     const score:any=scoreMap.get(selectedMission.id+"_"+area.id),actual=Number(score?.actual_value??0),percent=pct(actual,Number(selectedMission.target_value));
-    return <div className="area-score" key={area.id}><b>{area.name}</b><span>{actual.toLocaleString("fa-IR")} از {Number(selectedMission.target_value).toLocaleString("fa-IR")} {selectedMission.unit}</span><strong>{percent.toLocaleString("fa-IR")}٪</strong><div className="score-progress"><span style={{width:Math.min(percent,100)+"%"}}/></div><small>{score?"ثبت شده":"هنوز ثبت نشده"}</small></div>;
+    return <div className="area-score" key={area.id}><b>{area.name}</b><span>{actual.toLocaleString("fa-IR")} از {Number(selectedMission.target_value).toLocaleString("fa-IR")} {selectedMission.unit}</span><strong>{percent.toLocaleString("fa-IR")}٪</strong><div className="score-progress"><span style={{width:Math.min(percent,100)+"%"}}/></div><small>{score?"ثبت شده":"هنوز ثبت نشده"}</small>{canEnter&&!isClosed(selectedMission)&&<button type="button" className="button mission-export-button" onClick={()=>{setEntry({mission_id:selectedMission.id,area_id:area.id,actual_value:score?String(score.actual_value):"",notes:score?.notes??""});document.querySelector(".score-entry-form")?.scrollIntoView({behavior:"smooth",block:"center"});}}> {score?"ویرایش نمره":"ثبت نمره"} </button>}</div>;
    })}</div>
    {canEnter&&!isClosed(selectedMission)&&<form className="score-entry-form" onSubmit={saveScore}>
-    <h3>ثبت یا ویرایش عملکرد حوزه</h3>
+    <h3>{entry.area_id&&data.areas.find((a:any)=>a.id===entry.area_id)?(data.areas.find((a:any)=>a.id===entry.area_id).name+" · "):""}ثبت یا ویرایش عملکرد حوزه</h3>
     <div className="score-form-grid">
      <label>حوزه<select required value={entry.area_id} onChange={e=>setEntry({...entry,mission_id:selectedMission.id,area_id:e.target.value})}><option value="">انتخاب حوزه</option>{data.areas.map((a:any)=><option key={a.id} value={a.id}>{a.name}</option>)}</select></label>
      <label>مقدار انجام‌شده<input type="number" min="0" step="any" required value={entry.actual_value} onChange={e=>setEntry({...entry,mission_id:selectedMission.id,actual_value:e.target.value})}/></label>
      <label>توضیحات<input value={entry.notes} onChange={e=>setEntry({...entry,mission_id:selectedMission.id,notes:e.target.value})}/></label>
     </div>
-    <button className="button neon-button" disabled={saving==="score"||!entry.area_id||!entry.actual_value}>{saving==="score"?"در حال ثبت…":"ثبت عملکرد"}</button>
+    <button className="button neon-button" disabled={saving==="score"||!entry.area_id||!entry.actual_value}>{saving==="score"?"در حال ثبت…":(scoreMap.has(selectedMission.id+"_"+entry.area_id)?"ذخیره ویرایش نمره":"ثبت نمره حوزه")}</button>
    </form>}
    {isClosed(selectedMission)&&<p className="score-closed-note">مهلت این مأموریت به پایان رسیده و ثبت نمره حوزه‌ها قفل شده است.</p>}
   </section>}
