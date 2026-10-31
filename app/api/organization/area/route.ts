@@ -28,7 +28,7 @@ export async function GET(req:Request){
  const found=await resolveArea(ctx,id,setting.value);
  if(found.forbidden)return NextResponse.json({message:"به این حوزه دسترسی ندارید."},{status:403});
  if(!found.area)return NextResponse.json({message:"حوزه موردنظر در چارت پیدا نشد."},{status:404});
- return NextResponse.json({area:shape(found.area),can_edit:ctx.profile.role==="area_manager",can_manage_personnel:personnelRoles.includes(ctx.profile.role),db_area_id:found.dbArea?.id||id});
+ return NextResponse.json({area:shape(found.area),can_edit:personnelRoles.includes(ctx.profile.role),can_manage_personnel:personnelRoles.includes(ctx.profile.role),db_area_id:found.dbArea?.id||id});
 }
 export async function PATCH(req:Request){
  const ctx=await getCurrentContext();if(!ctx)return NextResponse.json({message:"ابتدا وارد سامانه شوید."},{status:401});
@@ -51,7 +51,8 @@ export async function PATCH(req:Request){
  if(index<0)return NextResponse.json({message:"این حوزه در چارت پیدا نشد."},{status:404});
  const old=shape(chart.areas[index]);const input=body.area||{};const valid=(v:any)=>typeof v==="string"&&v.length<=100;
  let next:any;
- if(ctx.profile.role==="area_manager"){
+ if(personnelRoles.includes(ctx.profile.role)){
+   if(ctx.profile.role==="area_manager"&&!ctx.areaIds.includes(id))return NextResponse.json({message:"اجازه ویرایش این حوزه را ندارید."},{status:403});
    if(!valid(input.leader_name)||!valid(input.successor_name)||!Array.isArray(input.bases)||input.bases.length>100)return NextResponse.json({message:"اطلاعات حوزه معتبر نیست."},{status:400});
    const bases=[];for(let i=0;i<input.bases.length;i++){const b=input.bases[i];if(!valid(b.title)||!valid(b.leader_name)||!Array.isArray(b.units)||b.units.length!==units.length||b.units.some((u:any)=>!units.includes(u.title)||!valid(u.leader_name))||!Array.isArray(b.personnel||[])||(b.personnel||[]).length>200||(b.personnel||[]).some((p:any)=>!valid(p)))return NextResponse.json({message:"اطلاعات پایگاه، نیروها یا مسئولان زیرمجموعه معتبر نیست."},{status:400});bases.push({id:String(b.id||old.bases[i]?.id||"base"+i).slice(0,40),title:b.title.trim(),leader_name:b.leader_name.trim(),personnel:(b.personnel||[]).map((p:string)=>p.trim()).filter(Boolean),units:units.map(title=>({title,leader_name:b.units.find((u:any)=>u.title===title).leader_name.trim()}))});}
    next={...old,leader_name:input.leader_name.trim(),successor_name:input.successor_name.trim(),bases};
