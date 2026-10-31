@@ -8,15 +8,26 @@ const db=()=>createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.SUPA
 export async function GET(){
   const c=await getCurrentContext();
   if(!c)return NextResponse.json({message:"احراز هویت لازم است."},{status:401});
-  const{data,error}=await db().from("category_groups")
+  const admin=db();
+  const{data,error}=await admin.from("category_groups")
     .select("id,name,sort_order,is_active,responsible_user_id,responsible:profiles!category_groups_responsible_user_id_fkey(id,user_code,display_name)")
     .eq("is_active",true).order("sort_order");
   if(error)return NextResponse.json({message:"خطا در دریافت بخش‌ها."},{status:500});
+  const {data:assignments}=await admin.from("category_group_responsibles")
+    .select("group_id,user_id,profiles(id,user_code,display_name)")
+    .in("group_id",(data??[]).map((g:any)=>g.id));
+  const groups=(data??[]).map((g:any)=>{
+    const links=(assignments??[]).filter((x:any)=>x.group_id===g.id);
+    const legacy=Array.isArray(g.responsible)?g.responsible[0]:g.responsible;
+    const ids=links.length?links.map((x:any)=>x.user_id):(g.responsible_user_id?[g.responsible_user_id]:[]);
+    const users=links.length?links.map((x:any)=>Array.isArray(x.profiles)?x.profiles[0]:x.profiles).filter(Boolean):(legacy?[legacy]:[]);
+    return {...g,responsible_user_ids:ids,responsible_users:users};
+  });
   const{data:categories,error:categoryError}=await db().from("categories")
     .select("id,name,group_id,sort_order,is_active,category_groups(id,name,responsible_user_id)")
     .order("sort_order");
   if(categoryError)return NextResponse.json({message:"خطا در دریافت دسته‌بندی‌ها."},{status:500});
-  return NextResponse.json({groups:data??[],categories:categories??[]});
+  return NextResponse.json({groups,categories:categories??[]});
 }
 
 export async function POST(req:Request){
