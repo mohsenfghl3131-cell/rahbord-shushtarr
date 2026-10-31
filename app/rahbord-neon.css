@@ -164,3 +164,52 @@ html[data-theme="dark"] .content>.quran-card .quran-edit-btn{align-self:start;wh
  html[data-theme="dark"] .content>.quran-card .quran-copy small{font-size:7px!important}
  html[data-theme="dark"] .content>.quran-card .quran-edit-btn{font-size:9px!important;padding:7px 9px!important}
 }
+
+
+/* Fixed Shushtar waterfalls background across the entire authenticated app */
+html,body{min-height:100%;background:transparent!important}
+body{position:relative;isolation:isolate;background-color:#06182a!important}
+body:before{
+ content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+ background:
+  linear-gradient(180deg,rgba(3,15,29,.78),rgba(4,22,39,.72) 48%,rgba(3,14,28,.84)),
+  url("https://upload.wikimedia.org/wikipedia/commons/1/15/Shushtar_Historical_Hydraulic_System_2.jpg") center center/cover no-repeat;
+ transform:translateZ(0);
+}
+.app-shell.unified-shell,.unified-shell .main{
+ background:transparent!important;
+}
+.unified-shell .sidebar{
+ background:linear-gradient(180deg,rgba(5,22,39,.78),rgba(4,18,34,.86))!important;
+ -webkit-backdrop-filter:blur(22px) saturate(145%)!important;
+ backdrop-filter:blur(22px) saturate(145%)!important;
+ border-color:rgba(105,220,255,.22)!important;
+}
+.unified-shell .header{
+ background:rgba(5,23,41,.62)!important;
+ -webkit-backdrop-filter:blur(20px) saturate(150%)!important;
+ backdrop-filter:blur(20px) saturate(150%)!important;
+ border-color:rgba(105,220,255,.22)!important;
+}
+.unified-shell .content>.panel,
+.unified-shell .content>.stats .stat-card,
+.unified-shell .content>.quran-card,
+.unified-shell .content>.dashboard-shortcuts a,
+.unified-shell .content>.welcome-pro{
+ background-color:rgba(5,24,43,.60)!important;
+ -webkit-backdrop-filter:blur(18px) saturate(145%)!important;
+ backdrop-filter:blur(18px) saturate(145%)!important;
+ border-color:rgba(108,220,255,.27)!important;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 12px 34px rgba(0,8,22,.26),0 0 20px rgba(0,170,230,.08)!important;
+}
+.unified-shell .content>.welcome-pro{
+ background-image:linear-gradient(100deg,rgba(3,15,29,.78),rgba(3,18,34,.55))!important;
+}
+.unified-shell .content>.quran-card{
+ background-image:linear-gradient(100deg,rgba(3,15,29,.70),rgba(3,18,34,.52)),url("https://upload.wikimedia.org/wikipedia/commons/1/15/Shushtar_Historical_Hydraulic_System_2.jpg")!important;
+ background-size:cover!important;background-position:center 53%!important;
+}
+@media(max-width:700px){
+ body:before{background-position:54% center}
+ .unified-shell .sidebar{background:rgba(4,19,35,.94)!important}
+}
