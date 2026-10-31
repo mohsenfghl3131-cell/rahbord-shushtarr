@@ -3661,3 +3661,63 @@ html[data-theme="dark"] .daily-message-card{
 @media print{
   :where([role="button"],a.btn,a.button,a.small-btn,[class~="btn"],[class*="btn-"],[class*="-btn"]){display:none!important}
 }
+
+
+/* FINAL OVERRIDE: consistent glass finish for every real and custom button */
+:where(.unified-shell,body) :is(
+  button,
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"],
+  a.button,
+  a.btn,
+  a.small-btn,
+  [role="button"],
+  .small-btn,
+  .small-btn *,
+  .org-add,
+  .org-remove,
+  .mission-export-button,
+  .force-area-card,
+  .theme-toggle,
+  .notification-bell,
+  .sidebar-collapse,
+  .menu-toggle,
+  .header-back-button,
+  .sidebar-logout,
+  .avatar-upload,
+  .avatar-remove,
+  .toggle
+){
+  -webkit-backdrop-filter:blur(16px) saturate(165%)!important;
+  backdrop-filter:blur(16px) saturate(165%)!important;
+  background-image:linear-gradient(135deg,rgba(69,190,255,.22),rgba(125,112,255,.17))!important;
+  border-color:rgba(111,199,255,.48)!important;
+  box-shadow:0 8px 24px rgba(20,116,185,.13),inset 0 1px 0 rgba(255,255,255,.48)!important;
+  transition:background .2s ease,border-color .2s ease,box-shadow .2s ease,transform .2s ease!important;
+}
+:where(.unified-shell,body) :is(
+  button,input[type="button"],input[type="submit"],input[type="reset"],
+  a.button,a.btn,a.small-btn,[role="button"],.org-add,.org-remove,
+  .mission-export-button,.force-area-card,.theme-toggle,.notification-bell,
+  .sidebar-collapse,.menu-toggle,.header-back-button,.sidebar-logout,
+  .avatar-upload,.avatar-remove,.toggle
+):not(:disabled):not([disabled]):not([aria-disabled="true"]):hover{
+  background-image:linear-gradient(135deg,rgba(69,190,255,.34),rgba(125,112,255,.29))!important;
+  border-color:rgba(105,207,255,.82)!important;
+  box-shadow:0 11px 29px rgba(20,126,194,.2),inset 0 1px 0 rgba(255,255,255,.7)!important;
+  transform:translateY(-1px);
+}
+:where(.unified-shell,body) :is(button,input[type="button"],input[type="submit"],input[type="reset"],a.button,a.btn,[role="button"]):focus-visible{
+  outline:2px solid rgba(61,190,255,.8)!important;
+  outline-offset:3px!important;
+}
+:where(.unified-shell,body) :is(button,input[type="button"],input[type="submit"],input[type="reset"]):disabled,
+:where(.unified-shell,body) :is([aria-disabled="true"]){
+  opacity:.5;
+  cursor:not-allowed;
+  transform:none;
+}
+@media(prefers-reduced-motion:reduce){
+  :where(.unified-shell,body) :is(button,input[type="button"],input[type="submit"],input[type="reset"],a.button,a.btn,[role="button"],.org-add,.org-remove,.mission-export-button,.force-area-card,.theme-toggle,.notification-bell,.sidebar-collapse,.menu-toggle,.header-back-button,.sidebar-logout,.avatar-upload,.avatar-remove,.toggle){transition:none!important}
+}
