@@ -218,6 +218,8 @@ export default async function Dashboard() {
           </div>
         </section>
 
+        <QuranCard />
+
         <section className="stats">
           <Stat label="کل گزارش‌ها" value={total} tone="blue" note="تمام گزارش‌های فعال" />
           <Stat label="گزارش‌های امروز" value={todayCount} tone="cyan" note="ثبت‌شده از ابتدای امروز" />
@@ -341,7 +343,6 @@ export default async function Dashboard() {
             </div>
           </section>
         </section>
-        <QuranCard />
         <section className="quick-actions dashboard-shortcuts">
           <Link href="/users"><span>♟</span><div><b>مدیریت کاربران</b><small>افزودن و مدیریت کاربران</small></div></Link>
           <Link href="/areas"><span>⌖</span><div><b>مدیریت حوزه‌ها</b><small>تعریف و ویرایش حوزه‌ها</small></div></Link>
