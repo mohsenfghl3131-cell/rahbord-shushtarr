@@ -188,6 +188,17 @@ export default async function Dashboard() {
     .slice(0, 5);
   const maxCategory = Math.max(1, ...categories.map((item) => item.count));
 
+  const isSenior = ["main_admin", "deputy", "battalion_commander"].includes(ctx.profile.role);
+  const canManageAreas = ["main_admin", "deputy", "battalion_commander", "area_manager"].includes(ctx.profile.role);
+  const shortcuts = [
+    { href: "/reports/new", icon: "＋", title: "ثبت گزارش جدید", detail: "ارسال گزارش تازه" },
+    { href: "/reports/mine", icon: "▤", title: "گزارش‌های من", detail: "پیگیری گزارش‌های ثبت‌شده" },
+    { href: "/messages", icon: "✉", title: "صندوق نامه‌ها", detail: "مشاهده و ارسال نامه" },
+    ...(isSenior ? [{ href: "/users", icon: "♟", title: "مدیریت کاربران", detail: "افزودن و مدیریت کاربران" }] : []),
+    ...(canManageAreas ? [{ href: "/areas", icon: "⌖", title: "مدیریت حوزه‌ها", detail: "تعریف و ویرایش حوزه‌ها" }] : []),
+    ...(isSenior ? [{ href: "/categories", icon: "▦", title: "دسته‌بندی‌ها", detail: "مدیریت گروه‌ها و دسته‌بندی‌ها" }, { href: "/settings", icon: "⚙", title: "تنظیمات سیستم", detail: "پیکربندی سامانه" }] : []),
+  ];
+
   return (
     <AppShell>
       <main className="content">
@@ -341,11 +352,8 @@ export default async function Dashboard() {
             </div>
           </section>
         </section>
-        <section className="quick-actions dashboard-shortcuts">
-          <Link href="/users"><span>♟</span><div><b>مدیریت کاربران</b><small>افزودن و مدیریت کاربران</small></div></Link>
-          <Link href="/areas"><span>⌖</span><div><b>مدیریت حوزه‌ها</b><small>تعریف و ویرایش حوزه‌ها</small></div></Link>
-          <Link href="/categories"><span>▦</span><div><b>مدیریت دسته‌بندی‌ها</b><small>مدیریت گروه‌ها و دسته‌بندی‌ها</small></div></Link>
-          <Link href="/settings"><span>⚙</span><div><b>تنظیمات سیستم</b><small>پیکربندی و تنظیمات سامانه</small></div></Link>
+        <section className="quick-actions dashboard-shortcuts" aria-label="دسترسی‌های سریع">
+          {shortcuts.map((item) => <Link href={item.href} key={item.href}><span>{item.icon}</span><div><b>{item.title}</b><small>{item.detail}</small></div><i>←</i></Link>)}
         </section>
       </main>
     </AppShell>
