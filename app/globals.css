@@ -4189,3 +4189,9 @@ html[data-theme="dark"] .org-subunit-view b{color:#d6edfa}
 .shushtar-map-caption i{width:8px;height:8px;border-radius:50%;background:#08aeea;box-shadow:0 0 0 4px rgba(8,174,234,.14)}
 .shushtar-map-note{margin:9px 2px 0;color:#8798aa;font-size:9px;line-height:1.9}
 @media(max-width:700px){.shushtar-map-panel{padding:14px}.shushtar-map-frame iframe{height:310px}.shushtar-map-panel .panel-title>a{font-size:9px}}
+
+
+/* Static Shushtar map image */
+.shushtar-map-image-wrap{width:100%;overflow:hidden;border:1px solid #cfe0ef;border-radius:13px;background:#f3f7fb;display:flex;justify-content:center;align-items:center}
+.shushtar-map-image{display:block;width:100%;height:auto;max-height:560px;object-fit:contain}
+@media(max-width:700px){.shushtar-map-image-wrap{border-radius:10px}.shushtar-map-image{max-height:390px}}
