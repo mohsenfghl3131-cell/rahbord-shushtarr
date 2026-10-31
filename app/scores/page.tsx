@@ -130,7 +130,7 @@ export default function ScoresPage(){
    {canEnter&&!isClosed(selectedMission)&&<form className="score-entry-form" onSubmit={saveScore}>
     <h3>{entry.area_id&&data.areas.find((a:any)=>a.id===entry.area_id)?(data.areas.find((a:any)=>a.id===entry.area_id).name+" · "):""}ثبت یا ویرایش عملکرد حوزه</h3>
     <div className="score-form-grid">
-     <label>حوزه<select required value={entry.area_id} onChange={e=>setEntry({...entry,mission_id:selectedMission.id,area_id:e.target.value})}><option value="">انتخاب حوزه</option>{data.areas.map((a:any)=><option key={a.id} value={a.id}>{a.name}</option>)}</select></label>
+     <label>حوزه<select required value={entry.area_id} onChange={e=>{const areaId=e.target.value,existing:any=scoreMap.get(selectedMission.id+"_"+areaId);setEntry({mission_id:selectedMission.id,area_id:areaId,actual_value:existing?String(existing.actual_value):"",notes:existing?.notes??""});}}><option value="">انتخاب حوزه</option>{data.areas.map((a:any)=><option key={a.id} value={a.id}>{a.name}</option>)}</select></label>
      <label>مقدار انجام‌شده<input type="number" min="0" step="any" required value={entry.actual_value} onChange={e=>setEntry({...entry,mission_id:selectedMission.id,actual_value:e.target.value})}/></label>
      <label>توضیحات<input value={entry.notes} onChange={e=>setEntry({...entry,mission_id:selectedMission.id,notes:e.target.value})}/></label>
     </div>
