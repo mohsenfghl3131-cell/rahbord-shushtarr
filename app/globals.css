@@ -2878,3 +2878,22 @@ html[data-theme="light"] .unified-shell :is(button,input[type="button"],input[ty
  .unified-shell .header-back-button{width:34px!important;min-width:34px!important;height:36px!important;min-height:36px!important;padding:0!important;font-size:17px!important}
  .unified-shell .header-back-button span{display:none!important}
 }
+
+
+/* Desktop notification center: escape header/sidebar clipping and stay on-screen */
+@media(min-width:761px){
+ .unified-shell .notification-wrap{position:static!important;z-index:120!important}
+ .unified-shell .notification-panel{
+  position:fixed!important;
+  top:78px!important;
+  left:16px!important;
+  right:auto!important;
+  width:min(390px,calc(100vw - 320px))!important;
+  max-width:calc(100vw - 32px)!important;
+  max-height:calc(100dvh - 96px)!important;
+  z-index:120!important;
+  overflow:hidden!important;
+ }
+ .unified-shell .notification-scroll{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;overscroll-behavior:contain}
+ .unified-shell .notification-head,.unified-shell .notification-foot{flex:0 0 auto!important}
+}
