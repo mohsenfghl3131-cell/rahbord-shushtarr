@@ -3089,3 +3089,14 @@ html[data-theme="dark"] .daily-message-content p{color:#d5effb!important}
  .daily-message-signature{font-size:8px!important;margin-top:5px!important}
  .daily-message-edit{top:9px!important;left:9px!important;width:28px!important;min-width:28px!important;height:28px!important;min-height:28px!important}
 }
+
+
+/* Use the exact same Shushtar photo, overlay and crop as the dashboard hero */
+.daily-message-card{
+ background:linear-gradient(90deg,rgba(6,27,49,.08) 0%,rgba(5,26,50,.88) 100%),url('https://upload.wikimedia.org/wikipedia/commons/1/15/Shushtar_Historical_Hydraulic_System_2.jpg') center 48%/cover no-repeat!important;
+ border:0!important;
+ border-radius:10px!important;
+ box-shadow:0 8px 22px rgba(20,53,90,.12)!important;
+}
+.daily-message-card:before,.daily-message-card:after{display:none!important}
+@media(max-width:700px){.daily-message-card{border-radius:10px!important;background-position:center 48%!important}}
