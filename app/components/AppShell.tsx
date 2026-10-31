@@ -65,6 +65,8 @@ export default function AppShell({ children }: Props) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
+  const [notificationData, setNotificationData] = useState<any>({unread_count:0,unread_messages:[],activity:[],active_missions:[]});
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
 
   useEffect(() => {
     const saved = window.localStorage.getItem("rahbord-theme");
