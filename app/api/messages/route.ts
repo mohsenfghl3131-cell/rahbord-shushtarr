@@ -8,7 +8,7 @@ const canWrite=(c:Awaited<ReturnType<typeof getCurrentContext>>)=>!!c;
 export async function GET(){
  const c=await getCurrentContext();if(!c)return NextResponse.json({message:"احراز هویت لازم است."},{status:401});
  const admin=db();
- const{data,error}=await admin.from("messages").select("id,sender_id,recipient_id,parent_id,subject,body,read_at,created_at,sender:profiles!messages_sender_id_fkey(id,user_code,display_name,role),recipient:profiles!messages_recipient_id_fkey(id,user_code,display_name,role)").or("sender_id.eq."+c.user.id+",recipient_id.eq."+c.user.id).order("created_at",{ascending:false}).limit(100);
+ const{data,error}=await admin.from("messages").select("id,sender_id,recipient_id,parent_id,subject,body,read_at,created_at,sender:profiles!messages_sender_id_fkey(id,user_code,display_name,role),recipient:profiles!messages_recipient_id_fkey(id,user_code,display_name,role)").or("and(sender_id.eq."+c.user.id+",sender_deleted_at.is.null),and(recipient_id.eq."+c.user.id+",recipient_deleted_at.is.null)").order("created_at",{ascending:false}).limit(100);
  if(error)return NextResponse.json({message:"خطا در دریافت پیام‌ها."},{status:500});
  const {data:groupRows}=await admin.from("category_groups").select("responsible_user_id").not("responsible_user_id","is",null);
  const targetIds=Array.from(new Set((groupRows??[]).map((g:any)=>g.responsible_user_id).filter(Boolean)));
