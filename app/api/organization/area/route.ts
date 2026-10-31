@@ -32,7 +32,7 @@ export async function GET(req:Request){
 }
 export async function PATCH(req:Request){
  const ctx=await getCurrentContext();if(!ctx)return NextResponse.json({message:"ابتدا وارد سامانه شوید."},{status:401});
- if(!personnelRoles.includes(ctx.profile.role))return NextResponse.json({message:"شما مجاز به ویرایش نیروهای پایگاه نیستید."},{status:403});
+ if(!personnelRoles.includes(ctx.profile.role))return NextResponse.json({message:"شما مجاز به مدیریت چارت پایگاه‌ها نیستید."},{status:403});
  let body:any;try{body=await req.json()}catch{return NextResponse.json({message:"اطلاعات نامعتبر است."},{status:400})}
  const id=String(body.areaId||"");
  const d=db();const {data:setting,error:settingError}=await d.from("site_settings").select("value").eq("key","organization_chart").maybeSingle();
@@ -65,6 +65,6 @@ export async function PATCH(req:Request){
  const areas=[...chart.areas];areas[index]=next;
  const {error}=await d.from("site_settings").update({value:{...chart,version:3,areas},updated_by:ctx.user.id,updated_at:new Date().toISOString()}).eq("key","organization_chart");
  if(error)return NextResponse.json({message:"ذخیره اطلاعات انجام نشد."},{status:500});
- await d.from("audit_logs").insert({user_id:ctx.user.id,action:ctx.profile.role==="area_manager"?"organization.area.update":"organization.base_personnel.update",entity_type:"organization_chart",metadata:{area_id:dbArea?.id||id,area_name:next.title}});
+ await d.from("audit_logs").insert({user_id:ctx.user.id,action:"organization.area.update",entity_type:"organization_chart",metadata:{area_id:dbArea?.id||id,area_name:next.title}});
  return NextResponse.json({ok:true,area:shape(next)});
 }
