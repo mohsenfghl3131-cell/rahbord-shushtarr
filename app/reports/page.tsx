@@ -15,7 +15,11 @@ export default function Reports(){
   const [reason,setReason]=useState("");
   const [rejectId,setRejectId]=useState("");
   const [reviewAllowed,setReviewAllowed]=useState(false);
-  const [mainAdmin,setMainAdmin]=useState(false);
+  const [canManageReports,setCanManageReports]=useState(false);
+  const [editingReport,setEditingReport]=useState<any>(null);
+  const [editTitle,setEditTitle]=useState("");
+  const [editBody,setEditBody]=useState("");
+  const [savingEdit,setSavingEdit]=useState(false);
   const [deletingId,setDeletingId]=useState("");
 
   async function loadReports(){
@@ -24,7 +28,7 @@ export default function Reports(){
     if(!reportsResponse.ok)throw new Error(r.message||"دریافت گزارش‌ها انجام نشد.");
     setReports(r.reports??[]);
     setReviewAllowed(Boolean(m.can_review));
-    setMainAdmin(m.profile?.role==="main_admin");
+    setCanManageReports(["main_admin","deputy","battalion_commander"].includes(m.profile?.role));
   }
 
   useEffect(()=>{
@@ -40,17 +44,27 @@ export default function Reports(){
     setRejectId("");setReason("");setMessage("وضعیت گزارش با موفقیت ثبت شد.");
   }
 
-  async function deleteTestReport(report:any){
-    if(!mainAdmin||!isTestReport(report.title)||deletingId)return;
-    const accepted=window.confirm("گزارش تست «"+report.title+"» حذف شود؟ این گزارش از فهرست خارج می‌شود و مدیر سامانه می‌تواند از طریق پشتیبانی پایگاه داده آن را بازیابی کند.");
-    if(!accepted)return;
+  function startEdit(report:any){setEditingReport(report);setEditTitle(report.title);setEditBody(report.body||"");setMessage("");}
+  async function saveEdit(){
+    if(!editingReport||savingEdit)return;
+    if(!editTitle.trim()||!editBody.trim()){setMessage("عنوان و متن گزارش الزامی است.");return;}
+    setSavingEdit(true);setMessage("");
+    try{
+      const response=await fetch("/api/reports/"+editingReport.id,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({title:editTitle,body:editBody})});
+      const data=await response.json();if(!response.ok)throw new Error(data.message||"ویرایش گزارش انجام نشد.");
+      setReports(xs=>xs.map(x=>x.id===editingReport.id?{...x,title:editTitle.trim(),body:editBody.trim()}:x));
+      setEditingReport(null);setMessage("گزارش با موفقیت ویرایش شد.");
+    }catch(e:any){setMessage(e.message||"ویرایش گزارش انجام نشد.");}
+    finally{setSavingEdit(false);}
+  }
+  async function deleteReport(report:any){
+    if(!canManageReports||deletingId)return;
+    if(!window.confirm("گزارش «"+report.title+"» حذف شود؟ گزارش به‌صورت نرم‌افزاری از فهرست خارج می‌شود."))return;
     setDeletingId(report.id);setMessage("");
     try{
       const response=await fetch("/api/reports/"+report.id,{method:"DELETE"});
-      const data=await response.json();
-      if(!response.ok)throw new Error(data.message||"حذف گزارش انجام نشد.");
-      setReports(xs=>xs.filter(x=>x.id!==report.id));
-      setMessage("گزارش تست با موفقیت از فهرست حذف شد.");
+      const data=await response.json();if(!response.ok)throw new Error(data.message||"حذف گزارش انجام نشد.");
+      setReports(xs=>xs.filter(x=>x.id!==report.id));setMessage("گزارش با موفقیت حذف شد.");
     }catch(e:any){setMessage(e.message||"حذف گزارش انجام نشد.");}
     finally{setDeletingId("");}
   }
@@ -73,10 +87,11 @@ export default function Reports(){
               {rejectId===r.id&&<input className="reason-input" placeholder="دلیل رد" value={reason} onChange={e=>setReason(e.target.value)}/>}
               <div><button className="small-btn green-btn" onClick={()=>review(r.id,"approved")}>تأیید</button><button className="small-btn red-btn" onClick={()=>{if(rejectId===r.id)review(r.id,"rejected");else setRejectId(r.id)}}>رد</button></div>
             </div>}
-            {mainAdmin&&isTestReport(r.title)&&<button className="small-btn red-btn" disabled={deletingId===r.id} onClick={()=>deleteTestReport(r)}>{deletingId===r.id?"در حال حذف…":"حذف گزارش تست"}</button>}
+            {canManageReports&&<div className="action-stack"><button className="small-btn" onClick={()=>startEdit(r)}>ویرایش گزارش</button><button className="small-btn red-btn" disabled={deletingId===r.id} onClick={()=>deleteReport(r)}>{deletingId===r.id?"در حال حذف…":"حذف گزارش"}</button></div>}
           </div>
         </article>)}
       </div>}
     </section>
+    {editingReport&&<div className="correspondence-modal" onClick={()=>setEditingReport(null)}><article className="report-edit-modal" onClick={e=>e.stopPropagation()}><button className="modal-close" type="button" onClick={()=>setEditingReport(null)}>×</button><span className="panel-eyebrow">مدیریت گزارش</span><h2>ویرایش گزارش</h2><label>عنوان گزارش<input value={editTitle} onChange={e=>setEditTitle(e.target.value)} maxLength={18000}/></label><label>متن گزارش<textarea rows={12} value={editBody} onChange={e=>setEditBody(e.target.value)}/></label><div className="action-stack"><button className="button neon-button" disabled={savingEdit||!editTitle.trim()||!editBody.trim()} onClick={saveEdit}>{savingEdit?"در حال ذخیره…":"ذخیره تغییرات"}</button><button type="button" className="button ghost-button" onClick={()=>setEditingReport(null)}>انصراف</button></div></article></div>}
   </main></AppShell>;
 }
