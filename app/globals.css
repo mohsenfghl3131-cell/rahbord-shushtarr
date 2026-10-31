@@ -2828,3 +2828,50 @@ html[data-theme="light"] .notification-panel{background:rgba(246,252,255,.97);co
 html[data-theme="light"] .notification-row,html[data-theme="light"] .notification-summary{color:#17324a;background:rgba(20,130,160,.055);border-color:rgba(30,120,150,.15)}
 html[data-theme="light"] .notification-row span{color:#49677d}
 @media(max-width:600px){.notification-panel{position:fixed;top:76px;left:12px;right:12px;width:auto;max-height:calc(100vh - 100px)}.notification-bell{width:38px;height:38px}.notification-head,.notification-foot{padding:12px}}
+
+
+/* FINAL GLOBAL NEON GLASS BUTTON OVERRIDE — all app controls */
+.unified-shell :is(button,input[type="button"],input[type="submit"],input[type="reset"],a.button,[role="button"],.small-btn,.toggle,.avatar-upload,.avatar-remove,.mission-export-button,.notification-bell,.theme-toggle,.sidebar-collapse,.menu-toggle,.sidebar-logout){
+  -webkit-backdrop-filter:blur(16px) saturate(165%)!important;
+  backdrop-filter:blur(16px) saturate(165%)!important;
+  background:linear-gradient(135deg,rgba(255,255,255,.20),rgba(0,211,255,.17)),rgba(10,39,65,.78)!important;
+  border:1px solid rgba(126,224,255,.48)!important;
+  border-radius:12px;
+  color:#eafaff!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 7px 22px rgba(0,10,30,.18),0 0 13px rgba(0,207,255,.12)!important;
+  text-shadow:0 0 10px rgba(72,218,255,.22);
+  transition:all .2s ease!important;
+}
+.unified-shell :is(button,input[type="button"],input[type="submit"],input[type="reset"],a.button,[role="button"],.small-btn,.toggle,.avatar-upload,.avatar-remove,.mission-export-button,.notification-bell,.theme-toggle,.sidebar-collapse,.menu-toggle,.sidebar-logout):not(:disabled):not([aria-disabled="true"]):hover{
+  background:linear-gradient(135deg,rgba(255,255,255,.30),rgba(0,225,255,.28)),rgba(12,57,88,.88)!important;
+  border-color:rgba(154,238,255,.82)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.34),0 10px 28px rgba(0,10,30,.24),0 0 22px rgba(0,211,255,.28)!important;
+  transform:translateY(-2px);
+  filter:brightness(1.08);
+}
+.unified-shell :is(button,input[type="button"],input[type="submit"],input[type="reset"],a.button,[role="button"],.small-btn,.toggle,.avatar-upload,.avatar-remove,.mission-export-button,.notification-bell,.theme-toggle,.sidebar-collapse,.menu-toggle,.sidebar-logout):active{
+  transform:translateY(0) scale(.98);
+}
+.unified-shell :is(button,input[type="button"],input[type="submit"],input[type="reset"],a.button,[role="button"]):focus-visible{
+  outline:2px solid #42dcff!important;outline-offset:3px;
+}
+.unified-shell :is(button,input[type="button"],input[type="submit"],input[type="reset"],a.button,[role="button"]):disabled,
+.unified-shell :is(button,input[type="button"],input[type="submit"],input[type="reset"],a.button,[role="button"])[aria-disabled="true"]{
+  opacity:.48;filter:saturate(.55);transform:none!important;cursor:not-allowed;
+}
+/* Danger buttons remain red glass, never lose their warning color */
+.unified-shell :is(.sidebar-logout,.logout-button,.btn-danger,.button-danger,.red-btn,.avatar-remove,[data-variant="danger"]){
+  background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,65,95,.22)),rgba(76,22,39,.82)!important;
+  border-color:rgba(255,145,165,.58)!important;color:#ffeaf0!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 7px 22px rgba(75,0,20,.2),0 0 14px rgba(255,70,105,.14)!important;
+}
+html[data-theme="light"] .unified-shell :is(button,input[type="button"],input[type="submit"],input[type="reset"],a.button,[role="button"],.small-btn,.toggle,.avatar-upload,.avatar-remove,.mission-export-button,.notification-bell,.theme-toggle,.sidebar-collapse,.menu-toggle){
+  background:linear-gradient(135deg,rgba(255,255,255,.78),rgba(91,211,244,.20)),rgba(225,246,255,.72)!important;
+  border-color:rgba(42,158,197,.42)!important;color:#16445d!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 7px 20px rgba(30,100,140,.12),0 0 12px rgba(0,174,220,.10)!important;
+  text-shadow:none;
+}
+html[data-theme="light"] .unified-shell :is(.sidebar-logout,.logout-button,.btn-danger,.button-danger,.red-btn,.avatar-remove,[data-variant="danger"]){
+  background:linear-gradient(135deg,rgba(255,255,255,.75),rgba(255,110,130,.18)),rgba(255,235,239,.82)!important;
+  border-color:rgba(220,80,105,.42)!important;color:#9c2941!important;
+}
