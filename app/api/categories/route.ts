@@ -13,9 +13,10 @@ export async function GET(){
     .select("id,name,sort_order,is_active,responsible_user_id,responsible:profiles!category_groups_responsible_user_id_fkey(id,user_code,display_name)")
     .eq("is_active",true).order("sort_order");
   if(error)return NextResponse.json({message:"خطا در دریافت بخش‌ها."},{status:500});
-  const {data:assignments}=await admin.from("category_group_responsibles")
-    .select("group_id,user_id,profiles(id,user_code,display_name)")
-    .in("group_id",(data??[]).map((g:any)=>g.id));
+  const groupIds=(data??[]).map((g:any)=>g.id);
+  const {data:assignments}=groupIds.length
+    ? await admin.from("category_group_responsibles").select("group_id,user_id,profiles(id,user_code,display_name)").in("group_id",groupIds)
+    : {data:[]};
   const groups=(data??[]).map((g:any)=>{
     const links=(assignments??[]).filter((x:any)=>x.group_id===g.id);
     const legacy=Array.isArray(g.responsible)?g.responsible[0]:g.responsible;
