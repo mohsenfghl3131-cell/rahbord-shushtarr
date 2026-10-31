@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 type Props = { children: ReactNode };
@@ -61,6 +61,7 @@ const pageTitles: Record<string, string> = {
 
 export default function AppShell({ children }: Props) {
   const pathname = usePathname();
+  const router = useRouter();
   const [me, setMe] = useState<any>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
@@ -215,6 +216,8 @@ export default function AppShell({ children }: Props) {
             <span />
             <span />
           </button>
+
+          {pathname !== "/dashboard" && <button type="button" className="header-back-button" aria-label="بازگشت به صفحه قبل" title="بازگشت" onClick={() => { if (window.history.length > 1) router.back(); else router.push("/dashboard"); }}>← <span>بازگشت</span></button>}
 
           <div className="header-context">
             <span>سامانه مدیریت و پایش</span>
