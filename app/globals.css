@@ -3730,3 +3730,13 @@ html[data-theme="dark"] .daily-message-card{
 .org-area-base-responsibility>span{font-size:.78rem;line-height:1.65;color:var(--text-secondary,#9bb4ca)}
 .org-area-open-hint{display:inline-flex;margin-top:10px}
 @media print{.org-area-base-responsibilities{display:none!important}}
+
+
+/* Per-area PDF export controls */
+.bases-area-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+.bases-pdf-button{cursor:pointer}
+@media print{
+ body:has(.bases-hub) .bases-print-area.bases-print-hidden{display:none!important}
+ body:has(.bases-hub) .bases-print-document.bases-print-single>header{display:none!important}
+ body:has(.bases-hub) .bases-print-document.bases-print-single .bases-print-area{break-before:auto!important;page-break-before:auto!important;margin-top:0!important}
+}
