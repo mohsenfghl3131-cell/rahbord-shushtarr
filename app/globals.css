@@ -3586,3 +3586,41 @@ html[data-theme="dark"] .daily-message-card{
  body:has(.org-poster) .org-print-base small{font-size:8pt!important;line-height:1.6!important}
  body:has(.org-poster) .org-poster-foot{display:none!important}
 }
+
+/* Unified glass treatment for every interactive button across the portal */
+:root{
+  --glass-button-bg:linear-gradient(135deg,rgba(37,157,235,.22),rgba(104,112,255,.16));
+  --glass-button-border:rgba(75,177,235,.48);
+  --glass-button-shadow:0 8px 22px rgba(25,105,170,.14),inset 0 1px 0 rgba(255,255,255,.62);
+}
+:where(button,input[type="button"],input[type="submit"],input[type="reset"],.button,.small-btn,.toggle,.avatar-upload,.avatar-remove){
+  -webkit-backdrop-filter:blur(14px) saturate(155%);
+  backdrop-filter:blur(14px) saturate(155%);
+  background:var(--glass-button-bg)!important;
+  border:1px solid var(--glass-button-border)!important;
+  border-radius:11px;
+  box-shadow:var(--glass-button-shadow)!important;
+  transition:background .2s ease,border-color .2s ease,box-shadow .2s ease,transform .2s ease,color .2s ease;
+}
+:where(button,input[type="button"],input[type="submit"],input[type="reset"],.button,.small-btn,.toggle,.avatar-upload,.avatar-remove):not(:disabled):not([disabled]):hover{
+  background:linear-gradient(135deg,rgba(42,177,242,.34),rgba(112,105,255,.27))!important;
+  border-color:rgba(65,183,244,.78)!important;
+  box-shadow:0 10px 26px rgba(20,126,194,.2),inset 0 1px 0 rgba(255,255,255,.78)!important;
+  transform:translateY(-1px);
+}
+:where(button,input[type="button"],input[type="submit"],input[type="reset"],.button,.small-btn,.toggle,.avatar-upload,.avatar-remove):focus-visible{
+  outline:2px solid rgba(8,174,234,.72);
+  outline-offset:3px;
+}
+:where(button,input[type="button"],input[type="submit"],input[type="reset"],.button,.small-btn,.toggle,.avatar-upload,.avatar-remove):disabled,
+:where(button,input[type="button"],input[type="submit"],input[type="reset"],.button,.small-btn,.toggle,.avatar-upload,.avatar-remove)[disabled]{
+  opacity:.52;
+  cursor:not-allowed;
+  transform:none;
+}
+@media(prefers-reduced-motion:reduce){
+  :where(button,input[type="button"],input[type="submit"],input[type="reset"],.button,.small-btn,.toggle,.avatar-upload,.avatar-remove){transition:none}
+}
+@media print{
+  :where(button,input[type="button"],input[type="submit"],input[type="reset"],.button,.small-btn,.toggle,.avatar-upload,.avatar-remove){display:none!important}
+}
