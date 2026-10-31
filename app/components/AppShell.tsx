@@ -43,7 +43,7 @@ const roles: Record<string, string> = {
 };
 
 const pageTitles: Record<string, string> = {
-  "/dashboard": "داشبورد فرماندهی",
+  "/dashboard": "سامانه راهبرد شوشتر",
   "/reports/new": "ثبت گزارش جدید",
   "/reports/mine": "گزارش‌های من",
   "/reports": "همه گزارش‌ها",
