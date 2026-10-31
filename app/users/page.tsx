@@ -8,7 +8,7 @@ const roleLabels: Record<string, string> = {
   main_admin: "مدیر اصلی",
   deputy: "معاون",
   battalion_commander: "فرمانده گردان",
-  area_manager: "مدیر حوزه",
+  area_manager: "مسئول مجازی حوزه",
   area_force: "نیروی حوزه",
 };
 const roleOptions = Object.entries(roleLabels);
