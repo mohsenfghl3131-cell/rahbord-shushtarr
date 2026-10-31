@@ -4195,3 +4195,31 @@ html[data-theme="dark"] .org-subunit-view b{color:#d6edfa}
 .shushtar-map-image-wrap{width:100%;overflow:hidden;border:1px solid #cfe0ef;border-radius:13px;background:#f3f7fb;display:flex;justify-content:center;align-items:center}
 .shushtar-map-image{display:block;width:100%;height:auto;max-height:560px;object-fit:contain}
 @media(max-width:700px){.shushtar-map-image-wrap{border-radius:10px}.shushtar-map-image{max-height:390px}}
+
+
+/* Shushtar waterfall background — separate desktop/mobile art direction */
+html[data-theme="dark"] .app-shell{
+  background:
+    linear-gradient(180deg,rgba(3,13,27,.62),rgba(3,13,27,.72)),
+    url("https://commons.wikimedia.org/wiki/Special:FilePath/Shushtar_ancient_hydraulic_system.jpg") center 46%/cover fixed no-repeat!important;
+}
+html[data-theme="light"] .app-shell,
+html:not([data-theme="dark"]) .app-shell{
+  background:
+    linear-gradient(180deg,rgba(231,243,251,.64),rgba(235,244,250,.76)),
+    url("https://commons.wikimedia.org/wiki/Special:FilePath/Shushtar_ancient_hydraulic_system.jpg") center 46%/cover fixed no-repeat!important;
+}
+html[data-theme="dark"] .main,
+html[data-theme="dark"] .content,
+html[data-theme="dark"] .shell,
+html[data-theme="light"] .main,
+html[data-theme="light"] .content,
+html[data-theme="light"] .shell,
+html:not([data-theme="dark"]) .main,
+html:not([data-theme="dark"]) .content,
+html:not([data-theme="dark"]) .shell{background:transparent!important}
+@media(max-width:700px){
+  html[data-theme="dark"] .app-shell{background:linear-gradient(180deg,#071729,#0a1b2d 55%,#071321)!important}
+  html[data-theme="light"] .app-shell,
+  html:not([data-theme="dark"]) .app-shell{background:linear-gradient(180deg,#eaf2f8,#f3f7fb 55%,#eaf1f7)!important}
+}
