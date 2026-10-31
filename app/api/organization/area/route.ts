@@ -5,8 +5,8 @@ const db=()=>createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.SUPA
 const units=["رصد","تولید محتوا","شبکه انتشار","خبر رسانه، رسانه محله","آموزش و مقابله با شایعه"];
 const personnelRoles=["main_admin","deputy","battalion_commander","area_manager"];
 const viewRoles=[...personnelRoles,"area_force"];
-const norm=(s:string)=>s.replace(/^حوزه\s*/,"").replace(/\s+/g," ").replace(/\s*\([^)]*\)/g,"").trim();
-function locate(chart:any,name:string){let a=(chart.areas||[]).find((x:any)=>norm(x.title)===norm(name));if(!a&&name.includes("امام صادق"))a=(chart.areas||[]).find((x:any)=>x.title.includes("امام جعفر صادق"));return a;}
+const norm=(value:string)=>String(value||"").normalize("NFKC").replace(/[يى]/g,"ی").replace(/ك/g,"ک").replace(/[\u064B-\u065F\u0670]/g,"").replace(/[\u200c\u200f\u200e]/g,"").replace(/\([^)]*\)/g," ").replace(/^حوزه\s*/,"").replace(/[،,؛;:_-]/g," ").replace(/\s+/g," ").trim();
+function locate(chart:any,name:string){const target=norm(name);const list=Array.isArray(chart.areas)?chart.areas:[];let a=list.find((x:any)=>norm(x.title)===target);if(a)return a;const compact=(s:string)=>norm(s).replace(/\s/g,"");a=list.find((x:any)=>compact(x.title)===compact(name));if(a)return a;if(target.includes("امام صادق"))return list.find((x:any)=>norm(x.title).includes("امام جعفر صادق"));return list.find((x:any)=>{const candidate=norm(x.title);return candidate.includes(target)||target.includes(candidate)});}
 function shape(a:any){return {...a,successor_name:typeof a.successor_name==="string"?a.successor_name:"",bases:(Array.isArray(a.bases)?a.bases:[]).map((b:any)=>({...b,leader_name:b.leader_name||"",personnel:Array.isArray(b.personnel)?b.personnel.filter((p:any)=>typeof p==="string").slice(0,200):[],units:units.map(title=>{const old=(b.units||[]).find((u:any)=>u.title===title);return {title,leader_name:old?.leader_name||""}})}))};}
 async function resolveArea(ctx:any,id:string,chart:any){
  const privileged=["main_admin","deputy","battalion_commander"].includes(ctx.profile.role);
