@@ -2982,3 +2982,56 @@ html[data-theme="dark"] .daily-message-edit{background:rgba(255,255,255,.10)!imp
 html[data-theme="dark"] .daily-message-editor label{color:#a8e9ff}
 html[data-theme="dark"] .daily-message-editor textarea{background:rgba(4,20,36,.72);color:#effaff;border-color:rgba(91,205,245,.35)}
 @media(max-width:760px){.daily-message-edit{top:10px;left:10px;padding:6px 8px!important;font-size:9px!important}.daily-message-content{padding-top:22px}}
+
+
+/* Match the daily message card to the dashboard hero: same dimensions and Shushtar waterfall backdrop */
+.daily-message-card{
+  box-sizing:border-box!important;
+  min-height:190px!important;
+  height:auto!important;
+  margin:16px 0 18px!important;
+  padding:30px 34px!important;
+  border-radius:22px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  overflow:hidden!important;
+  isolation:isolate!important;
+  background-image:linear-gradient(100deg,rgba(3,15,29,.78),rgba(3,18,34,.55)),url("https://upload.wikimedia.org/wikipedia/commons/1/15/Shushtar_Historical_Hydraulic_System_2.jpg")!important;
+  background-size:cover!important;
+  background-position:center 48%!important;
+  border:1px solid rgba(93,204,235,.48)!important;
+  box-shadow:0 0 0 1px rgba(0,207,255,.10),0 12px 34px rgba(0,8,22,.24),inset 0 1px rgba(255,255,255,.16)!important;
+}
+.daily-message-card:before{
+  z-index:0!important;
+  background:linear-gradient(90deg,rgba(3,15,29,.22),rgba(3,19,37,.08) 55%,rgba(0,25,45,.28))!important;
+  mask-image:none!important;
+}
+.daily-message-card:after{z-index:0!important}
+.daily-message-card>*{position:relative;z-index:2}
+.daily-message-content{max-width:760px!important;color:#effaff!important}
+.daily-message-content h2{color:#fff!important;text-shadow:0 2px 18px rgba(0,15,35,.4)!important}
+.daily-message-content p{color:#d5effb!important}
+.daily-message-kicker{color:#a5edff!important}
+.daily-message-signature{color:#b5e5f5!important}
+.daily-message-mark{color:rgba(210,245,255,.28)!important}
+.daily-message-edit{z-index:4!important}
+html[data-theme="light"] .daily-message-card,
+html[data-theme="dark"] .daily-message-card{
+  background-image:linear-gradient(100deg,rgba(3,15,29,.78),rgba(3,18,34,.55)),url("https://upload.wikimedia.org/wikipedia/commons/1/15/Shushtar_Historical_Hydraulic_System_2.jpg")!important;
+}
+html[data-theme="light"] .daily-message-content h2,
+html[data-theme="dark"] .daily-message-content h2{color:#fff!important}
+html[data-theme="light"] .daily-message-content p,
+html[data-theme="dark"] .daily-message-content p{color:#d5effb!important}
+@media(max-width:760px){
+  .daily-message-card{
+    min-height:170px!important;
+    margin:12px 0 15px!important;
+    padding:20px 18px!important;
+    border-radius:16px!important;
+    background-position:54% center!important;
+  }
+  .daily-message-content{padding-top:22px!important}
+}
