@@ -2537,3 +2537,23 @@ html[data-theme="dark"] :where(.performance-table-wrap,.recent-table,.report-tab
     border-radius:15px;
   }
 }
+
+
+/* Dashboard intelligence indicators */
+.dashboard-trend-delta{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  margin-top:7px;
+  padding:4px 9px;
+  border-radius:999px;
+  font-size:10px;
+  font-weight:700;
+  background:rgba(83,155,190,.10);
+  border:1px solid rgba(83,155,190,.20);
+}
+.dashboard-trend-delta.positive{color:#16865f;background:rgba(31,178,126,.10);border-color:rgba(31,178,126,.20)}
+.dashboard-trend-delta.negative{color:#c24c60;background:rgba(218,89,111,.10);border-color:rgba(218,89,111,.20)}
+html[data-theme="dark"] .dashboard-trend-delta{color:#b8d7e8;background:rgba(54,143,181,.13);border-color:rgba(88,177,211,.22)}
+html[data-theme="dark"] .dashboard-trend-delta.positive{color:#79e2b8;background:rgba(31,178,126,.13)}
+html[data-theme="dark"] .dashboard-trend-delta.negative{color:#ff9eae;background:rgba(218,89,111,.13)}
