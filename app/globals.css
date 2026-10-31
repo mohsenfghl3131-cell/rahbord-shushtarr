@@ -2557,3 +2557,35 @@ html[data-theme="dark"] :where(.performance-table-wrap,.recent-table,.report-tab
 html[data-theme="dark"] .dashboard-trend-delta{color:#b8d7e8;background:rgba(54,143,181,.13);border-color:rgba(88,177,211,.22)}
 html[data-theme="dark"] .dashboard-trend-delta.positive{color:#79e2b8;background:rgba(31,178,126,.13)}
 html[data-theme="dark"] .dashboard-trend-delta.negative{color:#ff9eae;background:rgba(218,89,111,.13)}
+
+
+/* Organization chart readability — especially section leaders on phones */
+.org-section-node{
+  padding:14px 12px;
+  min-height:76px;
+  gap:6px;
+}
+.org-section-node span{
+  font-size:14px!important;
+  line-height:1.8;
+}
+.org-section-node b{
+  font-size:14px!important;
+  line-height:1.9;
+  font-weight:800;
+  color:#294b67;
+}
+.org-metna-person-chip{
+  font-size:13px!important;
+  line-height:1.8;
+}
+@media(max-width:850px){
+  .org-section-node{padding:13px 10px;min-height:72px}
+  .org-section-node span{font-size:13px!important}
+  .org-section-node b{font-size:13px!important}
+  .org-metna-person-chip{font-size:12px!important}
+}
+@media(max-width:390px){
+  .org-section-node span{font-size:12.5px!important}
+  .org-section-node b{font-size:12.5px!important}
+}
