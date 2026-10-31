@@ -3,7 +3,6 @@ import { createClient } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
 import { getCurrentContext } from "@/lib/auth";
 import AppShell from "@/app/components/AppShell";
-import QuranCard from "./QuranCard";
 
 type AreaStat = {
   name: string;
@@ -217,9 +216,6 @@ export default async function Dashboard() {
             </div>
           </div>
         </section>
-
-        <QuranCard />
-
         <section className="stats">
           <Stat label="کل گزارش‌ها" value={total} tone="blue" note="تمام گزارش‌های فعال" />
           <Stat label="گزارش‌های امروز" value={todayCount} tone="cyan" note="ثبت‌شده از ابتدای امروز" />
