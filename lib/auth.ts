@@ -18,12 +18,15 @@ export async function getCurrentContext(){
   const{data:profile}=await admin.from("profiles").select("*").eq("id",userId).maybeSingle();
   if(!profile?.is_active)return null;
 
-  const[{data:access},{data:responsibleGroups}]=await Promise.all([
+  const[{data:access},{data:multiAssignments}]=await Promise.all([
     admin.from("user_area_access").select("area_id").eq("user_id",userId),
-    admin.from("category_groups").select("id,name").eq("responsible_user_id",userId).eq("is_active",true).order("sort_order")
+    admin.from("category_group_responsibles").select("group_id").eq("user_id",userId)
   ]);
 
-  const groupIds=(responsibleGroups??[]).map((x:{id:string})=>x.id);
+  const groupIds=Array.from(new Set((multiAssignments??[]).map((x:{group_id:string})=>x.group_id)));
+  const {data:responsibleGroups}=groupIds.length
+    ? await admin.from("category_groups").select("id,name").in("id",groupIds).eq("is_active",true).order("sort_order")
+    : {data:[]};
 
   return{
     user:{id:userId},
