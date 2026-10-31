@@ -3555,3 +3555,34 @@ html[data-theme="dark"] .daily-message-card{
   .bases-print-personnel span{padding:1mm 2mm!important;border:1px solid #d6e3eb!important;border-radius:1mm!important;background:#edf4f8!important}
   .bases-print-document footer{display:block!important;text-align:center!important;font-size:8pt!important;color:#617b91!important;padding:5mm 0 0!important}
 }
+
+@media print{
+ @page{size:A4 landscape;margin:8mm}
+ body:has(.org-poster) .org-page{width:100%!important;max-width:none!important;margin:0!important;padding:0!important}
+ body:has(.org-poster) .topbar,body:has(.org-poster) .org-editor,body:has(.org-poster) .org-print-row{display:none!important}
+ body:has(.org-poster) .org-poster{display:block!important;width:100%!important;max-width:none!important;margin:0!important;padding:5mm!important;box-shadow:none!important;background:#fff!important;color:#173653!important;break-after:page!important;page-break-after:always!important}
+ body:has(.org-poster) .org-poster-head{padding:0 0 3mm!important;margin:0 0 3mm!important}
+ body:has(.org-poster) .org-poster-head h2{font-size:16pt!important;margin:1mm 0!important;color:#173653!important}
+ body:has(.org-poster) .org-poster-head p{font-size:8pt!important;margin:0!important}
+ body:has(.org-poster) .org-tree{display:flex!important}
+ body:has(.org-poster) .org-node{max-width:none!important;padding:2mm!important;gap:1mm!important;box-shadow:none!important;background:#f4f8fb!important}
+ body:has(.org-poster) .org-node small{font-size:6pt!important}
+ body:has(.org-poster) .org-node b{font-size:9pt!important}
+ body:has(.org-poster) .org-node strong{font-size:8pt!important}
+ body:has(.org-poster) .org-connector{height:3mm!important}
+ body:has(.org-poster) .org-commanders{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:5mm!important}
+ body:has(.org-poster) .org-sections{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:1.5mm!important}
+ body:has(.org-poster) .org-section-node{padding:2mm 1mm!important;background:#f7fafc!important}
+ body:has(.org-poster) .org-section-node span,body:has(.org-poster) .org-section-node b{font-size:7pt!important}
+ body:has(.org-poster) .org-areas-poster{display:none!important}
+ body:has(.org-poster) .org-print-bases{display:block!important;padding:0!important;margin:0!important;background:#fff!important;color:#173653!important}
+ body:has(.org-poster) .org-print-bases>h3{font-size:17pt!important;margin:0 0 5mm!important}
+ body:has(.org-poster) .org-print-area-group{display:block!important;break-before:page!important;page-break-before:always!important;break-inside:auto!important;margin:0!important;padding:5mm!important;border:1px solid #cbdce9!important;background:#fff!important}
+ body:has(.org-poster) .org-print-area-group h4{font-size:16pt!important;color:#135d91!important}
+ body:has(.org-poster) .org-print-area-group>p{font-size:10pt!important;line-height:1.8!important}
+ body:has(.org-poster) .org-print-base-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:3mm!important}
+ body:has(.org-poster) .org-print-base{break-inside:avoid!important;padding:3mm!important;border:1px solid #c8d8e4!important;background:#f7fafc!important}
+ body:has(.org-poster) .org-print-base b{font-size:10pt!important}
+ body:has(.org-poster) .org-print-base small{font-size:8pt!important;line-height:1.6!important}
+ body:has(.org-poster) .org-poster-foot{display:none!important}
+}
