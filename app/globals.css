@@ -4116,3 +4116,43 @@ html[data-theme="dark"] .org-subunit-view b{color:#d6edfa}
  .scores-page .mission-export-actions{grid-template-columns:minmax(0,1fr)}
  .scores-page .mission-tile-meta{display:grid;justify-items:start}
 }
+
+
+/* A4 organization chart: readable type and natural overflow to continuation pages */
+@media print{
+ @page{size:A4 portrait;margin:7mm}
+ .org-area-print-pages{display:block!important;overflow:visible!important}
+ .org-area-print-sheet{
+  box-sizing:border-box!important;width:100%!important;height:auto!important;
+  min-height:283mm!important;max-height:none!important;overflow:visible!important;
+  margin:0!important;padding:2mm 1mm 3mm!important;position:relative!important;
+  break-after:page!important;page-break-after:always!important;
+  break-inside:auto!important;page-break-inside:auto!important;
+  background:#fff!important;color:#183650!important
+ }
+ .org-area-print-sheet:last-child{break-after:auto!important;page-break-after:auto!important}
+ .org-area-print-header{gap:4mm!important;padding-bottom:3mm!important}
+ .org-area-print-header h2{font-size:11pt!important;line-height:1.6!important}
+ .org-area-print-header h1{font-size:17pt!important;line-height:1.65!important;overflow-wrap:anywhere!important}
+ .org-area-print-command{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:2mm!important;margin:3mm 0!important}
+ .org-area-print-command>div,.org-area-print-leaders>div{padding:2.5mm!important;min-width:0!important;break-inside:avoid!important;page-break-inside:avoid!important}
+ .org-area-print-command small,.org-area-print-leaders small,.org-area-print-base-leader small{font-size:7.5pt!important;line-height:1.6!important}
+ .org-area-print-command b,.org-area-print-leaders b,.org-area-print-base-leader b{font-size:9pt!important;line-height:1.7!important;overflow-wrap:anywhere!important;white-space:normal!important}
+ .org-area-print-leaders{grid-template-columns:2fr 2fr 1fr!important;gap:2mm!important;margin-bottom:4mm!important}
+ .org-area-print-section-title{font-size:11pt!important;line-height:1.7!important;margin:0 0 3mm!important}
+ .org-area-print-base-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;align-items:start!important;gap:3mm!important;overflow:visible!important}
+ .org-area-print-base{min-width:0!important;padding:3mm!important;margin:0!important;break-inside:avoid!important;page-break-inside:avoid!important}
+ .org-area-print-base-head{gap:2mm!important;margin-bottom:2mm!important}
+ .org-area-print-base-head>span{font-size:7.5pt!important;width:7mm!important;height:7mm!important;flex-basis:7mm!important}
+ .org-area-print-base-head h4{font-size:9pt!important;line-height:1.7!important;overflow-wrap:anywhere!important}
+ .org-area-print-base-leader{grid-template-columns:24mm minmax(0,1fr)!important;gap:2mm!important;padding:1.5mm 0!important}
+ .org-area-print-base-leader small{font-size:7pt!important}
+ .org-area-print-base-leader b{font-size:8pt!important;line-height:1.7!important}
+ .org-area-print-unit{grid-template-columns:24mm minmax(0,1fr)!important;gap:2mm!important;padding:1.3mm 0!important}
+ .org-area-print-unit span{font-size:7pt!important;line-height:1.6!important}
+ .org-area-print-unit b{font-size:7.8pt!important;line-height:1.7!important;overflow-wrap:anywhere!important}
+ .org-area-print-personnel{padding-top:1.5mm!important;white-space:normal!important}
+ .org-area-print-personnel small{font-size:7.5pt!important;line-height:1.8!important;overflow-wrap:anywhere!important}
+ .org-area-print-empty{padding:12mm!important;font-size:10pt!important}
+ .org-area-print-footer{position:static!important;margin-top:5mm!important;padding-top:2mm!important;font-size:7pt!important;break-inside:avoid!important}
+}
