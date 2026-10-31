@@ -3411,3 +3411,23 @@ html[data-theme="light"] [role="button"]{
  .unified-shell>.sidebar.open{z-index:100!important}
  .unified-shell>.sidebar-backdrop{z-index:99!important}
 }
+
+
+/* Daily message background synchronized with the dashboard's top welcome banner */
+html:not([data-theme="dark"]) .daily-message-card{
+  background:
+    radial-gradient(ellipse at 82% 12%,rgba(120,143,208,.15),transparent 32%),
+    radial-gradient(ellipse at 8% 90%,rgba(55,159,193,.16),transparent 38%),
+    linear-gradient(120deg,#f9fcff 0%,#e8f3fa 55%,#edf0fa 100%)!important;
+  border:1px solid #c5ddeb!important;
+  box-shadow:0 13px 30px rgba(36,77,112,.09)!important;
+}
+html:not([data-theme="dark"]) .daily-message-content h2{color:#173d5c!important;text-shadow:none!important}
+html:not([data-theme="dark"]) .daily-message-content p{color:#607b94!important}
+html:not([data-theme="dark"]) .daily-message-kicker{color:#28779e!important}
+html:not([data-theme="dark"]) .daily-message-edit{color:#eafaff!important}
+html[data-theme="dark"] .daily-message-card{
+  background:linear-gradient(115deg,rgba(5,17,34,.88),rgba(7,38,61,.84)),url('/images/shushtar.jpg') center/cover no-repeat!important;
+  border:1px solid #087eaf!important;
+  box-shadow:0 0 0 1px rgba(0,217,255,.12),0 0 30px rgba(0,153,255,.16)!important;
+}
