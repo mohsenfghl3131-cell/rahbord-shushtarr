@@ -3252,3 +3252,98 @@ html[data-theme="dark"] .daily-message-content p{color:#d5effb!important}
   .daily-message-content p{font-size:9px!important;line-height:1.45!important;-webkit-line-clamp:1!important}
   .daily-message-edit{top:8px!important;left:8px!important;width:23px!important;min-width:23px!important;height:23px!important;min-height:23px!important}
 }
+
+
+/* GLOBAL NEON BUTTON SYSTEM — consistent across the whole dashboard */
+:root{
+  --neon-cyan:#35dfff;
+  --neon-blue:#278dff;
+  --neon-glow:rgba(34,190,255,.34);
+}
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+a.button,
+a.btn,
+.btn,
+[role="button"]{
+  position:relative;
+  border:1px solid rgba(67,207,255,.62)!important;
+  border-radius:11px!important;
+  background:linear-gradient(135deg,rgba(8,64,100,.94),rgba(9,39,76,.96))!important;
+  color:#eafaff!important;
+  box-shadow:
+    0 0 0 1px rgba(40,185,255,.10),
+    0 0 12px rgba(20,165,255,.20),
+    inset 0 1px rgba(255,255,255,.16)!important;
+  text-shadow:0 0 9px rgba(83,220,255,.25);
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease,filter .18s ease,background .18s ease!important;
+}
+button:hover,
+input[type="button"]:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover,
+a.button:hover,
+a.btn:hover,
+.btn:hover,
+[role="button"]:hover{
+  border-color:#72edff!important;
+  background:linear-gradient(135deg,rgba(8,93,137,.98),rgba(13,56,104,.98))!important;
+  box-shadow:0 0 0 1px rgba(62,213,255,.22),0 0 9px rgba(31,190,255,.45),0 0 22px rgba(31,155,255,.28),inset 0 1px rgba(255,255,255,.22)!important;
+  filter:brightness(1.12);
+  transform:translateY(-1px);
+}
+button:active,
+input[type="button"]:active,
+input[type="submit"]:active,
+input[type="reset"]:active,
+a.button:active,
+a.btn:active,
+.btn:active,
+[role="button"]:active{
+  transform:translateY(0) scale(.98);
+  box-shadow:0 0 8px rgba(34,190,255,.32),inset 0 2px 8px rgba(0,0,0,.22)!important;
+}
+button:focus-visible,
+input[type="button"]:focus-visible,
+input[type="submit"]:focus-visible,
+input[type="reset"]:focus-visible,
+a.button:focus-visible,
+a.btn:focus-visible,
+.btn:focus-visible,
+[role="button"]:focus-visible{
+  outline:2px solid #72edff!important;
+  outline-offset:3px!important;
+  box-shadow:0 0 0 4px rgba(53,223,255,.18),0 0 20px rgba(53,223,255,.42)!important;
+}
+button:disabled,
+button[disabled],
+input:disabled{
+  opacity:.42!important;
+  filter:saturate(.45)!important;
+  cursor:not-allowed!important;
+  transform:none!important;
+  box-shadow:none!important;
+}
+/* Keep destructive actions visibly red while giving them a neon edge */
+button.danger,button.delete,.btn-danger,.danger button,
+button[class*="delete"],button[class*="danger"]{
+  border-color:rgba(255,105,125,.72)!important;
+  background:linear-gradient(135deg,rgba(112,26,48,.96),rgba(65,17,38,.98))!important;
+  box-shadow:0 0 12px rgba(255,65,100,.20),inset 0 1px rgba(255,255,255,.14)!important;
+}
+/* Light theme keeps the same neon identity without sacrificing contrast */
+html[data-theme="light"] button,
+html[data-theme="light"] input[type="button"],
+html[data-theme="light"] input[type="submit"],
+html[data-theme="light"] input[type="reset"],
+html[data-theme="light"] a.button,
+html[data-theme="light"] a.btn,
+html[data-theme="light"] .btn,
+html[data-theme="light"] [role="button"]{
+  color:#f2fcff!important;
+  background:linear-gradient(135deg,#075078,#123b70)!important;
+  border-color:rgba(0,155,210,.62)!important;
+  box-shadow:0 0 0 1px rgba(0,150,220,.08),0 0 10px rgba(0,150,220,.16),inset 0 1px rgba(255,255,255,.20)!important;
+}
