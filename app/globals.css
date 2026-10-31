@@ -3433,3 +3433,25 @@ html[data-theme="dark"] .daily-message-card{
   border:1px solid rgba(93,204,235,.48)!important;
   box-shadow:0 0 0 1px rgba(0,207,255,.10),0 12px 34px rgba(0,8,22,.24),inset 0 1px rgba(255,255,255,.16)!important;
 }
+
+
+/* Organization chart: area cards navigate to their dedicated base page */
+.org-area-poster-card .org-area-open-hint{display:inline-flex;align-self:flex-start;margin-top:12px;padding:8px 13px;border:1px solid rgba(66,196,235,.48);border-radius:10px;background:linear-gradient(135deg,rgba(8,91,132,.92),rgba(12,55,101,.96));color:#eafaff!important;font-size:11px;font-weight:800;box-shadow:0 0 12px rgba(20,165,255,.15)}
+.org-area-poster-card .org-area-open-hint:hover{filter:brightness(1.12)}
+.org-print-bases{display:none}
+@media print{
+ .org-areas-poster{break-before:page;page-break-before:always}
+ .org-areas-poster h3{margin:0 0 18px;font-size:20px}
+ .org-area-poster-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}
+ .org-area-poster-card{break-inside:avoid!important;page-break-inside:avoid!important;padding:14px!important}
+ .org-area-open-hint{display:none!important}
+ .org-print-bases{display:block!important;break-before:page;page-break-before:always;padding:24px 28px;color:#173653;background:#f5faff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ .org-print-bases>h3{font-size:22px;margin:0 0 20px;padding-bottom:12px;border-bottom:2px solid #2496c4}
+ .org-print-area-group{break-inside:avoid;page-break-inside:avoid;margin:0 0 18px;padding:14px;border:1px solid #cbdce9;border-radius:12px;background:#fff}
+ .org-print-area-group h4{margin:0 0 5px;font-size:16px;color:#135d91}
+ .org-print-area-group>p{margin:0 0 10px;font-size:11px;color:#526d83}
+ .org-print-base-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .org-print-base{display:flex;flex-direction:column;gap:4px;padding:10px;border:1px solid #dbe6ef;border-radius:8px;background:#f7fafc;break-inside:avoid}
+ .org-print-base b{font-size:12px}
+ .org-print-base small{font-size:9px;color:#526d83}
+}
