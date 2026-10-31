@@ -13,7 +13,7 @@ export async function GET(){
   }
   return NextResponse.json({
     profile,
-    can_message: profile.role === "main_admin" || profile.role === "area_manager" || ctx.responsibleGroupIds.length > 0,
+    can_message: profile.role === "main_admin" || profile.role === "deputy" || profile.role === "battalion_commander" || profile.role === "area_manager" || ctx.responsibleGroupIds.length > 0,
     areas:ctx.areaIds,
     responsible_groups:ctx.responsibleGroups,
     responsible_group_ids:ctx.responsibleGroupIds,
