@@ -4156,3 +4156,23 @@ html[data-theme="dark"] .org-subunit-view b{color:#d6edfa}
  .org-area-print-empty{padding:12mm!important;font-size:10pt!important}
  .org-area-print-footer{position:static!important;margin-top:5mm!important;padding-top:2mm!important;font-size:7pt!important;break-inside:avoid!important}
 }
+
+
+/* Dashboard executive metrics: six balanced KPI cards */
+.content:has(.welcome-pro)>.stats{
+ display:grid!important;
+ grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ gap:13px!important;
+}
+.content:has(.welcome-pro) .stat-card.red:before{background:linear-gradient(180deg,#fb7185,#e11d48)!important}
+.content:has(.welcome-pro) .stat-card.violet:before{background:linear-gradient(180deg,#c4b5fd,#8b5cf6)!important}
+.content:has(.welcome-pro) .stat-card.red>strong{color:#fecdd3!important}
+.content:has(.welcome-pro) .stat-card.violet>strong{color:#ddd6fe!important}
+.content:has(.welcome-pro) .stat-card{min-height:126px;display:flex;flex-direction:column;justify-content:center;gap:8px}
+@media(max-width:700px){
+ .content:has(.welcome-pro)>.stats{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+ .content:has(.welcome-pro) .stat-card{min-height:108px!important}
+}
+@media(max-width:360px){
+ .content:has(.welcome-pro)>.stats{grid-template-columns:1fr!important}
+}
