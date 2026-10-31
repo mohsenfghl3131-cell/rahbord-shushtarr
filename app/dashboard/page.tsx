@@ -216,6 +216,16 @@ export default async function Dashboard() {
             </div>
           </div>
         </section>
+        <section className="daily-message-card" aria-label="پیام روز">
+          <div className="daily-message-art" aria-hidden="true"><span /><span /><span /></div>
+          <div className="daily-message-content">
+            <div className="daily-message-kicker"><span>✦</span> پیام روز</div>
+            <h2>قدم‌های کوچک و پیوسته، مسیرهای بزرگ را می‌سازند.</h2>
+            <p>با دقت، همدلی و مسئولیت‌پذیری، هر روز می‌توانیم یک گام بهتر از دیروز باشیم.</p>
+            <div className="daily-message-signature"><i /> راهبرد شوشتر <span>•</span> اندیشه امروز</div>
+          </div>
+          <div className="daily-message-mark" aria-hidden="true">〝</div>
+        </section>
         <section className="stats">
           <Stat label="کل گزارش‌ها" value={total} tone="blue" note="تمام گزارش‌های فعال" />
           <Stat label="گزارش‌های امروز" value={todayCount} tone="cyan" note="ثبت‌شده از ابتدای امروز" />
