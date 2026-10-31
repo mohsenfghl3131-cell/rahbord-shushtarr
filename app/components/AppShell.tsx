@@ -65,6 +65,8 @@ export default function AppShell({ children }: Props) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
+  const [notificationData, setNotificationData] = useState<any>({ unread_count: 0, unread_messages: [], activity: [], active_missions: [], is_leader: false, is_area: false });
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [notificationData, setNotificationData] = useState<any>({unread_count:0,unread_messages:[],activity:[],active_missions:[]});
   const [notificationsOpen, setNotificationsOpen] = useState(false);
 
@@ -90,7 +92,16 @@ export default function AppShell({ children }: Props) {
   }, []);
 
   useEffect(() => {
+    let alive = true;
+    const loadNotifications = () => fetch("/api/notifications", { cache: "no-store" }).then((r) => r.ok ? r.json() : null).then((data) => { if (alive && data) setNotificationData(data); }).catch(() => null);
+    loadNotifications();
+    const timer = window.setInterval(loadNotifications, 30000);
+    return () => { alive = false; window.clearInterval(timer); };
+  }, []);
+
+  useEffect(() => {
     setMobileOpen(false);
+    setNotificationsOpen(false);
   }, [pathname]);
 
   const role = me?.profile?.role;
@@ -215,6 +226,39 @@ export default function AppShell({ children }: Props) {
             <span aria-hidden="true">{theme === "dark" ? "☀" : "☾"}</span>
             <small>{theme === "dark" ? "روشن" : "تاریک"}</small>
           </button>
+
+          <div className="notification-wrap">
+            <button className={"notification-bell" + (notificationsOpen ? " active" : "")} type="button" aria-label="اعلان‌ها" aria-expanded={notificationsOpen} title="اعلان‌ها" onClick={() => setNotificationsOpen((value) => !value)}>
+              <span aria-hidden="true">♧</span>
+              {notificationData.unread_count > 0 && <i>{notificationData.unread_count > 99 ? "۹۹+" : notificationData.unread_count}</i>}
+            </button>
+            {notificationsOpen && (
+              <section className="notification-panel" aria-label="مرکز اعلان‌ها">
+                <div className="notification-head">
+                  <div><b>مرکز اعلان‌ها</b><small>به‌روزرسانی خودکار هر ۳۰ ثانیه</small></div>
+                  <button type="button" aria-label="بستن اعلان‌ها" onClick={() => setNotificationsOpen(false)}>×</button>
+                </div>
+                <div className="notification-scroll">
+                  <Link className="notification-summary" href="/messages" onClick={() => setNotificationsOpen(false)}>
+                    <span className="notification-icon">✉</span><span><b>{notificationData.unread_count || 0} نامه خوانده‌نشده</b><small>مشاهده صندوق نامه‌ها</small></span>
+                  </Link>
+                  {notificationData.unread_messages?.length > 0 && <>
+                    <div className="notification-section-title">نامه‌های جدید</div>
+                    {notificationData.unread_messages.map((item: any) => <Link className="notification-row" key={item.id} href="/messages" onClick={() => setNotificationsOpen(false)}><b>{item.subject || "بدون موضوع"}</b><span>فرستنده: {item.sender?.display_name || "کاربر سامانه"}</span></Link>)}
+                  </>}
+                  {notificationData.is_leader && <>
+                    <div className="notification-section-title">فعالیت مدیران و کاربران</div>
+                    {notificationData.activity?.length ? notificationData.activity.map((item: any) => <div className="notification-row" key={item.id}><b>{item.title}</b><span>{item.detail}</span></div>) : <div className="notification-empty">فعالیت تازه‌ای ثبت نشده است</div>}
+                  </>}
+                  {notificationData.is_area && <>
+                    <div className="notification-section-title">مأموریت‌های در حال اجرا</div>
+                    {notificationData.active_missions?.length ? notificationData.active_missions.map((item: any) => <Link className="notification-row" key={item.id} href="/scores" onClick={() => setNotificationsOpen(false)}><b>{item.title}</b><span>{item.group}{item.deadline_at ? " · مهلت: " + new Date(item.deadline_at).toLocaleDateString("fa-IR") : ""}</span></Link>) : <div className="notification-empty">مأموریت فعالی وجود ندارد</div>}
+                  </>}
+                </div>
+                <div className="notification-foot"><Link href="/messages" onClick={() => setNotificationsOpen(false)}>رفتن به صندوق نامه‌ها ←</Link></div>
+              </section>
+            )}
+          </div>
 
           <div className="header-spacer" />
 
