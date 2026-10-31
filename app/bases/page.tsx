@@ -1,0 +1,22 @@
+"use client";
+import AppShell from "@/app/components/AppShell";
+import Link from "next/link";
+import {useEffect,useState} from "react";
+type DbArea={id:string;name:string;is_active:boolean};
+type Unit={title:string;leader_name:string};
+type Base={id:string;title:string;leader_name:string;units:Unit[];personnel?:string[]};
+type ChartArea={id:string;title:string;leader_name:string;successor_name:string;bases:Base[]};
+export default function BasesPage(){
+ const [areas,setAreas]=useState<DbArea[]>([]),[charts,setCharts]=useState<Record<string,ChartArea>>({}),[loading,setLoading]=useState(true),[error,setError]=useState(""),[busy,setBusy]=useState(false);
+ useEffect(()=>{let alive=true;(async()=>{try{const r=await fetch("/api/areas",{cache:"no-store"});const d=await r.json();if(!r.ok)throw Error(d.message||"دریافت حوزه‌ها انجام نشد");const list=(d.areas||[]).filter((a:DbArea)=>a.is_active);if(!alive)return;setAreas(list);const results=await Promise.all(list.map(async(a:DbArea)=>{const x=await fetch("/api/organization/area?areaId="+encodeURIComponent(a.id),{cache:"no-store"});const v=await x.json();return x.ok?[a.id,v.area as ChartArea]:null}));if(alive)setCharts(Object.fromEntries(results.filter(Boolean) as [string,ChartArea][]));}catch(e:any){if(alive)setError(e.message||"خطا در دریافت اطلاعات")}finally{if(alive)setLoading(false)}})();return()=>{alive=false}},[]);
+ const print=()=>window.print();
+ const totalBases=Object.values(charts).reduce((n,a)=>n+(a?.bases?.length||0),0);
+ return <AppShell><main className="shell unified-page bases-hub">
+  <div className="topbar"><div><span className="eyebrow">ساختار عملیاتی راهبرد</span><h1>پایگاه‌ها</h1><p>چارت پایگاه‌ها، مسئولان و نیروهای زیرمجموعه هر حوزه</p></div><button className="button" onClick={print} disabled={!Object.keys(charts).length}>چاپ همه حوزه‌ها / PDF</button></div>
+  <div className="bases-summary"><div><b>{areas.length.toLocaleString("fa-IR")}</b><span>حوزه قابل دسترس</span></div><div><b>{totalBases.toLocaleString("fa-IR")}</b><span>پایگاه ثبت‌شده</span></div></div>
+  {error&&<div className="error">{error}</div>}{loading?<section className="panel">در حال دریافت چارت حوزه‌ها…</section>:areas.length===0?<section className="panel">حوزه‌ای برای نمایش در دسترس نیست.</section>:<>
+   <section className="bases-card-grid">{areas.map((a,i)=>{const c=charts[a.id];return <article className="bases-area-card" key={a.id}><div className="bases-area-number">{String(i+1).padStart(2,"0")}</div><div className="bases-area-info"><h2>{c?.title||a.name}</h2><p>مسئول حوزه: {c?.leader_name||"تعیین نشده"}</p><p>مسئول پایگاه‌ها: {c?.bases?.filter(b=>b.leader_name).length||0} از {c?.bases?.length||0}</p></div><Link className="button bases-open-button" href={"/organization/"+a.id}>مشاهده و مدیریت چارت ←</Link></article>})}</section>
+   <section className="bases-print-document"><header><small>RAHBORD • SHUSHTAR</small><h2>گزارش جامع پایگاه‌ها و مسئولان حوزه‌ها</h2><p>ساختار حوزه، پایگاه‌ها و نیروهای زیرمجموعه</p></header>{areas.map((a,i)=>{const c=charts[a.id];return <article className="bases-print-area" key={a.id}><h3>{i+1}. {c?.title||a.name}</h3><p className="bases-print-leader">مسئول حوزه: {c?.leader_name||"تعیین نشده"}　 |　 جانشین: {c?.successor_name||"تعیین نشده"}</p>{c?.bases?.length?<div className="bases-print-grid">{c.bases.map((b,j)=><section className="bases-print-base" key={b.id}><h4>پایگاه {j+1}: {b.title}</h4><p>مسئول پایگاه: <b>{b.leader_name||"تعیین نشده"}</b></p>{b.units?.length>0&&<div className="bases-print-units">{b.units.map(u=><div key={u.title}><span>{u.title}</span><b>{u.leader_name||"تعیین نشده"}</b></div>)}</div>}{b.personnel?.length>0&&<div className="bases-print-personnel"><b>نیروهای زیرمجموعه</b>{b.personnel.map((p,k)=><span key={k}>{p}</span>)}</div>}</section>)}</div>:<p>برای این حوزه هنوز پایگاهی ثبت نشده است.</p>}</article>})}<footer>سامانه مدیریت و پایش • راهبرد شوشتر</footer></section>
+  </>}
+ </main></AppShell>
+}
