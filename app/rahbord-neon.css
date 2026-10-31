@@ -61,3 +61,69 @@ html[data-theme="dark"] .header-profile{background:rgba(15,48,73,.8)!important;b
  html[data-theme="dark"] .stat-card{min-height:145px;padding:22px!important}
  html[data-theme="dark"] .dashboard-grid-pro{gap:16px!important}
 }
+
+
+/* Dashboard composition: responsive command-center hierarchy */
+html[data-theme="dark"] .content{width:min(100%,1540px)!important;margin-inline:auto!important;padding:24px clamp(14px,2.2vw,34px) 42px!important}
+html[data-theme="dark"] .content>.welcome-pro{display:grid!important;grid-template-columns:minmax(0,1fr) 150px!important;align-items:center!important;gap:24px!important;min-height:236px!important;padding:clamp(22px,3vw,38px)!important;margin-bottom:20px!important;background-image:linear-gradient(90deg,rgba(3,14,27,.94) 0%,rgba(3,18,34,.78) 52%,rgba(3,18,34,.38) 100%),url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=85")!important;background-size:cover!important;background-position:center 48%!important}
+html[data-theme="dark"] .content>.welcome-pro:before{content:"";position:absolute;inset:0;background:linear-gradient(125deg,rgba(0,208,255,.09),transparent 48%,rgba(63,93,255,.1));pointer-events:none}
+html[data-theme="dark"] .content>.welcome-pro>div:first-child{max-width:780px}
+html[data-theme="dark"] .content>.welcome-pro .welcome-kicker{display:inline-flex;align-items:center;padding:8px 12px;border:1px solid rgba(62,222,255,.28);border-radius:30px;background:rgba(2,20,37,.55);color:#9beaff;letter-spacing:.2px}
+html[data-theme="dark"] .content>.welcome-pro h1{font-size:clamp(25px,3vw,38px)!important;margin:15px 0 8px!important;line-height:1.5}
+html[data-theme="dark"] .content>.welcome-pro p{font-size:clamp(11px,1vw,14px)!important;line-height:2}
+html[data-theme="dark"] .content>.welcome-pro .welcome-meta{gap:9px!important;flex-wrap:wrap}
+html[data-theme="dark"] .content>.welcome-pro .welcome-meta span{padding:8px 12px;border-radius:30px;border:1px solid rgba(99,193,231,.2);background:rgba(3,20,37,.55);font-size:10px}
+html[data-theme="dark"] .content>.welcome-pro .welcome-orbit{width:132px;height:132px;background:radial-gradient(circle,rgba(8,36,58,.94) 0 48%,rgba(7,25,44,.82) 49% 100%);border-color:rgba(65,221,255,.75);box-shadow:0 0 0 10px rgba(0,211,255,.06),0 0 38px rgba(0,201,255,.25),inset 0 0 25px rgba(0,188,255,.12)}
+html[data-theme="dark"] .content>.welcome-pro .welcome-orbit strong{color:#f2fbff;font-size:32px;text-shadow:0 0 18px rgba(0,215,255,.4)}
+html[data-theme="dark"] .content>.quran-card{margin:0 0 20px!important;min-height:185px!important;display:grid!important;align-items:center!important}
+html[data-theme="dark"] .content>.stats{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:14px!important;margin:0 0 20px!important}
+html[data-theme="dark"] .content>.stats .stat-card{min-height:142px!important;padding:20px!important;display:flex!important;flex-direction:column!important;justify-content:center!important;gap:5px!important}
+html[data-theme="dark"] .content>.stats .stat-card span{font-size:11px!important;color:#b5ccdf!important}
+html[data-theme="dark"] .content>.stats .stat-card strong{font-size:clamp(27px,2.5vw,36px)!important;margin:2px 0!important}
+html[data-theme="dark"] .content>.stats .stat-card small{font-size:9px!important;color:#8faec5!important}
+html[data-theme="dark"] .content>.dashboard-grid-pro{display:grid!important;grid-template-columns:minmax(0,1.22fr) minmax(300px,.78fr)!important;gap:16px!important;align-items:stretch!important}
+html[data-theme="dark"] .content>.dashboard-grid-pro>.panel{min-width:0;padding:22px!important;border-radius:20px!important}
+html[data-theme="dark"] .content>.dashboard-grid-pro>.panel.wide{grid-column:auto}
+html[data-theme="dark"] .content>.dashboard-grid-pro>.panel:first-child{grid-column:1/-1}
+html[data-theme="dark"] .content>.dashboard-grid-pro .panel-title h2{font-size:15px!important}
+html[data-theme="dark"] .content>.dashboard-grid-pro .panel-eyebrow{font-size:9px!important;letter-spacing:.6px}
+html[data-theme="dark"] .content>.dashboard-grid-pro .trend-chart{height:230px!important}
+html[data-theme="dark"] .content>.dashboard-grid-pro .trend-col i{max-width:42px!important;width:55%!important}
+html[data-theme="dark"] .content>.dashboard-shortcuts{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:13px!important;margin:18px 0 0!important}
+html[data-theme="dark"] .content>.dashboard-shortcuts a{min-width:0;min-height:84px;padding:15px!important;border-radius:17px!important}
+html[data-theme="dark"] .content>.dashboard-shortcuts a>div{min-width:0}
+html[data-theme="dark"] .content>.dashboard-shortcuts small{line-height:1.7}
+@media(max-width:1050px){
+ html[data-theme="dark"] .content>.stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ html[data-theme="dark"] .content>.dashboard-grid-pro{grid-template-columns:1fr 1fr!important}
+ html[data-theme="dark"] .content>.dashboard-grid-pro>.panel:first-child{grid-column:1/-1}
+ html[data-theme="dark"] .content>.dashboard-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:700px){
+ html[data-theme="dark"] .content{padding:13px 12px 30px!important}
+ html[data-theme="dark"] .content>.welcome-pro{grid-template-columns:minmax(0,1fr) 84px!important;gap:10px!important;min-height:180px!important;padding:17px 15px!important;margin-bottom:13px!important;background-position:56% center!important;border-radius:19px!important}
+ html[data-theme="dark"] .content>.welcome-pro .welcome-kicker{font-size:8px!important;padding:6px 8px!important}
+ html[data-theme="dark"] .content>.welcome-pro h1{font-size:clamp(18px,5vw,23px)!important;margin:10px 0 5px!important;line-height:1.55}
+ html[data-theme="dark"] .content>.welcome-pro p{font-size:9px!important;line-height:1.9!important;margin:0!important}
+ html[data-theme="dark"] .content>.welcome-pro .welcome-meta{margin-top:9px!important;gap:5px!important}
+ html[data-theme="dark"] .content>.welcome-pro .welcome-meta span{font-size:7px!important;padding:6px 7px!important}
+ html[data-theme="dark"] .content>.welcome-pro .welcome-orbit{width:76px!important;height:76px!important;flex:0 0 76px!important}
+ html[data-theme="dark"] .content>.welcome-pro .welcome-orbit strong{font-size:21px!important}
+ html[data-theme="dark"] .content>.welcome-pro .welcome-orbit small{font-size:7px!important}
+ html[data-theme="dark"] .content>.quran-card{min-height:160px!important;margin-bottom:13px!important;padding:17px!important;grid-template-columns:1fr!important}
+ html[data-theme="dark"] .content>.stats{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important;margin-bottom:13px!important}
+ html[data-theme="dark"] .content>.stats .stat-card{min-height:116px!important;padding:13px!important;border-radius:16px!important}
+ html[data-theme="dark"] .content>.stats .stat-card span{font-size:9px!important}
+ html[data-theme="dark"] .content>.stats .stat-card strong{font-size:25px!important}
+ html[data-theme="dark"] .content>.stats .stat-card small{font-size:7px!important;line-height:1.7}
+ html[data-theme="dark"] .content>.dashboard-grid-pro{grid-template-columns:minmax(0,1fr)!important;gap:10px!important}
+ html[data-theme="dark"] .content>.dashboard-grid-pro>.panel:first-child{grid-column:auto}
+ html[data-theme="dark"] .content>.dashboard-grid-pro>.panel{padding:15px!important;border-radius:17px!important;min-height:0!important}
+ html[data-theme="dark"] .content>.dashboard-grid-pro .trend-chart{height:190px!important}
+ html[data-theme="dark"] .content>.dashboard-grid-pro .recent-row{grid-template-columns:74px minmax(0,1fr) 40px 12px!important;gap:6px!important;padding:10px 1px!important}
+ html[data-theme="dark"] .content>.dashboard-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;margin-top:12px!important}
+ html[data-theme="dark"] .content>.dashboard-shortcuts a{min-height:65px!important;padding:10px!important;gap:8px!important}
+ html[data-theme="dark"] .content>.dashboard-shortcuts a>span{width:30px!important;height:30px!important;flex:0 0 30px!important;font-size:15px!important}
+ html[data-theme="dark"] .content>.dashboard-shortcuts b{font-size:8px!important}
+ html[data-theme="dark"] .content>.dashboard-shortcuts small{font-size:7px!important}
+}
