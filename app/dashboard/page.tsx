@@ -82,8 +82,10 @@ export default async function Dashboard() {
 
   const weekStart = new Date(todayStart);
   weekStart.setDate(weekStart.getDate() - 6);
+  const previousWeekStart = new Date(weekStart);
+  previousWeekStart.setDate(previousWeekStart.getDate() - 7);
 
-  const [all, pending, approved, rejected, today, week, recent, areaRows] =
+  const [all, pending, approved, rejected, today, week, previousWeek, recent, areaRows] =
     await Promise.all([
       scope(db.from("reports").select("id", { count: "exact", head: true }).is("deleted_at", null)),
       scope(db.from("reports").select("id", { count: "exact", head: true }).eq("status", "pending").is("deleted_at", null)),
@@ -99,12 +101,19 @@ export default async function Dashboard() {
       ),
       scope(
         db.from("reports")
+          .select("id", { count: "exact", head: true })
+          .gte("created_at", previousWeekStart.toISOString())
+          .lt("created_at", weekStart.toISOString())
+          .is("deleted_at", null)
+      ),
+      scope(
+        db.from("reports")
           .select("id,title,status,created_at,areas(name),categories(name)")
           .is("deleted_at", null)
           .order("created_at", { ascending: false })
           .limit(6)
       ),
-      scope(db.from("reports").select("area_id,status,areas(name)").is("deleted_at", null)),
+      scope(db.from("reports").select("area_id,status,areas(name),categories(name)").is("deleted_at", null)),
     ]);
 
   const total = all.count ?? 0;
@@ -138,6 +147,11 @@ export default async function Dashboard() {
   });
 
   const maxDay = Math.max(1, ...days.map((day) => day.count));
+  const previousWeekCount = previousWeek.count ?? 0;
+  const currentWeekCount = week.data?.length ?? 0;
+  const weeklyChange = previousWeekCount
+    ? Math.round(((currentWeekCount - previousWeekCount) / previousWeekCount) * 100)
+    : currentWeekCount > 0 ? 100 : 0;
 
   const areaMap = new Map<string, AreaStat>();
   (areaRows.data ?? []).forEach((row: any) => {
@@ -162,6 +176,17 @@ export default async function Dashboard() {
     .slice(0, 6);
 
   const maxArea = Math.max(1, ...areas.map((area) => area.total));
+
+  const categoryMap = new Map<string, number>();
+  (areaRows.data ?? []).forEach((row: any) => {
+    const name = row.categories?.name ?? "بدون دسته‌بندی";
+    categoryMap.set(name, (categoryMap.get(name) ?? 0) + 1);
+  });
+  const categories = [...categoryMap.entries()]
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 5);
+  const maxCategory = Math.max(1, ...categories.map((item) => item.count));
 
   return (
     <AppShell>
@@ -203,7 +228,7 @@ export default async function Dashboard() {
         <section className="dashboard-grid dashboard-grid-pro">
           <section className="panel wide">
             <div className="panel-title">
-              <div><span className="panel-eyebrow">۷ روز اخیر</span><h2>روند ثبت گزارش‌ها</h2></div>
+              <div><span className="panel-eyebrow">۷ روز اخیر</span><h2>روند ثبت گزارش‌ها</h2><small className={"dashboard-trend-delta " + (weeklyChange >= 0 ? "positive" : "negative")}>{weeklyChange > 0 ? "↑ " : weeklyChange < 0 ? "↓ " : ""}{Math.abs(weeklyChange).toLocaleString("fa-IR")}٪ نسبت به ۷ روز قبل</small></div>
               <Link href="/analytics">تحلیل کامل ←</Link>
             </div>
             <div className="trend-chart">
@@ -268,7 +293,25 @@ export default async function Dashboard() {
             </div>
           </section>
 
-          
+          <section className="panel">
+            <div className="panel-title">
+              <div><span className="panel-eyebrow">CATEGORY OVERVIEW</span><h2>دسته‌بندی‌های پرتکرار</h2></div>
+            </div>
+            <div className="area-ranking">
+              {categories.length === 0 ? (
+                <div className="empty-state">هنوز داده‌ای برای دسته‌بندی‌ها ثبت نشده است.</div>
+              ) : categories.map((item, index) => (
+                <div className="area-rank" key={item.name}>
+                  <b className="rank-number">{String(index + 1).padStart(2, "0")}</b>
+                  <div className="area-rank-main">
+                    <div><strong>{item.name}</strong><small>تعداد گزارش‌های ثبت‌شده</small></div>
+                    <b>{item.count.toLocaleString("fa-IR")}</b>
+                  </div>
+                  <div className="area-bar"><i style={{ width: (item.count / maxCategory) * 100 + "%" }} /></div>
+                </div>
+              ))}
+            </div>
+          </section>
 
           <section className="panel wide">
             <div className="panel-title">
