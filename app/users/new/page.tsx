@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 const roleOptions = [
   ["area_force", "نیروی حوزه"],
-  ["area_manager", "مدیر حوزه"],
+  ["area_manager", "مسئول مجازی حوزه"],
   ["battalion_commander", "فرمانده گردان"],
   ["deputy", "معاون"],
   ["main_admin", "مدیر اصلی"],
