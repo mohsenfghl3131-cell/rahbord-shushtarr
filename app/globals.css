@@ -2460,3 +2460,80 @@ html[data-theme="dark"] .org-main-base-summary>b{color:#8cddff}
   border-color:rgba(255,160,174,.48)!important;
   color:#ffe8ec!important;
 }
+
+
+/* Unified glass surfaces for cards, panels and content sections */
+:where(.panel,.stat-card,.area-card,.user-card,.setting-card,.form-panel,
+.analytics-card,.profile-card,.radar-card,.quran-card,.private-files-panel,
+.correspondence-inbox,.correspondence-modal,.message-modal,.org-area-edit-card,
+.org-area-poster-card,.org-area-subchart-editor,.org-detail-base-card,
+.org-detail-section,.org-edit-section,.section-manager-card,.mission-tile,
+.roadman-card,.guard-emblem-card,.welcome-pro,.empty-state,.performance-table-wrap,
+.report-status-dashboard,.org-node,.org-section-node){
+  background:linear-gradient(145deg,rgba(255,255,255,.78),rgba(222,243,255,.48))!important;
+  -webkit-backdrop-filter:blur(18px) saturate(150%);
+  backdrop-filter:blur(18px) saturate(150%);
+  border:1px solid rgba(105,174,211,.34)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.72),0 12px 30px rgba(24,75,112,.09)!important;
+}
+:where(.panel,.stat-card,.area-card,.setting-card,.form-panel,.analytics-card,
+.profile-card,.radar-card,.quran-card,.private-files-panel,.correspondence-inbox,
+.org-detail-section,.section-manager-card,.mission-tile,.roadman-card,.welcome-pro){
+  border-radius:18px;
+}
+:where(.report-card,.report-status-item,.mission-tile){
+  background:linear-gradient(145deg,rgba(255,255,255,.72),rgba(224,243,255,.40));
+  -webkit-backdrop-filter:blur(14px) saturate(145%);
+  backdrop-filter:blur(14px) saturate(145%);
+  border:1px solid rgba(105,174,211,.28);
+  border-radius:14px;
+  margin-bottom:10px;
+  padding:15px;
+}
+:where(.performance-table-wrap,.recent-table,.report-table){
+  overflow-x:auto;
+  border-radius:16px;
+  border:1px solid rgba(105,174,211,.30);
+  background:rgba(255,255,255,.46);
+  -webkit-backdrop-filter:blur(14px);
+  backdrop-filter:blur(14px);
+}
+:where(.panel-title,.org-card-heading,.correspondence-section-title){
+  border-bottom:1px solid rgba(105,174,211,.20);
+}
+:where(.panel,.stat-card,.area-card,.setting-card,.form-panel,.analytics-card,
+.profile-card,.radar-card,.quran-card,.private-files-panel,.correspondence-inbox,
+.org-detail-section,.section-manager-card,.mission-tile,.roadman-card,.welcome-pro,
+.report-card,.report-status-item){
+  transition:background .2s ease,border-color .2s ease,box-shadow .2s ease,transform .2s ease;
+}
+:where(.area-card,.stat-card,.mission-tile,.report-card):hover{
+  border-color:rgba(62,174,222,.52)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.78),0 15px 34px rgba(24,103,145,.13)!important;
+}
+html[data-theme="dark"] :where(.panel,.stat-card,.area-card,.user-card,.setting-card,.form-panel,
+.analytics-card,.profile-card,.radar-card,.quran-card,.private-files-panel,
+.correspondence-inbox,.correspondence-modal,.message-modal,.org-area-edit-card,
+.org-area-poster-card,.org-area-subchart-editor,.org-detail-base-card,
+.org-detail-section,.org-edit-section,.section-manager-card,.mission-tile,
+.roadman-card,.guard-emblem-card,.welcome-pro,.empty-state,.performance-table-wrap,
+.report-status-dashboard,.org-node,.org-section-node){
+  background:linear-gradient(145deg,rgba(13,39,60,.82),rgba(8,27,45,.68))!important;
+  border-color:rgba(82,190,225,.24)!important;
+  box-shadow:inset 0 1px 0 rgba(226,248,255,.08),0 14px 34px rgba(0,0,0,.20)!important;
+}
+html[data-theme="dark"] :where(.report-card,.report-status-item,.mission-tile){
+  background:linear-gradient(145deg,rgba(13,39,60,.76),rgba(8,27,45,.60));
+  border-color:rgba(82,190,225,.22);
+}
+html[data-theme="dark"] :where(.performance-table-wrap,.recent-table,.report-table){
+  background:rgba(9,29,47,.56);
+  border-color:rgba(82,190,225,.22);
+}
+@media(max-width:700px){
+  :where(.panel,.stat-card,.area-card,.setting-card,.form-panel,.analytics-card,
+  .profile-card,.radar-card,.quran-card,.private-files-panel,.correspondence-inbox,
+  .org-detail-section,.section-manager-card,.mission-tile,.roadman-card,.welcome-pro){
+    border-radius:15px;
+  }
+}
