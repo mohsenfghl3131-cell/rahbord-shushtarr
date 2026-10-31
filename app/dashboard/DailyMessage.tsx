@@ -22,7 +22,7 @@ export default function DailyMessage({ canEdit = false }: { canEdit?: boolean })
     try{localStorage.setItem(STORAGE_KEY,JSON.stringify(next));setTitle(next.title);setBody(next.body);setEditing(false);}
     catch{window.alert("ذخیره پیام در این مرورگر انجام نشد.");}
   }
-  return <section className="daily-message-card" aria-label="پیام روز">
+  return <section className={"daily-message-card" + (editing ? " is-editing" : "")} aria-label="پیام روز">
     <div className="daily-message-art" aria-hidden="true"><span/><span/><span/></div>
     <div className="daily-message-content">
       <div className="daily-message-kicker"><span>✦</span> پیام روز</div>
