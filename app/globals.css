@@ -2951,3 +2951,34 @@ html[data-theme="light"] .daily-message-card{background:radial-gradient(ellipse 
  .daily-message-art{width:55%;opacity:.55}
 }
 @media(prefers-reduced-motion:reduce){.daily-message-art span{animation:none}}
+
+
+/* Daily message editor and header-matched glass surface */
+.daily-message-card{
+  background:radial-gradient(circle at 15% 25%,rgba(8,174,234,.18),transparent 34%),radial-gradient(circle at 80% 20%,rgba(113,87,255,.12),transparent 28%),linear-gradient(135deg,#ffffff,#eef8ff 58%,#f4f1ff)!important;
+  border:1px solid rgba(119,190,225,.48)!important;
+  box-shadow:0 12px 32px rgba(26,77,133,.09),inset 0 1px 0 rgba(255,255,255,.8)!important;
+}
+.daily-message-content{color:#173b59!important}
+.daily-message-content h2{color:#173b59!important;text-shadow:none!important}
+.daily-message-content p{color:#58758b!important}
+.daily-message-kicker{color:#1570b8!important}
+.daily-message-signature{color:#66879e!important}
+.daily-message-mark{color:rgba(25,126,178,.18)!important}
+.daily-message-edit{position:absolute;z-index:4;top:16px;left:18px;padding:8px 12px!important;border:1px solid rgba(34,139,184,.3)!important;border-radius:10px!important;background:rgba(255,255,255,.52)!important;color:#176184!important;font-size:10px!important;cursor:pointer}
+.daily-message-editor{display:grid;gap:7px;margin-top:12px;max-width:680px}
+.daily-message-editor label{font-size:10px;font-weight:800;color:#28617e}
+.daily-message-editor textarea{width:100%;resize:vertical;min-height:54px;padding:10px 12px;border:1px solid rgba(49,147,190,.3);border-radius:10px;background:rgba(255,255,255,.76);color:#173b59;font:inherit;font-size:12px;line-height:1.9;outline:none}
+.daily-message-editor textarea:focus{border-color:#28a9db;box-shadow:0 0 0 3px rgba(40,169,219,.12)}
+.daily-message-actions{display:flex;gap:8px;margin-top:4px}
+.daily-message-actions button{padding:8px 14px!important;border-radius:9px!important;font-size:10px!important}
+.daily-message-actions button:disabled{opacity:.45;cursor:not-allowed}
+html[data-theme="dark"] .daily-message-card{background:radial-gradient(circle at 15% 25%,rgba(8,174,234,.22),transparent 34%),radial-gradient(circle at 80% 20%,rgba(113,87,255,.16),transparent 28%),linear-gradient(135deg,#102b45,#123e5b 58%,#202b50)!important;border-color:rgba(91,205,245,.38)!important}
+html[data-theme="dark"] .daily-message-content,html[data-theme="dark"] .daily-message-content h2{color:#effaff!important}
+html[data-theme="dark"] .daily-message-content p{color:#c0e5f5!important}
+html[data-theme="dark"] .daily-message-kicker{color:#8ceaff!important}
+html[data-theme="dark"] .daily-message-signature{color:#8bc9e3!important}
+html[data-theme="dark"] .daily-message-edit{background:rgba(255,255,255,.10)!important;color:#dff8ff!important;border-color:rgba(126,224,255,.35)!important}
+html[data-theme="dark"] .daily-message-editor label{color:#a8e9ff}
+html[data-theme="dark"] .daily-message-editor textarea{background:rgba(4,20,36,.72);color:#effaff;border-color:rgba(91,205,245,.35)}
+@media(max-width:760px){.daily-message-edit{top:10px;left:10px;padding:6px 8px!important;font-size:9px!important}.daily-message-content{padding-top:22px}}
