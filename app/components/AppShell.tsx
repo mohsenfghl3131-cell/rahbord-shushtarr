@@ -28,7 +28,7 @@ const nav: readonly NavItem[] = [
   { label: "پایگاه‌ها", href: "/bases", icon: "⌂", roles: [] },
   { label: "دسته‌بندی‌ها", href: "/categories", icon: "▦", roles: ["main_admin", "deputy", "battalion_commander"] },
   { label: "فایل‌ها", href: "/files", icon: "▣", roles: [] },
-  { label: "گزارش‌های تحلیلی", href: "/analytics", icon: "⌁", roles: ["main_admin", "deputy", "battalion_commander", "area_manager"] },
+  { label: "گزارش ماهانه و تحلیلی", href: "/analytics", icon: "⌁", roles: ["main_admin", "deputy", "battalion_commander", "area_manager"] },
   { label: "لاگ‌ها", href: "/audit", icon: "◷", roles: ["main_admin", "deputy", "battalion_commander"] },
   { label: "مدیریت پیام روز", href: "/daily-message", icon: "✦", roles: ["main_admin", "deputy", "battalion_commander"] },
   { label: "تنظیمات", href: "/settings", icon: "⚙", roles: ["main_admin", "deputy", "battalion_commander"] }
@@ -57,7 +57,7 @@ const pageTitles: Record<string, string> = {
   "/bases": "پایگاه‌ها و چارت حوزه‌ها",
   "/categories": "دسته‌بندی‌ها",
   "/files": "فایل‌ها",
-  "/analytics": "گزارش‌های تحلیلی",
+  "/analytics": "گزارش عملکرد ماهانه و تحلیلی",
   "/audit": "لاگ‌های سامانه",
   "/settings": "تنظیمات",
   "/daily-message": "مدیریت پیام روز"
