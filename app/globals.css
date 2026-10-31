@@ -2935,3 +2935,44 @@ html[data-theme="light"] .unified-shell :is(button,input[type="button"],input[ty
 .unified-shell :is(.green-btn,.toggle.on,[data-variant="success"]){
   background:linear-gradient(135deg,rgba(255,255,255,.10),rgba(40,210,145,.13))!important;
 }
+
+
+/* TODAY'S MESSAGE CONTENT — arrange the message text itself horizontally */
+.quran-card:not(.quran-edit) .quran-copy{
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  flex-wrap:nowrap!important;
+  gap:clamp(10px,1.5vw,22px)!important;
+  width:100%;
+  min-width:0;
+}
+.quran-card:not(.quran-edit) .quran-copy>span,
+.quran-card:not(.quran-edit) .quran-copy>blockquote,
+.quran-card:not(.quran-edit) .quran-copy>p,
+.quran-card:not(.quran-edit) .quran-copy>small{
+  margin:0!important;
+  flex:0 1 auto;
+  min-width:0;
+}
+.quran-card:not(.quran-edit) .quran-copy>blockquote{
+  white-space:normal;
+  overflow-wrap:anywhere;
+}
+.quran-card:not(.quran-edit) .quran-copy>p{
+  flex:1 1 auto;
+  overflow-wrap:anywhere;
+}
+@media(max-width:560px){
+  .quran-card:not(.quran-edit) .quran-copy{
+    flex-direction:row!important;
+    flex-wrap:nowrap!important;
+    align-items:center!important;
+    gap:7px!important;
+  }
+  .quran-card:not(.quran-edit) .quran-copy>span{font-size:10px;white-space:nowrap}
+  .quran-card:not(.quran-edit) .quran-copy>blockquote{font-size:12px;line-height:1.6}
+  .quran-card:not(.quran-edit) .quran-copy>p{font-size:11px;line-height:1.6}
+  .quran-card:not(.quran-edit) .quran-copy>small{font-size:9px;white-space:nowrap}
+}
