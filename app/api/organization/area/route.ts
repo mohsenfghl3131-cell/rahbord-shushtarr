@@ -4,6 +4,7 @@ import {getCurrentContext} from "@/lib/auth";
 const db=()=>createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.SUPABASE_SERVICE_ROLE_KEY!);
 const units=["رصد","تولید محتوا","شبکه انتشار","خبر رسانه، رسانه محله","آموزش و مقابله با شایعه"];
 const personnelRoles=["main_admin","deputy","battalion_commander","area_manager"];
+const viewRoles=[...personnelRoles,"area_force"];
 const norm=(s:string)=>s.replace(/^حوزه\s*/,"").replace(/\s+/g," ").replace(/\s*\([^)]*\)/g,"").trim();
 function locate(chart:any,name:string){let a=(chart.areas||[]).find((x:any)=>norm(x.title)===norm(name));if(!a&&name.includes("امام صادق"))a=(chart.areas||[]).find((x:any)=>x.title.includes("امام جعفر صادق"));return a;}
 function shape(a:any){return {...a,successor_name:typeof a.successor_name==="string"?a.successor_name:"",bases:(Array.isArray(a.bases)?a.bases:[]).map((b:any)=>({...b,leader_name:b.leader_name||"",personnel:Array.isArray(b.personnel)?b.personnel.filter((p:any)=>typeof p==="string").slice(0,200):[],units:units.map(title=>{const old=(b.units||[]).find((u:any)=>u.title===title);return {title,leader_name:old?.leader_name||""}})}))};}
@@ -20,7 +21,7 @@ async function resolveArea(ctx:any,id:string,chart:any){
 }
 export async function GET(req:Request){
  const ctx=await getCurrentContext();if(!ctx)return NextResponse.json({message:"ابتدا وارد سامانه شوید."},{status:401});
- if(!personnelRoles.includes(ctx.profile.role))return NextResponse.json({message:"دسترسی مشاهده این ساختار را ندارید."},{status:403});
+ if(!viewRoles.includes(ctx.profile.role))return NextResponse.json({message:"دسترسی مشاهده این ساختار را ندارید."},{status:403});
  const id=new URL(req.url).searchParams.get("areaId");if(!id)return NextResponse.json({message:"شناسه حوزه مشخص نیست."},{status:400});
  const {data:setting,error}=await db().from("site_settings").select("value").eq("key","organization_chart").maybeSingle();
  if(error||!setting?.value)return NextResponse.json({message:"چارت سازمانی پیدا نشد."},{status:404});
