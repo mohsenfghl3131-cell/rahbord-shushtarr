@@ -4075,3 +4075,44 @@ html[data-theme="dark"] .org-subunit-view b{color:#d6edfa}
  .org-area-print-empty{padding:10mm!important;text-align:center!important;color:#7891a4!important;font-size:9pt!important}
  .org-area-print-footer{position:absolute!important;bottom:1mm!important;left:1mm!important;right:1mm!important;display:flex!important;justify-content:space-between!important;padding-top:1.5mm!important;border-top:.5px solid #d7e5ef!important;color:#7890a3!important;font-size:6pt!important}
 }
+
+
+/* Scores workspace: prevent Persian text clipping in cards and controls */
+.scores-page,
+.scores-page *{box-sizing:border-box}
+.scores-page .panel,
+.scores-page .mission-tile,
+.scores-page .area-score,
+.scores-page .score-entry-form,
+.scores-page .score-form-grid label{min-width:0;max-width:100%}
+.scores-page .mission-tile-main{min-width:0;flex-wrap:wrap;align-items:flex-start}
+.scores-page .mission-tile-title{min-width:0;max-width:100%;overflow-wrap:anywhere;word-break:normal}
+.scores-page .mission-tile-title h3,
+.scores-page .mission-tile-title p,
+.scores-page .mission-tile-meta small,
+.scores-page .area-score b,
+.scores-page .area-score>span,
+.scores-page .score-entry-form h3,
+.scores-page .panel-title h2{max-width:100%;overflow-wrap:anywhere;word-break:normal;white-space:normal;line-height:1.9}
+.scores-page .mission-tile-meta{min-width:0;max-width:100%;white-space:normal}
+.scores-page .mission-tile-meta small{max-width:100%;text-align:left}
+.scores-page .mission-export-actions{min-width:0}
+.scores-page .mission-export-button{min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere;line-height:1.7}
+.scores-page .score-form-grid input,
+.scores-page .score-form-grid select,
+.scores-page .score-form-grid textarea{min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere}
+.scores-page .area-score{overflow:hidden}
+.scores-page .area-score>span{line-height:1.9}
+.scores-page .mission-detail-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,245px),1fr))}
+@media(max-width:760px){
+ .scores-page .mission-tile-main{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start}
+ .scores-page .mission-tile-title{grid-column:1;grid-row:1}
+ .scores-page .mission-tile-meta{grid-column:1;grid-row:2;justify-items:start;text-align:right;display:flex;flex-wrap:wrap;align-items:center;gap:7px 10px}
+ .scores-page .mission-chevron{grid-column:2;grid-row:1}
+ .scores-page .mission-tile-meta small{max-width:none;text-align:right}
+ .scores-page .mission-export-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:390px){
+ .scores-page .mission-export-actions{grid-template-columns:minmax(0,1fr)}
+ .scores-page .mission-tile-meta{display:grid;justify-items:start}
+}
