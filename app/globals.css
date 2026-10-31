@@ -2877,37 +2877,6 @@ html[data-theme="light"] .unified-shell :is(.sidebar-logout,.logout-button,.btn-
 }
 
 
-/* TODAY'S MESSAGE — keep the card horizontal on every screen */
-.quran-card{
-  display:flex!important;
-  flex-direction:row!important;
-  align-items:center!important;
-  justify-content:space-between;
-  width:100%;
-  min-width:0;
-  gap:18px;
-}
-.quran-card .quran-copy{
-  flex:1 1 auto;
-  min-width:0;
-  text-align:right;
-}
-.quran-card .quran-edit-btn{
-  flex:0 0 auto;
-  align-self:center;
-  white-space:nowrap;
-}
-@media(max-width:900px){
-  .quran-card{flex-direction:row!important;align-items:center!important}
-}
-@media(max-width:560px){
-  .quran-card{flex-direction:row!important;align-items:center!important;gap:10px;padding:14px}
-  .quran-card .quran-copy blockquote{font-size:clamp(14px,4vw,17px);line-height:1.8;overflow-wrap:anywhere}
-  .quran-card .quran-copy>span{letter-spacing:0}
-  .quran-card .quran-edit-btn{padding:7px 9px;font-size:11px}
-}
-
-
 /* GLOBAL TRANSPARENT GLASS BUTTONS — lighter, see-through finish */
 .unified-shell :is(button,input[type="button"],input[type="submit"],input[type="reset"],a.button,[role="button"],.small-btn,.toggle,.avatar-upload,.avatar-remove,.mission-export-button,.notification-bell,.theme-toggle,.sidebar-collapse,.menu-toggle,.sidebar-logout){
   background:linear-gradient(135deg,rgba(255,255,255,.10),rgba(0,211,255,.075))!important;
@@ -2937,60 +2906,3 @@ html[data-theme="light"] .unified-shell :is(button,input[type="button"],input[ty
 }
 
 
-/* TODAY'S MESSAGE CONTENT — arrange the message text itself horizontally */
-.quran-card:not(.quran-edit) .quran-copy{
-  display:flex!important;
-  flex-direction:row!important;
-  align-items:center!important;
-  justify-content:flex-start!important;
-  flex-wrap:nowrap!important;
-  gap:clamp(10px,1.5vw,22px)!important;
-  width:100%;
-  min-width:0;
-}
-.quran-card:not(.quran-edit) .quran-copy>span,
-.quran-card:not(.quran-edit) .quran-copy>blockquote,
-.quran-card:not(.quran-edit) .quran-copy>p,
-.quran-card:not(.quran-edit) .quran-copy>small{
-  margin:0!important;
-  flex:0 1 auto;
-  min-width:0;
-}
-.quran-card:not(.quran-edit) .quran-copy>blockquote{
-  white-space:normal;
-  overflow-wrap:anywhere;
-}
-.quran-card:not(.quran-edit) .quran-copy>p{
-  flex:1 1 auto;
-  overflow-wrap:anywhere;
-}
-@media(max-width:560px){
-  .quran-card:not(.quran-edit) .quran-copy{
-    flex-direction:row!important;
-    flex-wrap:nowrap!important;
-    align-items:center!important;
-    gap:7px!important;
-  }
-  .quran-card:not(.quran-edit) .quran-copy>span{font-size:10px;white-space:nowrap}
-  .quran-card:not(.quran-edit) .quran-copy>blockquote{font-size:12px;line-height:1.6}
-  .quran-card:not(.quran-edit) .quran-copy>p{font-size:11px;line-height:1.6}
-  .quran-card:not(.quran-edit) .quran-copy>small{font-size:9px;white-space:nowrap}
-}
-
-
-/* RESTORE TODAY'S MESSAGE: horizontal card, readable stacked text */
-.quran-card:not(.quran-edit){display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:space-between!important;gap:18px!important;width:100%!important;min-width:0!important;padding:22px 24px!important}
-.quran-card:not(.quran-edit) .quran-copy{display:flex!important;flex:1 1 auto!important;flex-direction:column!important;align-items:stretch!important;justify-content:center!important;flex-wrap:nowrap!important;gap:0!important;min-width:0!important;width:auto!important;text-align:right!important}
-.quran-card:not(.quran-edit) .quran-copy>span{display:block!important;margin:0 0 7px!important;font-size:12px!important;line-height:1.7!important;letter-spacing:0!important;white-space:normal!important}
-.quran-card:not(.quran-edit) .quran-copy>blockquote{display:block!important;margin:0 0 8px!important;font-size:clamp(17px,2vw,23px)!important;line-height:2!important;font-weight:700!important;white-space:normal!important;overflow-wrap:break-word!important;word-break:normal!important}
-.quran-card:not(.quran-edit) .quran-copy>p{display:block!important;flex:initial!important;margin:0 0 7px!important;font-size:14px!important;line-height:2!important;white-space:normal!important;overflow-wrap:break-word!important;word-break:normal!important}
-.quran-card:not(.quran-edit) .quran-copy>small{display:block!important;margin:0!important;font-size:12px!important;line-height:1.8!important;white-space:normal!important;overflow-wrap:anywhere!important}
-.quran-card:not(.quran-edit) .quran-edit-btn{display:inline-flex!important;flex:0 0 auto!important;align-self:center!important;white-space:nowrap!important}
-@media(max-width:560px){
-.quran-card:not(.quran-edit){flex-direction:row!important;align-items:center!important;gap:10px!important;padding:15px 13px!important}
-.quran-card:not(.quran-edit) .quran-copy>span{font-size:11px!important}
-.quran-card:not(.quran-edit) .quran-copy>blockquote{font-size:16px!important;line-height:1.9!important}
-.quran-card:not(.quran-edit) .quran-copy>p{font-size:12px!important;line-height:1.85!important}
-.quran-card:not(.quran-edit) .quran-copy>small{font-size:10px!important}
-.quran-card:not(.quran-edit) .quran-edit-btn{padding:7px 9px!important;font-size:11px!important}
-}
