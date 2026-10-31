@@ -381,3 +381,70 @@ html[data-theme="light"] .content>.welcome-pro .welcome-orbit strong{
 html[data-theme="light"] .content>.welcome-pro .welcome-orbit small{
  color:#bceeff!important;text-shadow:0 1px 8px rgba(0,15,30,.55)!important;
 }
+
+
+/* FINAL FIX: keep waterfall photo visible behind both themes and force true glass on controls */
+html,body{background:transparent!important}
+body{background-color:transparent!important;position:relative!important;isolation:isolate!important}
+body:before{
+  content:""!important;position:fixed!important;inset:0!important;z-index:0!important;pointer-events:none!important;
+  background-image:linear-gradient(180deg,rgba(3,15,29,.43),rgba(4,22,39,.52) 52%,rgba(3,14,28,.62)),url("https://upload.wikimedia.org/wikipedia/commons/1/15/Shushtar_Historical_Hydraulic_System_2.jpg")!important;
+  background-position:center center!important;background-size:cover!important;background-repeat:no-repeat!important;
+}
+.unified-shell{position:relative!important;z-index:1!important;background:transparent!important}
+.unified-shell .main{background:transparent!important}
+html[data-theme="light"] body:before{
+  background-image:linear-gradient(180deg,rgba(5,25,42,.26),rgba(5,28,46,.34) 52%,rgba(4,22,38,.43)),url("https://upload.wikimedia.org/wikipedia/commons/1/15/Shushtar_Historical_Hydraulic_System_2.jpg")!important;
+}
+/* Explicit high-specificity frosted glass for every real button, including user actions */
+.unified-shell button,
+.unified-shell input[type="button"],
+.unified-shell input[type="submit"],
+.unified-shell input[type="reset"],
+.unified-shell a.button,
+.unified-shell [role="button"],
+.unified-shell .small-btn,
+.unified-shell .user-actions button,
+.unified-shell .user-actions a,
+.unified-shell .quick-actions a,
+.unified-shell .dashboard-shortcuts a,
+.unified-shell .theme-toggle,
+.unified-shell .notification-bell,
+.unified-shell .menu-toggle,
+.unified-shell .sidebar-collapse{
+  -webkit-backdrop-filter:blur(22px) saturate(180%)!important;
+  backdrop-filter:blur(22px) saturate(180%)!important;
+  background:linear-gradient(135deg,rgba(255,255,255,.42),rgba(68,204,245,.22) 52%,rgba(117,135,255,.18)),rgba(18,76,105,.48)!important;
+  border:1px solid rgba(143,231,255,.62)!important;
+  color:#f2fcff!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.42),inset 0 -1px 0 rgba(0,180,230,.16),0 8px 24px rgba(0,18,40,.20),0 0 18px rgba(0,190,255,.14)!important;
+  text-shadow:0 1px 7px rgba(0,20,35,.32)!important;
+}
+html[data-theme="light"] .unified-shell button,
+html[data-theme="light"] .unified-shell input[type="button"],
+html[data-theme="light"] .unified-shell input[type="submit"],
+html[data-theme="light"] .unified-shell input[type="reset"],
+html[data-theme="light"] .unified-shell a.button,
+html[data-theme="light"] .unified-shell [role="button"],
+html[data-theme="light"] .unified-shell .small-btn,
+html[data-theme="light"] .unified-shell .user-actions button,
+html[data-theme="light"] .unified-shell .user-actions a,
+html[data-theme="light"] .unified-shell .quick-actions a,
+html[data-theme="light"] .unified-shell .dashboard-shortcuts a,
+html[data-theme="light"] .unified-shell .theme-toggle,
+html[data-theme="light"] .unified-shell .notification-bell,
+html[data-theme="light"] .unified-shell .menu-toggle,
+html[data-theme="light"] .unified-shell .sidebar-collapse{
+  background:linear-gradient(135deg,rgba(255,255,255,.50),rgba(66,194,231,.22) 52%,rgba(118,135,255,.15)),rgba(213,241,250,.48)!important;
+  border-color:rgba(39,151,190,.55)!important;color:#12415a!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.78),0 8px 22px rgba(17,93,126,.14),0 0 16px rgba(0,160,210,.12)!important;
+  text-shadow:none!important;
+}
+.unified-shell button:hover,.unified-shell a.button:hover,.unified-shell .small-btn:hover,.unified-shell .user-actions a:hover,.unified-shell .user-actions button:hover{
+  border-color:rgba(112,232,255,.9)!important;filter:brightness(1.08);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.52),0 10px 28px rgba(0,25,50,.22),0 0 24px rgba(0,190,255,.22)!important;
+}
+.unified-shell :is(.sidebar-logout,.logout-button,.btn-danger,.button-danger,.red-btn,.avatar-remove,[data-variant="danger"]){
+  background:linear-gradient(135deg,rgba(255,255,255,.30),rgba(255,90,115,.23)),rgba(110,28,48,.55)!important;
+  border-color:rgba(255,143,163,.65)!important;color:#fff0f3!important;
+}
