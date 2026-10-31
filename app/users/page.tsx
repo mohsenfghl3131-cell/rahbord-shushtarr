@@ -20,6 +20,7 @@ export default function Users() {
   const [notice, setNotice] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
   const [busy, setBusy] = useState("");
+  const [deleting, setDeleting] = useState("");
   const [editing, setEditing] = useState<any>(null);
   const [draft, setDraft] = useState({ display_name: "", role: "area_force", area_ids: [] as string[] });
 
@@ -93,6 +94,32 @@ export default function Users() {
     setBusy("");
   }
 
+  async function deleteUser(user: any) {
+    if (user.user_code === "ADMIN001") {
+      setError("حساب اصلی سامانه قابل حذف نیست.");
+      return;
+    }
+    if (!confirm(`کاربر «${user.display_name}» با تمام دسترسی‌هایش حذف شود؟ این عملیات قابل بازگشت نیست.`)) return;
+    setDeleting(user.id);
+    setError("");
+    setNotice("");
+    try {
+      const res = await fetch("/api/users/" + user.id, { method: "DELETE" });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.message || "حذف کاربر انجام نشد.");
+      } else {
+        setUsers(items => items.filter(x => x.id !== user.id));
+        if (editing?.id === user.id) setEditing(null);
+        setNotice("حساب کاربر با موفقیت حذف شد.");
+      }
+    } catch {
+      setError("ارتباط با سرور برقرار نشد؛ دوباره تلاش کنید.");
+    } finally {
+      setDeleting("");
+    }
+  }
+
   function toggleArea(areaId: string) {
     setDraft(current => ({
       ...current,
@@ -140,6 +167,7 @@ export default function Users() {
         {isAdmin && <div className="user-actions">
           {user.user_code !== "ADMIN001" && <button className="small-btn" disabled={busy === user.id} onClick={() => toggleUser(user)}>{busy === user.id ? "…" : user.is_active ? "غیرفعال‌سازی" : "فعال‌سازی"}</button>}
           <button className="small-btn" onClick={() => beginEdit(user)}>ویرایش دسترسی</button>
+          {user.user_code !== "ADMIN001" && <button className="small-btn btn-danger" disabled={deleting === user.id || busy === user.id} onClick={() => deleteUser(user)}>{deleting === user.id ? "در حال حذف…" : "حذف کاربر"}</button>}
         </div>}
       </article>)}</div>
     </section>
