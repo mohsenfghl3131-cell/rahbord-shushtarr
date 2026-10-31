@@ -234,7 +234,9 @@ export default async function Dashboard() {
           <Stat label="کل گزارش‌ها" value={total} tone="blue" note="تمام گزارش‌های فعال" />
           <Stat label="گزارش‌های امروز" value={todayCount} tone="cyan" note="ثبت‌شده از ابتدای امروز" />
           <Stat label="در انتظار بررسی" value={pendingCount} tone="orange" note="نیازمند اقدام" />
-          <Stat label="نرخ تأیید" value={approvalRate} suffix="٪" tone="green" note={reviewRate + "٪ از گزارش‌ها بررسی شده‌اند"} />
+          <Stat label="گزارش‌های ردشده" value={rejectedCount} tone="red" note="گزارش‌های تعیین‌تکلیف‌شده" />
+          <Stat label="نرخ تأیید" value={approvalRate} suffix="٪" tone="green" note="سهم گزارش‌های تأییدشده از کل" />
+          <Stat label="نرخ بررسی" value={reviewRate} suffix="٪" tone="violet" note="سهم گزارش‌های بررسی‌شده از کل" />
         </section>
 
         <section className="dashboard-grid dashboard-grid-pro">
