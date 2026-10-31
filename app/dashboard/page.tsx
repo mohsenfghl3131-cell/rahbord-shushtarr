@@ -233,22 +233,21 @@ export default async function Dashboard() {
         <section className="panel shushtar-map-panel">
           <div className="panel-title">
             <div>
-              <span className="panel-eyebrow">نقشه جغرافیایی شهر</span>
-              <h2>نقشه واقعی شوشتر</h2>
-              <small>نمای خیابان‌ها و محدوده شهری بر پایه نقشه OpenStreetMap</small>
+              <span className="panel-eyebrow">نقشه جغرافیایی شوشتر</span>
+              <h2>نقشه شوشتر</h2>
+              <small>تصویر ثابت نقشه تاریخی شوشتر، منتشرشده در ویکی‌مدیا کامنز</small>
             </div>
-            <a href="https://www.openstreetmap.org/?mlat=32.0497&mlon=48.8484#map=13/32.0497/48.8484" target="_blank" rel="noreferrer">نمایش در نقشه کامل ↗</a>
+            <a href="https://commons.wikimedia.org/wiki/File:ShushtarMAP.jpg" target="_blank" rel="noreferrer">منبع تصویر ↗</a>
           </div>
-          <div className="shushtar-map-frame">
-            <iframe
-              title="نقشه واقعی شهر شوشتر"
-              src="https://www.openstreetmap.org/export/embed.html?bbox=48.7900%2C32.0050%2C48.9100%2C32.0950&layer=mapnik&marker=32.0497%2C48.8484"
+          <div className="shushtar-map-image-wrap">
+            <img
+              className="shushtar-map-image"
+              src="https://commons.wikimedia.org/wiki/Special:FilePath/ShushtarMAP.jpg"
+              alt="نقشه تاریخی شوشتر و سازه‌های آبی تاریخی"
               loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
             />
-            <div className="shushtar-map-caption"><span><i /> مرکز شهر شوشتر</span><span>نقشه تعاملی · قابلیت بزرگ‌نمایی و جابه‌جایی</span></div>
           </div>
-          <p className="shushtar-map-note">این نقشه، نقشه جغرافیایی واقعی شهر است؛ مرزبندی حوزه‌ها تا زمان تأیید محدوده‌های رسمی روی آن نمایش داده نمی‌شود.</p>
+          <p className="shushtar-map-note">منبع: نقشه عمومی یونسکو، سال ۲۰۰۸؛ تصویر صرفاً جهت نمایش است و تعاملی نیست.</p>
         </section>
         <section className="stats">
           <Stat label="کل گزارش‌ها" value={total} tone="blue" note="تمام گزارش‌های فعال" />
