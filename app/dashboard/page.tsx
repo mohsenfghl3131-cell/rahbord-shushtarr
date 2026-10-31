@@ -297,7 +297,7 @@ export default async function Dashboard() {
 
           <section className="panel">
             <div className="panel-title">
-              <div><span className="panel-eyebrow">CATEGORY OVERVIEW</span><h2>دسته‌بندی‌های پرتکرار</h2></div>
+              <div><span className="panel-eyebrow">نمای کلی دسته‌بندی‌ها</span><h2>دسته‌بندی‌های پرتکرار</h2></div>
             </div>
             <div className="area-ranking">
               {categories.length === 0 ? (
@@ -317,7 +317,7 @@ export default async function Dashboard() {
 
           <section className="panel wide">
             <div className="panel-title">
-              <div><span className="panel-eyebrow">RECENT REPORTS</span><h2>آخرین گزارش‌های ثبت‌شده</h2></div>
+              <div><span className="panel-eyebrow">گزارش‌های تازه</span><h2>آخرین گزارش‌های ثبت‌شده</h2></div>
               <Link href="/reports">مشاهده همه ←</Link>
             </div>
             <div className="recent-table">
