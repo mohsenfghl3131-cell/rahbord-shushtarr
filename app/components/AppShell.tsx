@@ -64,11 +64,11 @@ export default function AppShell({ children }: Props) {
   const [me, setMe] = useState<any>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [theme, setTheme] = useState<"light" | "dark">("dark");
 
   useEffect(() => {
     const saved = window.localStorage.getItem("rahbord-theme");
-    const initial = saved === "dark" ? "dark" : "light";
+    const initial = saved === "light" ? "light" : "dark";
     setTheme(initial);
     document.documentElement.dataset.theme = initial;
   }, []);
