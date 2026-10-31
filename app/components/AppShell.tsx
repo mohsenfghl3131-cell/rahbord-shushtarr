@@ -105,6 +105,14 @@ export default function AppShell({ children }: Props) {
     setNotificationsOpen(false);
   }, [pathname]);
 
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => { if (event.key === "Escape") setMobileOpen(false); };
+    document.addEventListener("keydown", onKeyDown);
+    document.body.style.overflow = "hidden";
+    return () => { document.removeEventListener("keydown", onKeyDown); document.body.style.overflow = ""; };
+  }, [mobileOpen]);
+
   const role = me?.profile?.role;
   const visible = nav.filter((item) => !item.roles.length || (role && item.roles.includes(role)) || (item.href === "/reports" && me?.can_review) || (item.href === "/messages" && me?.can_message) || (item.href === "/scores" && (me?.responsible_group_ids?.length > 0)));
 
@@ -152,6 +160,7 @@ export default function AppShell({ children }: Props) {
           className="sidebar-backdrop"
           aria-label="بستن منو"
           onClick={closeMobile}
+          type="button"
         />
       )}
 
@@ -163,6 +172,7 @@ export default function AppShell({ children }: Props) {
             <small>مرکز عملیات و پایش</small>
           </div>
           <span className="brand-status" />
+          <button type="button" className="sidebar-mobile-back" onClick={closeMobile} aria-label="بستن پنل و بازگشت" title="بازگشت به صفحه">→ <span>بازگشت</span></button>
         </div>
 
         <div className="sidebar-controls">
