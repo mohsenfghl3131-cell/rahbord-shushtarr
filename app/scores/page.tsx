@@ -24,6 +24,33 @@ export default function ScoresPage(){
  const pct=(a:number,t:number)=>t>0?Math.round(a/t*100):0;
  const isClosed=(m:any)=>Boolean(m.deadline_at&&new Date(m.deadline_at).getTime()<=Date.now());
  const dateLabel=(v:string)=>v?new Date(v).toLocaleString("fa-IR",{dateStyle:"short",timeStyle:"short"}):"بدون مهلت";
+
+ function safeExportText(value:any){return String(value??"").replace(/[&<>"']/g,(c:string)=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]??c));}
+ function missionExportRows(m:any){
+  return data.areas.map((area:any)=>{
+   const score:any=scoreMap.get(m.id+"_"+area.id),actual=Number(score?.actual_value??0),percent=pct(actual,Number(m.target_value));
+   return {name:area.name,actual,percent,notes:score?.notes??"",submitted:Boolean(score)};
+  });
+ }
+ function exportMissionPdf(m:any){
+  const rows=missionExportRows(m),total=rows.reduce((n:number,r:any)=>n+r.actual,0),overall=pct(total,Number(m.target_value)*Math.max(rows.length,1));
+  const w=window.open("","_blank");
+  if(!w){setError("مرورگر اجازه باز شدن صفحه خروجی را نداد؛ پنجره بازشو را برای این سایت فعال کنید.");return;}
+  const tableRows=rows.map((r:any)=>"<tr><td>"+safeExportText(r.name)+"</td><td>"+r.actual.toLocaleString("fa-IR")+" "+safeExportText(m.unit)+"</td><td>"+r.percent.toLocaleString("fa-IR")+"٪</td><td>"+(r.submitted?"ثبت شده":"ثبت نشده")+"</td><td>"+safeExportText(r.notes||"—")+"</td></tr>").join("");
+  const html="<!doctype html><html lang='fa' dir='rtl'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>گزارش مأموریت - "+safeExportText(m.title)+"</title><style>@page{size:A4;margin:16mm}*{box-sizing:border-box}body{font-family:Tahoma,Arial,sans-serif;color:#172b43;margin:0;direction:rtl}.head{background:#102b46;color:#fff;padding:24px;border-radius:14px}.eyebrow{color:#a9d8ee;font-size:12px}.head h1{font-size:24px;margin:12px 0}.head p{margin:5px 0;color:#d9e9f5}.summary{display:flex;gap:12px;margin:18px 0}.metric{flex:1;border:1px solid #d9e4ed;border-radius:10px;padding:14px}.metric b{display:block;font-size:22px;color:#087e89;margin-bottom:5px}table{width:100%;border-collapse:collapse;margin-top:20px;font-size:12px}th{background:#eaf1f6;color:#16334c}th,td{border:1px solid #d8e1e8;padding:10px;text-align:right;vertical-align:top}.foot{margin-top:22px;color:#63788a;font-size:11px}@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body><header class='head'><div class='eyebrow'>سامانه راهبرد شوشتر · گزارش ارزیابی مأموریت</div><h1>"+safeExportText(m.title)+"</h1><p>بخش: "+safeExportText(m.category_groups?.name||"—")+"</p><p>توضیحات: "+safeExportText(m.description||"—")+"</p></header><section class='summary'><div class='metric'><b>"+overall.toLocaleString("fa-IR")+"٪</b>درصد تحقق کل</div><div class='metric'><b>"+total.toLocaleString("fa-IR")+"</b>مجموع عملکرد ثبت‌شده</div><div class='metric'><b>"+Number(m.target_value).toLocaleString("fa-IR")+"</b>هدف هر حوزه · "+safeExportText(m.unit)+"</div></section><p>مهلت: "+safeExportText(dateLabel(m.deadline_at))+"　 |　 تاریخ تهیه: "+new Date().toLocaleDateString("fa-IR")+"</p><table><thead><tr><th>حوزه</th><th>عملکرد ثبت‌شده</th><th>درصد تحقق</th><th>وضعیت</th><th>توضیحات</th></tr></thead><tbody>"+tableRows+"</tbody></table><div class='foot'>این گزارش بر اساس اطلاعات ثبت‌شده در سامانه راهبرد شوشتر تهیه شده است.</div><script>window.onload=function(){setTimeout(function(){window.print()},350)};<\/script></body></html>";
+  w.document.open();w.document.write(html);w.document.close();
+ }
+ function exportMissionPoster(m:any){
+  const rows=missionExportRows(m),total=rows.reduce((n:number,r:any)=>n+r.actual,0),overall=pct(total,Number(m.target_value)*Math.max(rows.length,1));
+  const rowSvg=rows.slice(0,7).map((r:any,i:number)=>{
+   const y=790+i*66;
+   return "<text x='930' y='"+y+"' text-anchor='end' fill='#e9f4ff' font-size='27'>"+safeExportText(r.name)+"</text><text x='145' y='"+y+"' text-anchor='start' fill='#75e0d1' font-size='25'>"+r.actual.toLocaleString("fa-IR")+" "+safeExportText(m.unit)+" · "+r.percent.toLocaleString("fa-IR")+"٪</text>";
+  }).join("");
+  const more=rows.length>7?"<text x='930' y='1270' text-anchor='end' fill='#9db5c9' font-size='20'>و "+(rows.length-7).toLocaleString("fa-IR")+" حوزه دیگر</text>":"";
+  const svg="<svg xmlns='http://www.w3.org/2000/svg' width='1080' height='1350' viewBox='0 0 1080 1350'><defs><linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#071b31'/><stop offset='1' stop-color='#123f59'/></linearGradient><linearGradient id='accent'><stop stop-color='#27d6c1'/><stop offset='1' stop-color='#54a8ff'/></linearGradient></defs><rect width='1080' height='1350' rx='42' fill='url(#bg)'/><circle cx='930' cy='120' r='210' fill='#1c6680' opacity='.18'/><circle cx='70' cy='1260' r='250' fill='#21b8a5' opacity='.12'/><rect x='58' y='58' width='964' height='1234' rx='34' fill='none' stroke='#6ec8d5' stroke-opacity='.32' stroke-width='2'/><text x='930' y='145' text-anchor='end' fill='#9edee9' font-size='27'>سامانه راهبرد شوشتر</text><text x='930' y='205' text-anchor='end' fill='#d9f4ff' font-size='22'>گزارش تصویری مأموریت</text><rect x='150' y='250' width='780' height='5' rx='3' fill='url(#accent)'/><text x='930' y='355' text-anchor='end' fill='#ffffff' font-size='48' font-weight='bold'>"+safeExportText(m.title)+"</text><text x='930' y='420' text-anchor='end' fill='#b5d0e2' font-size='27'>"+safeExportText(m.category_groups?.name||"بخش")+" · هدف هر حوزه: "+Number(m.target_value).toLocaleString("fa-IR")+" "+safeExportText(m.unit)+"</text><rect x='150' y='475' width='780' height='210' rx='28' fill='#ffffff' fill-opacity='.08' stroke='#8bd8e0' stroke-opacity='.35'/><text x='540' y='555' text-anchor='middle' fill='#a9dbe8' font-size='25'>درصد تحقق مأموریت</text><text x='540' y='635' text-anchor='middle' fill='#ffffff' font-size='76' font-weight='bold'>"+overall.toLocaleString("fa-IR")+"٪</text><text x='930' y='745' text-anchor='end' fill='#7fe2d3' font-size='26'>عملکرد حوزه‌ها</text>"+rowSvg+more+"<text x='930' y='1225' text-anchor='end' fill='#a8c1d2' font-size='19'>تاریخ تهیه: "+new Date().toLocaleDateString("fa-IR")+"</text><text x='150' y='1225' text-anchor='start' fill='#a8c1d2' font-size='19'>راهبرد شوشتر</text></svg>";
+  const blob=new Blob([svg],{type:"image/svg+xml;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=url;a.download="poster-mission-"+String(m.title||"mission").replace(/[^\u0600-\u06FF\w-]+/g,"-")+".svg";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+ }
  async function createMission(e:any){
   e.preventDefault();setSaving("mission");setError("");setNotice("");
   try{
@@ -78,7 +105,7 @@ export default function ScoresPage(){
        <span className="mission-chevron">{selectedId===m.id?"−":"+"}</span>
       </button>
       <div className="score-progress"><span style={{width:Math.min(overall,100)+"%"}}/></div>
-      {isLeader&&<button type="button" className="mission-delete" disabled={saving==="delete"} onClick={()=>deleteMission(m)}>حذف مأموریت</button>}
+      <div className="mission-export-actions"><button type="button" className="button neon-button mission-export-button" onClick={()=>exportMissionPdf(m)}>خروجی PDF</button><button type="button" className="button mission-export-button mission-poster-button" onClick={()=>exportMissionPoster(m)}>دریافت پوستر</button></div>\n      {isLeader&&<button type="button" className="mission-delete" disabled={saving==="delete"} onClick={()=>deleteMission(m)}>حذف مأموریت</button>}
      </article>;
     })}</div>}
   </section>
