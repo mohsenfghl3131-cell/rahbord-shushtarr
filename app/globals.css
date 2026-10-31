@@ -4197,37 +4197,39 @@ html[data-theme="dark"] .org-subunit-view b{color:#d6edfa}
 @media(max-width:700px){.shushtar-map-image-wrap{border-radius:10px}.shushtar-map-image{max-height:390px}}
 
 
-/* Shushtar waterfall background — separate desktop/mobile art direction */
-html[data-theme="dark"] .app-shell{
-  background:
-    linear-gradient(180deg,rgba(3,13,27,.62),rgba(3,13,27,.72)),
-    url("https://commons.wikimedia.org/wiki/Special:FilePath/Shushtar_ancient_hydraulic_system.jpg") center 46%/cover fixed no-repeat!important;
+/* Shushtar waterfall photo background — visible beneath translucent panels */
+html,body{min-height:100%;background:#071729!important}
+.app-shell.unified-shell{
+  min-height:100vh;
+  background-image:
+    linear-gradient(180deg,rgba(3,13,27,.48),rgba(3,13,27,.66)),
+    url("https://commons.wikimedia.org/wiki/Special:FilePath/Shushtar_Abshar.JPG")!important;
+  background-position:center 45%!important;
+  background-size:cover!important;
+  background-repeat:no-repeat!important;
+  background-attachment:fixed!important;
 }
-html[data-theme="light"] .app-shell,
-html:not([data-theme="dark"]) .app-shell{
-  background:
-    linear-gradient(180deg,rgba(231,243,251,.64),rgba(235,244,250,.76)),
-    url("https://commons.wikimedia.org/wiki/Special:FilePath/Shushtar_ancient_hydraulic_system.jpg") center 46%/cover fixed no-repeat!important;
+html[data-theme="light"] .app-shell.unified-shell,
+html:not([data-theme="dark"]) .app-shell.unified-shell{
+  background-image:
+    linear-gradient(180deg,rgba(231,243,251,.48),rgba(235,244,250,.62)),
+    url("https://commons.wikimedia.org/wiki/Special:FilePath/Shushtar_Abshar.JPG")!important;
 }
-html[data-theme="dark"] .main,
-html[data-theme="dark"] .content,
-html[data-theme="dark"] .shell,
-html[data-theme="light"] .main,
-html[data-theme="light"] .content,
-html[data-theme="light"] .shell,
-html:not([data-theme="dark"]) .main,
-html:not([data-theme="dark"]) .content,
-html:not([data-theme="dark"]) .shell{background:transparent!important}
+.app-shell.unified-shell>.main,
+.app-shell.unified-shell .content{background:transparent!important}
 @media(max-width:700px){
-  html[data-theme="dark"] .app-shell{
-    background:
-      linear-gradient(180deg,rgba(3,13,27,.66),rgba(3,13,27,.78)),
-      url("https://commons.wikimedia.org/wiki/Special:FilePath/Shushtar_Historical_Hydraulic_System_Darafsh_(55).jpg") center 42%/cover fixed no-repeat!important;
+  .app-shell.unified-shell{
+    background-image:
+      linear-gradient(180deg,rgba(3,13,27,.52),rgba(3,13,27,.68)),
+      url("https://commons.wikimedia.org/wiki/Special:FilePath/Shushtar_Historical_Hydraulic_System_Darafsh_(55).jpg")!important;
+    background-position:center 42%!important;
+    background-size:cover!important;
+    background-attachment:scroll!important;
   }
-  html[data-theme="light"] .app-shell,
-  html:not([data-theme="dark"]) .app-shell{
-    background:
-      linear-gradient(180deg,rgba(231,243,251,.62),rgba(235,244,250,.76)),
-      url("https://commons.wikimedia.org/wiki/Special:FilePath/Shushtar_Historical_Hydraulic_System_Darafsh_(55).jpg") center 42%/cover fixed no-repeat!important;
+  html[data-theme="light"] .app-shell.unified-shell,
+  html:not([data-theme="dark"]) .app-shell.unified-shell{
+    background-image:
+      linear-gradient(180deg,rgba(231,243,251,.5),rgba(235,244,250,.64)),
+      url("https://commons.wikimedia.org/wiki/Special:FilePath/Shushtar_Historical_Hydraulic_System_Darafsh_(55).jpg")!important;
   }
 }
