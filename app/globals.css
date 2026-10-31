@@ -2875,3 +2875,34 @@ html[data-theme="light"] .unified-shell :is(.sidebar-logout,.logout-button,.btn-
   background:linear-gradient(135deg,rgba(255,255,255,.75),rgba(255,110,130,.18)),rgba(255,235,239,.82)!important;
   border-color:rgba(220,80,105,.42)!important;color:#9c2941!important;
 }
+
+
+/* TODAY'S MESSAGE — keep the card horizontal on every screen */
+.quran-card{
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  justify-content:space-between;
+  width:100%;
+  min-width:0;
+  gap:18px;
+}
+.quran-card .quran-copy{
+  flex:1 1 auto;
+  min-width:0;
+  text-align:right;
+}
+.quran-card .quran-edit-btn{
+  flex:0 0 auto;
+  align-self:center;
+  white-space:nowrap;
+}
+@media(max-width:900px){
+  .quran-card{flex-direction:row!important;align-items:center!important}
+}
+@media(max-width:560px){
+  .quran-card{flex-direction:row!important;align-items:center!important;gap:10px;padding:14px}
+  .quran-card .quran-copy blockquote{font-size:clamp(14px,4vw,17px);line-height:1.8;overflow-wrap:anywhere}
+  .quran-card .quran-copy>span{letter-spacing:0}
+  .quran-card .quran-edit-btn{padding:7px 9px;font-size:11px}
+}
