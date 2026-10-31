@@ -81,7 +81,6 @@ export default function AnalyticsPage() {
     const total=data.total??0;
     const approvalPct=total?Math.round(approved/total*100):0;
     const pendingPct=total?Math.round(pending/total*100):0;
-    const rejectedPct=total?Math.max(0,100-approvalPct-pendingPct):0;
     const statusGradient='conic-gradient(#12a879 0 '+approvalPct+'%,#e9a43b '+approvalPct+'% '+(approvalPct+pendingPct)+'%,#df6472 '+(approvalPct+pendingPct)+'% 100%)';
     const rankingRows=areas.length?areas.map((area,index)=>'<tr><td class="rank">'+fmt(index+1)+'</td><td>'+escapeHtml(area.name)+'</td><td><div class="mini-track"><i style="width:'+Math.max(0,area.count/maxArea*100)+'%"></i></div></td><td class="num">'+fmt(area.count)+'</td></tr>').join(""):'<tr><td colspan="4" class="empty">داده‌ای برای این بازه وجود ندارد.</td></tr>';
     const period=range==="custom"?(from||"ابتدا")+" تا "+(to||"امروز"):({ "7":"۷ روز گذشته","30":"۳۰ روز گذشته","90":"۹۰ روز گذشته","all":"تمام بازه‌ها" } as Record<string,string>)[range]||"بازه انتخاب‌شده";
@@ -129,7 +128,7 @@ export default function AnalyticsPage() {
           <div className="review-legend"><span><i className="approved-dot"/>تأیید شده <b>{fmt(approved)}</b></span><span><i className="pending-dot"/>در انتظار <b>{fmt(pending)}</b></span><span><i className="rejected-dot"/>رد شده <b>{fmt(rejected)}</b></span></div>
         </section>
       </div>
-      <section className="panel analytics-ranking"><div className="panel-title"><div><span className="panel-eyebrow">AREA PERFORMANCE</span><h2>مقایسه عملکرد حوزه‌ها</h2></div><div className="analytics-export-actions"><button className="small-btn pdf-export-btn" type="button" onClick={exportPdf}>⬇ دریافت گزارش حرفه‌ای PDF</button><button className="small-btn" type="button" onClick={exportCsv}>خروجی اکسل‌خوان (CSV) ↓</button></div></div>
+      <section className="panel analytics-ranking"><div className="panel-title"><div><span className="panel-eyebrow">AREA PERFORMANCE</span><h2>مقایسه عملکرد حوزه‌ها</h2></div><div className="analytics-export-actions"><button className="small-btn pdf-export-btn" type="button" onClick={exportPdf} style={{background:"linear-gradient(120deg,#123e68,#087ea8)",color:"#fff",border:"1px solid #1a789f",boxShadow:"0 5px 14px rgba(8,126,168,.18)"}}>⬇ دریافت گزارش حرفه‌ای PDF</button><button className="small-btn" type="button" onClick={exportCsv}>خروجی اکسل‌خوان (CSV) ↓</button></div></div>
         {areas.length===0?<div className="empty-state">در این بازه گزارشی برای مقایسه وجود ندارد.</div>:areas.map((area,index)=><div className="analytics-rank-row" key={area.name}><b className="rank-number">{fmt(index+1)}</b><span>{area.name}</span><div className="bar"><i style={{width:(area.count/maxArea*100)+"%"}}/></div><strong>{fmt(area.count)}</strong></div>)}
       </section>
     </>}
