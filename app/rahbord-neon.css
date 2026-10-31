@@ -234,3 +234,65 @@ html[data-theme="light"] .unified-shell .content>.quran-card .quran-edit-btn{col
 html[data-theme="light"] body:before{
  background:linear-gradient(180deg,rgba(4,20,35,.55),rgba(5,27,45,.58) 48%,rgba(4,18,32,.66)),url("https://upload.wikimedia.org/wikipedia/commons/1/15/Shushtar_Historical_Hydraulic_System_2.jpg") center center/cover no-repeat!important;
 }
+
+
+/* THEME-AWARE TYPOGRAPHY — consistent readable text in light and dark modes */
+html[data-theme="dark"]{
+ --rb-text:#eaf5ff;
+ --rb-heading:#f5fbff;
+ --rb-muted:#a8c0d3;
+ --rb-subtle:#829db3;
+ --rb-link:#55dafa;
+ --rb-border:rgba(83,174,216,.24);
+}
+html[data-theme="light"]{
+ --rb-text:#203b50;
+ --rb-heading:#102d43;
+ --rb-muted:#526d80;
+ --rb-subtle:#6e8798;
+ --rb-link:#087da5;
+ --rb-border:rgba(30,111,145,.18);
+}
+html[data-theme="dark"] body{color:var(--rb-text)}
+html[data-theme="light"] body{color:var(--rb-text);background:#edf5fa}
+html[data-theme="dark"] :is(.content,.main,.panel,.card,.form-panel,.setting-card,.user-card,.area-card){color:var(--rb-text)}
+html[data-theme="light"] :is(.content,.main,.panel,.card,.form-panel,.setting-card,.user-card,.area-card){color:var(--rb-text)}
+/* Headings and primary content */
+:where(h1,h2,h3,h4,h5,h6,.panel-title b,.panel-title strong,.section-title,.page-title){
+ color:var(--rb-heading);
+}
+html[data-theme="light"] :where(.unified-header,.sidebar,.sidebar nav,.sidebar-profile){
+ color:#17364d;
+}
+html[data-theme="light"] .unified-header :where(b,strong,.header-context b){color:#15364e!important}
+html[data-theme="light"] .sidebar :where(.brand-copy b,.sidebar-user,.sidebar nav a){color:#23465d}
+html[data-theme="light"] .sidebar :where(.brand-copy small,.sidebar-user small,.sidebar-section>span){color:#647f91}
+html[data-theme="light"] .sidebar nav a.active{color:#075b7b!important}
+/* Supporting labels, descriptions, timestamps and helper text */
+:where(.muted,.text-muted,.description,.help-text,.field-hint,.panel-eyebrow,.welcome-meta,.stat-card small,.stat-card span,.recent-row small,.recent-row time,.area-rank-main small,.form-hint){
+ color:var(--rb-muted);
+}
+html[data-theme="light"] :where(.content p,.content li,.content label,.content dt,.content dd,.content td,.content th,.content small,.content time,.content .recent-row,.content .report-row,.content .audit-row){
+ color:var(--rb-text);
+}
+html[data-theme="light"] :where(.content small,.content time,.content .muted,.content .description,.content .help-text,.content .field-hint){color:var(--rb-muted)}
+html[data-theme="dark"] :where(.content p,.content li,.content label,.content dt,.content dd,.content td,.content th,.content small,.content time){color:inherit}
+/* Links remain distinct without sacrificing contrast */
+html[data-theme="light"] a:not(.button):not(.small-btn):not(.sidebar-logout){color:var(--rb-link)}
+html[data-theme="dark"] a:not(.button):not(.small-btn):not(.sidebar-logout){color:var(--rb-link)}
+/* Tables, list rows and separators */
+html[data-theme="light"] :where(table,th,td,.report-row,.recent-row,.audit-row,.area-rank){border-color:var(--rb-border)}
+html[data-theme="light"] :where(th){color:#254b63;background:rgba(22,139,177,.07)}
+html[data-theme="light"] :where(tr:hover,.recent-row:hover){background:rgba(0,145,190,.055)}
+/* Form text and placeholders */
+html[data-theme="light"] :where(input,select,textarea){color:#19384e!important;background:rgba(255,255,255,.9)!important;border-color:rgba(40,116,148,.28)!important}
+html[data-theme="light"] :where(input,textarea)::placeholder{color:#8296a5!important;opacity:1}
+html[data-theme="dark"] :where(input,select,textarea)::placeholder{color:#8faabd!important;opacity:1}
+/* Light theme glass cards: dark ink on pale translucent surfaces */
+html[data-theme="light"] :where(.stat-card,.dashboard-grid-pro>.panel,.quick-actions a,.user-card,.area-card,.form-panel,.setting-card,.quran-card,.command-status-strip){
+ color:#203b50;
+}
+html[data-theme="light"] :where(.stat-card strong,.panel-title h2,.quick-actions b,.recent-row b,.area-rank-main strong,.report-status-total strong){color:#12364d!important;text-shadow:none!important}
+html[data-theme="light"] .content>.welcome-pro :where(h1,.welcome-kicker,.welcome-meta span,p){color:#f5fbff!important}
+html[data-theme="light"] .content>.quran-card :where(.quran-copy blockquote,.quran-copy p,.quran-copy small,.quran-copy>span){color:#f4fbff!important}
+html[data-theme="light"] .content>.quran-card .quran-edit-btn{color:#16445d!important}
