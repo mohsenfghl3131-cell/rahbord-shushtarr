@@ -2863,3 +2863,18 @@ html[data-theme="light"] .unified-shell :is(button,input[type="button"],input[ty
 }
 
 
+
+
+/* Desktop sidebar: keep navigation scrollable between fixed header and profile */
+@media(min-width:761px){
+ .unified-shell>.sidebar{height:100vh!important;max-height:100vh!important;overflow:hidden!important;display:flex!important;flex-direction:column!important}
+ .unified-shell>.sidebar .sidebar-scroll{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:rgba(63,177,218,.55) transparent}
+ .unified-shell>.sidebar .sidebar-profile{flex:0 0 auto!important}
+}
+/* Universal previous-page control */
+.unified-shell .header-back-button{display:inline-flex;align-items:center;justify-content:center;gap:6px;flex:0 0 auto;min-height:38px;padding:0 12px!important;border-radius:11px!important;font:700 11px Vazirmatn,Tahoma,sans-serif!important;white-space:nowrap;cursor:pointer}
+.unified-shell .header-back-button span{font-size:10px}
+@media(max-width:760px){
+ .unified-shell .header-back-button{width:34px!important;min-width:34px!important;height:36px!important;min-height:36px!important;padding:0!important;font-size:17px!important}
+ .unified-shell .header-back-button span{display:none!important}
+}
