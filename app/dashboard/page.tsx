@@ -197,7 +197,7 @@ export default async function Dashboard() {
               <span className="online-dot" />
               سامانه عملیاتی فعال
             </div>
-            <h1>مرکز فرماندهی راهبرد</h1>
+            <h1>سامانه راهبرد شوشتر</h1>
             <p>نمای کلی عملکرد، گزارش‌ها و فعالیت‌های سامانه در یک نگاه.</p>
             <div className="welcome-meta">
               <span>
