@@ -218,6 +218,19 @@ export default async function Dashboard() {
           </div>
         </section>
 
+        <section className="command-status-strip" aria-label="وضعیت عملیاتی سامانه">
+          <div className="command-status-heading">
+            <span><i className="command-pulse" /> نمای عملیاتی</span>
+            <small>شاخص‌ها بر اساس اطلاعات ثبت‌شده در سامانه</small>
+          </div>
+          <div className="command-status-items">
+            <div><span className="command-status-icon">⌁</span><span>گزارش‌های نیازمند بررسی</span><b>{pendingCount.toLocaleString("fa-IR")}</b></div>
+            <div><span className="command-status-icon">✓</span><span>نرخ رسیدگی به گزارش‌ها</span><b>{reviewRate.toLocaleString("fa-IR")}٪</b></div>
+            <div><span className="command-status-icon">⌖</span><span>حوزه‌های دارای گزارش</span><b>{areaMap.size.toLocaleString("fa-IR")}</b></div>
+            <div><span className="command-status-icon">▥</span><span>گزارش‌های ۷ روز اخیر</span><b>{currentWeekCount.toLocaleString("fa-IR")}</b></div>
+          </div>
+        </section>
+
         <section className="stats">
           <Stat label="کل گزارش‌ها" value={total} tone="blue" note="تمام گزارش‌های فعال" />
           <Stat label="گزارش‌های امروز" value={todayCount} tone="cyan" note="ثبت‌شده از ابتدای امروز" />
