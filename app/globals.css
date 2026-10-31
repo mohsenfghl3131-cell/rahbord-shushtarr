@@ -3721,3 +3721,12 @@ html[data-theme="dark"] .daily-message-card{
 @media(prefers-reduced-motion:reduce){
   :where(.unified-shell,body) :is(button,input[type="button"],input[type="submit"],input[type="reset"],a.button,a.btn,[role="button"],.org-add,.org-remove,.mission-export-button,.force-area-card,.theme-toggle,.notification-bell,.sidebar-collapse,.menu-toggle,.header-back-button,.sidebar-logout,.avatar-upload,.avatar-remove,.toggle){transition:none!important}
 }
+
+
+/* Responsibilities of each base are visible on the main organization chart */
+.org-area-base-responsibilities{display:grid;gap:9px;margin:12px 0 4px;text-align:right}
+.org-area-base-responsibility{display:grid;gap:5px;padding:10px 12px;border:1px solid rgba(75,177,235,.24);border-radius:12px;background:rgba(40,130,190,.07)}
+.org-area-base-responsibility>b{font-size:.9rem;color:var(--text-primary,#dceeff)}
+.org-area-base-responsibility>span{font-size:.78rem;line-height:1.65;color:var(--text-secondary,#9bb4ca)}
+.org-area-open-hint{display:inline-flex;margin-top:10px}
+@media print{.org-area-base-responsibilities{display:none!important}}
