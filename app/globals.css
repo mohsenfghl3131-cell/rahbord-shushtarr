@@ -3507,3 +3507,51 @@ html[data-theme="dark"] .daily-message-card{
 .org-base-personnel-view{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;padding-top:9px;border-top:1px solid rgba(120,150,175,.22)}
 .org-base-personnel-view>b{width:100%;font-size:10px;color:var(--text-secondary,#9bb4ca)}
 .org-base-personnel-view>span{padding:5px 8px;border:1px solid rgba(100,160,190,.25);border-radius:7px;font-size:10px}
+
+
+/* Reliable A4 PDF for the complete area/base directory */
+@media print{
+  @page{size:A4 portrait;margin:12mm}
+  html,body{background:#fff!important;color:#172f49!important}
+  body:has(.bases-hub){-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body:has(.bases-hub) .bases-print-document{
+    display:block!important;position:static!important;inset:auto!important;
+    width:100%!important;max-width:none!important;min-height:0!important;
+    overflow:visible!important;visibility:visible!important;
+    color:#172f49!important;background:#fff!important;
+  }
+  body:has(.bases-hub) .bases-print-document *{visibility:visible!important}
+  .bases-print-document>header{display:block!important;text-align:center!important;margin:0 0 12mm!important;padding:0 0 7mm!important}
+  .bases-print-document>header h2{font-size:18pt!important;line-height:1.7!important}
+  .bases-print-document>header p{font-size:10pt!important}
+  .bases-print-area{
+    display:block!important;position:static!important;overflow:visible!important;
+    break-inside:auto!important;page-break-inside:auto!important;
+    margin:0 0 8mm!important;padding:5mm!important;
+    border:1.2px solid #9bb8cc!important;border-radius:3mm!important;
+    background:#fff!important;color:#172f49!important;
+  }
+  .bases-print-area+.bases-print-area{break-before:page!important;page-break-before:always!important}
+  .bases-print-area h3{
+    display:block!important;margin:0 0 3mm!important;padding:0 0 2.5mm!important;
+    border-bottom:2px solid #258bb8!important;color:#104f78!important;
+    font-size:15pt!important;line-height:1.8!important;
+  }
+  .bases-print-leader{display:block!important;margin:0 0 4mm!important;font-size:10pt!important;line-height:1.8!important;color:#314f68!important}
+  .bases-print-grid{display:grid!important;grid-template-columns:1fr!important;gap:3mm!important}
+  .bases-print-base{
+    display:block!important;position:static!important;overflow:visible!important;
+    break-inside:avoid!important;page-break-inside:avoid!important;
+    padding:3.5mm!important;border:1px solid #c8d8e4!important;
+    border-radius:2mm!important;background:#f7fafc!important;
+  }
+  .bases-print-base h4{font-size:11pt!important;line-height:1.8!important;color:#104f78!important;margin:0 0 1.5mm!important}
+  .bases-print-base p{font-size:9pt!important;line-height:1.7!important;margin:0 0 2mm!important;color:#314f68!important}
+  .bases-print-units{display:grid!important;grid-template-columns:1fr!important;gap:1mm!important}
+  .bases-print-units>div{display:flex!important;justify-content:space-between!important;gap:4mm!important;padding:1.2mm 0!important;border-top:1px solid #dce6ed!important;font-size:8.5pt!important;line-height:1.6!important}
+  .bases-print-units span,.bases-print-units b{color:#294b63!important}
+  .bases-print-personnel{display:flex!important;flex-wrap:wrap!important;gap:1.5mm!important;margin-top:2mm!important;font-size:8.5pt!important}
+  .bases-print-personnel>b{flex:0 0 100%!important;color:#214e6b!important}
+  .bases-print-personnel span{padding:1mm 2mm!important;border:1px solid #d6e3eb!important;border-radius:1mm!important;background:#edf4f8!important}
+  .bases-print-document footer{display:block!important;text-align:center!important;font-size:8pt!important;color:#617b91!important;padding:5mm 0 0!important}
+}
