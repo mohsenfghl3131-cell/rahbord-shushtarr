@@ -2,7 +2,7 @@ import {NextResponse} from "next/server";
 import {createClient} from "@supabase/supabase-js";
 import {getCurrentContext} from "@/lib/auth";
 
-const roles=["main_admin","deputy","battalion_commander","area_manager","area_force"];
+const roles=["main_admin","deputy","battalion_commander","area_manager","area_force","section_manager"];
 const managerRoles=["main_admin","deputy","battalion_commander"];
 
 function db(){
@@ -46,6 +46,7 @@ export async function POST(request:Request){
   const displayName=String(b.display_name??"").trim();
   const password=String(b.password??"");
   const role=String(b.role??"area_force");
+  const groupIds: string[] = Array.isArray(b.group_ids) ? Array.from(new Set(b.group_ids.filter((x: unknown): x is string => typeof x === "string" && x.trim()).map((x: string) => x.trim()))) : [];
   const areaIds: string[] = Array.isArray(b.area_ids)
     ? Array.from(
         new Set(
@@ -56,6 +57,8 @@ export async function POST(request:Request){
       )
     : [];
 
+  if(role==="section_manager" && groupIds.length===0) return NextResponse.json({message:"برای مسئول بخش حداقل یک بخش انتخاب کنید."},{status:400});
+  if(role==="section_manager" && areaIds.length>0) return NextResponse.json({message:"مسئول بخش نباید به حوزه‌ای متصل باشد."},{status:400});
   if(!userCode||!displayName||password.length<8||!roles.includes(role)){
     return NextResponse.json({message:"کد کاربری، نام، رمز عبور یا نقش معتبر نیست."},{status:400});
   }
@@ -100,6 +103,10 @@ export async function POST(request:Request){
   }
 
   const userId=created.user.id;
+  if(groupIds.length){
+    const {data:validGroups,error:groupCheckError}=await admin.from("category_groups").select("id").in("id",groupIds).eq("is_active",true);
+    if(groupCheckError || (validGroups??[]).length!==groupIds.length){ await admin.auth.admin.deleteUser(userId); return NextResponse.json({message:"یک یا چند بخش انتخاب‌شده معتبر نیست."},{status:400}); }
+  }
 
   const {error:profileError}=await admin
     .from("profiles")
@@ -143,6 +150,11 @@ export async function POST(request:Request){
     }
   }
 
+  if(groupIds.length){
+    const {error:groupError}=await admin.from("category_group_responsibles").insert(groupIds.map(group_id=>({user_id:userId,group_id})));
+    if(groupError){ await admin.from("user_area_access").delete().eq("user_id",userId); await admin.from("profiles").delete().eq("id",userId); await admin.auth.admin.deleteUser(userId); return NextResponse.json({message:"تخصیص بخش به مسئول ثبت نشد."},{status:500}); }
+  }
+
   const {error:auditError}=await admin
     .from("audit_logs")
     .insert({
@@ -150,7 +162,7 @@ export async function POST(request:Request){
       action:"user.create",
       entity_type:"profile",
       entity_id:userId,
-      metadata:{user_code:userCode,role,area_ids:areaIds}
+      metadata:{user_code:userCode,role,area_ids:areaIds,group_ids:groupIds}
     });
 
   if(auditError){
