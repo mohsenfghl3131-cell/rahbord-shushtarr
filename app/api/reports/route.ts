@@ -43,13 +43,16 @@ export async function GET(request:Request){
   if(q)query=query.or("title.ilike.%"+q+"%,body.ilike.%"+q+"%");
   if(status)query=query.eq("status",status);
   if(category)query=query.eq("category_id",category);
+  if(sectionScoped && category && !responsibleCategoryIds.includes(category)) return NextResponse.json({message:"دسترسی به گزارش این بخش مجاز نیست."},{status:403});
 
   if(!privileged && !mine){
     if(area){
+      if(sectionScoped && !responsibleCategoryIds.length) return NextResponse.json({reports:[]});
       if((ctx.profile.role==="area_manager"||ctx.profile.role==="area_force") && !canUseArea(ctx,area)){
         return NextResponse.json({message:"دسترسی به این حوزه مجاز نیست."},{status:403});
       }
       query=query.eq("area_id",area);
+      if(sectionScoped) query=query.in("category_id",responsibleCategoryIds.length ? responsibleCategoryIds : ["00000000-0000-0000-0000-000000000000"]);
     }else{
       const areaScoped=ctx.profile.role==="area_manager"||ctx.profile.role==="area_force";
       const hasAreas=areaScoped && ctx.areaIds.length>0;
