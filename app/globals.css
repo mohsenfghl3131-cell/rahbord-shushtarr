@@ -4292,3 +4292,58 @@ html:not([data-theme="dark"]) .app-shell.unified-shell{
   body:has(.org-poster) .org-areas-poster{display:none!important}
   body:has(.org-poster) .org-poster-foot{display:none!important}
 }
+
+
+/* LIGHT THEME ACCESSIBILITY — brighter glass buttons and readable labels */
+html[data-theme="light"] .unified-shell,
+html:not([data-theme="dark"]) .unified-shell{
+  --light-control-text:#123451;
+  --light-control-border:rgba(30,111,170,.24);
+}
+html[data-theme="light"] .unified-shell :is(button,input[type="button"],input[type="submit"],input[type="reset"],a.button,a.btn,.button,.btn,.small-btn,[role="button"]),
+html:not([data-theme="dark"]) .unified-shell :is(button,input[type="button"],input[type="submit"],input[type="reset"],a.button,a.btn,.button,.btn,.small-btn,[role="button"]){
+  color:#123451!important;
+  border:1px solid rgba(28,125,181,.28)!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.97),rgba(224,243,255,.94))!important;
+  box-shadow:0 5px 15px rgba(27,91,143,.12),inset 0 1px 0 rgba(255,255,255,.95)!important;
+  text-shadow:none!important;
+  font-weight:800!important;
+  opacity:1!important;
+}
+html[data-theme="light"] .unified-shell :is(.button,.btn,.primary,.btn-primary,.submit-button),
+html:not([data-theme="dark"]) .unified-shell :is(.button,.btn,.primary,.btn-primary,.submit-button),
+html[data-theme="light"] .unified-shell :is(button[type="submit"],input[type="submit"]),
+html:not([data-theme="dark"]) .unified-shell :is(button[type="submit"],input[type="submit"]){
+  color:#fff!important;
+  border-color:rgba(20,111,205,.5)!important;
+  background:linear-gradient(115deg,#087acb,#1769e8 58%,#397cf4)!important;
+  box-shadow:0 7px 19px rgba(23,105,232,.22),inset 0 1px 0 rgba(255,255,255,.28)!important;
+}
+html[data-theme="light"] .unified-shell :is(.red-btn,.danger,.btn-danger,.delete-button),
+html:not([data-theme="dark"]) .unified-shell :is(.red-btn,.danger,.btn-danger,.delete-button){
+  color:#a91f2c!important;background:linear-gradient(145deg,#fff5f5,#ffe2e5)!important;border-color:#f2b8c0!important;
+}
+html[data-theme="light"] .unified-shell :is(.green-btn,.success,.btn-success),
+html:not([data-theme="dark"]) .unified-shell :is(.green-btn,.success,.btn-success){
+  color:#087447!important;background:linear-gradient(145deg,#f1fff7,#d9f8e8)!important;border-color:#a8e5c3!important;
+}
+html[data-theme="light"] .unified-shell :is(button,a.button,a.btn,.button,.btn,.small-btn,[role="button"]):hover,
+html:not([data-theme="dark"]) .unified-shell :is(button,a.button,a.btn,.button,.btn,.small-btn,[role="button"]):hover{
+  filter:brightness(1.035)!important;transform:translateY(-1px);
+}
+html[data-theme="light"] .unified-shell :is(button,a.button,a.btn,.button,.btn,.small-btn,[role="button"]):focus-visible,
+html:not([data-theme="dark"]) .unified-shell :is(button,a.button,a.btn,.button,.btn,.small-btn,[role="button"]):focus-visible{
+  outline:3px solid rgba(14,145,220,.28)!important;outline-offset:2px!important;
+}
+html[data-theme="light"] .unified-shell :is(button,a.button,a.btn,.button,.btn,.small-btn,[role="button"]):disabled,
+html:not([data-theme="dark"]) .unified-shell :is(button,a.button,a.btn,.button,.btn,.small-btn,[role="button"]):disabled{
+  opacity:.58!important;filter:grayscale(.12)!important;
+}
+html[data-theme="light"] .unified-shell .theme-toggle,
+html:not([data-theme="dark"]) .unified-shell .theme-toggle,
+html[data-theme="light"] .unified-shell .notification-bell,
+html:not([data-theme="dark"]) .unified-shell .notification-bell{
+  color:#164568!important;background:rgba(255,255,255,.9)!important;border-color:#b9d8ea!important;
+}
+html[data-theme="light"] .unified-shell :is(.button,.btn,.small-btn) :is(span,small,i),
+html:not([data-theme="dark"]) .unified-shell :is(.button,.btn,.small-btn) :is(span,small,i){color:inherit!important}
