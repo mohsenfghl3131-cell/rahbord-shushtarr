@@ -48,7 +48,7 @@ export default function NewUser() {
           throw new Error("شما مجاز به ایجاد کاربر نیستید.");
         }
         if (!active) return;
-        const allowedRoles = me.profile.role === "main_admin" ? roleOptions : roleOptions.slice(0, 4);
+        const allowedRoles = me.profile.role === "main_admin" ? roleOptions : roleOptions.filter(([value]) => value !== "main_admin");
         setRoles(allowedRoles);
         setForm(current => ({ ...current, role: allowedRoles[0][0] }));
         setAreas(areaData.areas ?? []);
@@ -146,7 +146,7 @@ export default function NewUser() {
               نقش
               <select
                 value={form.role}
-                onChange={event => setForm(current => ({ ...current, role: event.target.value }))}
+                onChange={event => setForm(current => ({ ...current, role: event.target.value, area_ids: event.target.value === "section_manager" ? [] : current.area_ids, group_ids: event.target.value === "section_manager" ? current.group_ids : [] }))}
               >
                 {roles.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
               </select>
