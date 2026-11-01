@@ -4518,3 +4518,16 @@ main.auth>.card:after{color:#8bcce9!important;border-color:rgba(130,185,218,.2)!
   -webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;
  }
 }
+
+
+/* FINAL LOGIN CONTRAST OVERRIDE — fixed readable login palette */
+html body main.auth{background-color:#071a2d!important;background-image:linear-gradient(120deg,rgba(2,15,31,.72),rgba(3,28,52,.58),rgba(2,15,31,.78)),url("https://commons.wikimedia.org/wiki/Special:FilePath/Shushtar_Historical_Hydraulic_System_Panorama.jpg")!important;background-size:cover!important;background-position:center!important}
+html body main.auth form.card{background:linear-gradient(145deg,#102d46 0%,#081e34 100%)!important;color:#f5fbff!important;opacity:1!important;border:1px solid rgba(91,218,248,.62)!important;box-shadow:0 25px 80px rgba(0,0,0,.5),0 0 35px rgba(0,190,240,.15)!important;backdrop-filter:blur(18px)!important}
+html body main.auth form.card .brand{color:#75eaff!important;-webkit-text-fill-color:#75eaff!important;text-shadow:none!important;opacity:1!important}
+html body main.auth form.card h1{color:#fff!important;-webkit-text-fill-color:#fff!important;font-size:clamp(26px,4vw,32px)!important;font-weight:950!important;opacity:1!important;text-shadow:none!important}
+html body main.auth form.card p{color:#e1edf6!important;-webkit-text-fill-color:#e1edf6!important;font-size:14px!important;font-weight:650!important;opacity:1!important;text-shadow:none!important}
+html body main.auth form.card label{color:#f0f8ff!important;-webkit-text-fill-color:#f0f8ff!important;font-size:13px!important;font-weight:900!important;opacity:1!important;text-shadow:none!important}
+html body main.auth form.card input{background:#061727!important;color:#fff!important;-webkit-text-fill-color:#fff!important;border:1px solid #47718b!important}
+html body main.auth form.card input::placeholder{color:#b8cbd9!important;-webkit-text-fill-color:#b8cbd9!important;opacity:1!important}
+html body main.auth form.card button{color:#fff!important;-webkit-text-fill-color:#fff!important}
+html body main.auth form.card:after{color:#9cc9dc!important;-webkit-text-fill-color:#9cc9dc!important;opacity:1!important}
