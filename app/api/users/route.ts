@@ -57,11 +57,11 @@ export async function POST(request:Request){
       )
     : [];
 
-  if(role==="section_manager" && groupIds.length===0) return NextResponse.json({message:"برای مسئول بخش حداقل یک بخش انتخاب کنید."},{status:400});
-  if(role==="section_manager" && areaIds.length>0) return NextResponse.json({message:"مسئول بخش نباید به حوزه‌ای متصل باشد."},{status:400});
   if(!userCode||!displayName||password.length<8||!roles.includes(role)){
     return NextResponse.json({message:"کد کاربری، نام، رمز عبور یا نقش معتبر نیست."},{status:400});
   }
+  if(role==="section_manager" && groupIds.length===0) return NextResponse.json({message:"برای مسئول بخش حداقل یک بخش انتخاب کنید."},{status:400});
+  if(role==="section_manager" && areaIds.length>0) return NextResponse.json({message:"مسئول بخش نباید به حوزه‌ای متصل باشد."},{status:400});
 
   if(!/^[A-Za-z0-9._-]+$/.test(userCode)){
     return NextResponse.json({message:"کد کاربری فقط می‌تواند شامل حروف انگلیسی، عدد، نقطه، خط تیره و زیرخط باشد."},{status:400});
@@ -73,12 +73,26 @@ export async function POST(request:Request){
 
   const admin=db();
 
-  const {data:existingProfile}=await admin
+  // Validate all access assignments before creating an Auth account. This avoids
+  // leaving orphaned Auth users when a selected area/group is invalid.
+  if(areaIds.length){
+    const {data:validAreas,error:areaCheckError}=await admin.from("areas").select("id").in("id",areaIds).eq("is_active",true);
+    if(areaCheckError) return NextResponse.json({message:"بررسی حوزه‌های انتخاب‌شده با خطا روبه‌رو شد."},{status:500});
+    if((validAreas??[]).length!==areaIds.length) return NextResponse.json({message:"یک یا چند حوزه انتخاب‌شده معتبر یا فعال نیست."},{status:400});
+  }
+  if(groupIds.length){
+    const {data:validGroups,error:groupCheckError}=await admin.from("category_groups").select("id").in("id",groupIds).eq("is_active",true);
+    if(groupCheckError) return NextResponse.json({message:"بررسی بخش‌های انتخاب‌شده با خطا روبه‌رو شد."},{status:500});
+    if((validGroups??[]).length!==groupIds.length) return NextResponse.json({message:"یک یا چند بخش انتخاب‌شده معتبر یا فعال نیست."},{status:400});
+  }
+
+  const {data:existingProfile,error:profileLookupError}=await admin
     .from("profiles")
     .select("id")
     .eq("user_code",userCode)
     .maybeSingle();
 
+  if(profileLookupError) return NextResponse.json({message:"بررسی تکراری نبودن کد کاربری انجام نشد."},{status:500});
   if(existingProfile){
     return NextResponse.json({message:"این کد کاربری قبلاً ثبت شده است."},{status:409});
   }
@@ -96,17 +110,16 @@ export async function POST(request:Request){
   });
 
   if(authError||!created.user){
-    const message=authError?.message?.toLowerCase().includes("already")
+    const authMessage=authError?.message?.toLowerCase()??"";
+    const message=authMessage.includes("already")
       ?"این کد کاربری قبلاً استفاده شده است."
-      :"ایجاد حساب کاربری انجام نشد. لطفاً اطلاعات را بررسی کنید.";
+      :authMessage.includes("password")
+        ?"رمز عبور توسط سرویس احراز هویت پذیرفته نشد؛ رمز قوی‌تری انتخاب کنید."
+        :"ایجاد حساب ورود ناموفق بود. جزئیات: "+(authError?.message??"پاسخ نامعتبر از سرویس احراز هویت");
     return NextResponse.json({message},{status:400});
   }
 
   const userId=created.user.id;
-  if(groupIds.length){
-    const {data:validGroups,error:groupCheckError}=await admin.from("category_groups").select("id").in("id",groupIds).eq("is_active",true);
-    if(groupCheckError || (validGroups??[]).length!==groupIds.length){ await admin.auth.admin.deleteUser(userId); return NextResponse.json({message:"یک یا چند بخش انتخاب‌شده معتبر نیست."},{status:400}); }
-  }
 
   const {error:profileError}=await admin
     .from("profiles")
