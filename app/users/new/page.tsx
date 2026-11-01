@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const roleOptions = [
+  ["section_manager", "مسئول بخش"],
   ["area_force", "نیروی حوزه"],
   ["area_manager", "مسئول مجازی حوزه"],
   ["battalion_commander", "فرمانده گردان"],
@@ -15,6 +16,7 @@ const roleOptions = [
 export default function NewUser() {
   const router = useRouter();
   const [areas, setAreas] = useState<any[]>([]);
+  const [groups, setGroups] = useState<any[]>([]);
   const [roles, setRoles] = useState(roleOptions.slice(0, 4));
   const [form, setForm] = useState({
     user_code: "",
@@ -22,6 +24,7 @@ export default function NewUser() {
     password: "",
     role: "area_force",
     area_ids: [] as string[],
+    group_ids: [] as string[],
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -31,12 +34,14 @@ export default function NewUser() {
     let active = true;
     async function load() {
       try {
-        const [meResponse, areasResponse] = await Promise.all([
+        const [meResponse, areasResponse, groupsResponse] = await Promise.all([
           fetch("/api/me", { cache: "no-store" }),
           fetch("/api/areas", { cache: "no-store" }),
+          fetch("/api/categories", { cache: "no-store" }),
         ]);
         const me = await meResponse.json();
         const areaData = await areasResponse.json();
+        const groupData = groupsResponse.ok ? await groupsResponse.json() : { groups: [] };
         if (!meResponse.ok) throw new Error(me.message || "احراز هویت لازم است.");
         if (!areasResponse.ok) throw new Error(areaData.message || "دریافت حوزه‌ها انجام نشد.");
         if (!["main_admin", "deputy", "battalion_commander"].includes(me.profile?.role)) {
@@ -47,6 +52,7 @@ export default function NewUser() {
         setRoles(allowedRoles);
         setForm(current => ({ ...current, role: allowedRoles[0][0] }));
         setAreas(areaData.areas ?? []);
+        setGroups(groupData.groups ?? []);
       } catch (e: any) {
         if (active) setError(e.message || "بارگذاری صفحه انجام نشد.");
       } finally {
@@ -65,6 +71,8 @@ export default function NewUser() {
         : [...current.area_ids, id],
     }));
   }
+
+  function toggleGroup(id: string) { setForm(current => ({ ...current, group_ids: current.group_ids.includes(id) ? current.group_ids.filter(x => x !== id) : [...current.group_ids, id] })); }
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -97,7 +105,7 @@ export default function NewUser() {
           <div>
             <span className="eyebrow">راهبرد شوشتر</span>
             <h1>ایجاد کاربر</h1>
-            <p>حساب کاربری، نقش و دسترسی حوزه‌ای</p>
+            <p>حساب کاربری، نقش و سطح دسترسی</p>
           </div>
         </div>
         {loadingPage ? (
@@ -143,7 +151,11 @@ export default function NewUser() {
                 {roles.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
               </select>
             </label>
-            <div className="area-access-list">
+            {form.role === "section_manager" ? <div className="area-access-list">
+              <b>بخش‌های تحت مسئولیت</b><small>این کاربر مستقل از حوزه‌هاست و فقط گزارش‌های بخش‌های انتخاب‌شده را مشاهده می‌کند.</small>
+              {groups.map(group => <label key={group.id}><input type="checkbox" checked={form.group_ids.includes(group.id)} onChange={() => toggleGroup(group.id)} /><span>{group.name}</span></label>)}
+              {!groups.length && <p>بخشی برای تخصیص وجود ندارد.</p>}
+            </div> : <div className="area-access-list">
               <b>حوزه‌های مجاز</b>
               <small>برای مدیران و معاونان نیز می‌توانید حوزه مشخص کنید؛ انتخاب حوزه برای نقش‌های حوزه‌ای ضروری است.</small>
               {areas.length ? areas.map(area => (
@@ -156,7 +168,7 @@ export default function NewUser() {
                   <span>{area.name}</span>
                 </label>
               )) : <p>حوزه فعالی برای تخصیص وجود ندارد.</p>}
-            </div>
+            </div>}
             {error && <div className="error">{error}</div>}
             <button className="button" disabled={loading || !form.user_code.trim() || !form.display_name.trim() || form.password.length < 8}>
               {loading ? "در حال ایجاد…" : "ایجاد کاربر"}
