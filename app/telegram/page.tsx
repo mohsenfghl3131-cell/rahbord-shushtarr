@@ -1,7 +1,7 @@
 "use client";
 import{useEffect,useState}from"react";
 const blank={chat_id:"",topic_map:{} as Record<string,string>,letters_topic_id:"",announcements_topic_id:"",reports_enabled:false,letters_enabled:false,announcements_enabled:false};
-const sections=["شمسا","متنا","مپتا","نسرا"];
+const sections=["شمسا","متنا","مپتا","نسرا","رسانه محله","رصد"];
 export default function TelegramSettings(){
  const[s,setS]=useState<any>(blank),[loading,setLoading]=useState(true),[saving,setSaving]=useState(false),[testing,setTesting]=useState(false),[settingUp,setSettingUp]=useState(false),[msg,setMsg]=useState(""),[bot,setBot]=useState(false);
  const load=()=>fetch("/api/telegram/settings").then(async r=>{const d=await r.json();if(!r.ok){setMsg(d.message||"دریافت تنظیمات ناموفق بود.");return}setS({...blank,...d.settings});setBot(!!d.bot_configured)}).catch(()=>setMsg("ارتباط با سرور برقرار نشد.")).finally(()=>setLoading(false));
