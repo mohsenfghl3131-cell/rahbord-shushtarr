@@ -8,7 +8,7 @@ const db = () => createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const ctx = await getCurrentContext();
   if (!ctx) return NextResponse.json({ message: "احراز هویت لازم است." }, { status: 401 });
-  if (ctx.profile.role !== "main_admin") return NextResponse.json({ message: "فقط مدیر اصلی می‌تواند کاربران را ویرایش کند." }, { status: 403 });
+  if (!["main_admin", "deputy"].includes(ctx.profile.role)) return NextResponse.json({ message: "فقط مدیر اصلی می‌تواند کاربران را ویرایش کند." }, { status: 403 });
 
   const { id } = await params;
   let body: any;
@@ -100,7 +100,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 export async function DELETE(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   const ctx = await getCurrentContext();
   if (!ctx) return NextResponse.json({ message: "احراز هویت لازم است." }, { status: 401 });
-  if (ctx.profile.role !== "main_admin") {
+  if (!["main_admin", "deputy"].includes(ctx.profile.role)) {
     return NextResponse.json({ message: "فقط مدیر اصلی می‌تواند کاربران را حذف کند." }, { status: 403 });
   }
 
