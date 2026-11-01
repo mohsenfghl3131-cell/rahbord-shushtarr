@@ -99,9 +99,8 @@ export async function POST(request:Request){
   let telegramReason="not_configured";
   try{
     const {data:settings}=await db.from("telegram_integration_settings")
-      .select("chat_id,topic_map,reports_enabled").eq("id",true).maybeSingle();
-    if(!settings?.reports_enabled) telegramReason="reports_disabled";
-    else if(!settings.chat_id) telegramReason="group_not_configured";
+      .select("chat_id,topic_map").eq("id",true).maybeSingle();
+    if(!settings?.chat_id) telegramReason="group_not_configured";
     else {
       const group:any=Array.isArray((category as any).category_groups)?(category as any).category_groups[0]:(category as any).category_groups;
       const sectionName=String(group?.name||"");
