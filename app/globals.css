@@ -4414,3 +4414,58 @@ html:not([data-theme="dark"]) .unified-shell :is(.button,.btn,.small-btn) :is(sp
   .auth .card{padding:27px 22px;border-radius:23px}
 }
 @media(prefers-reduced-motion:reduce){.auth .button{transition:none}.auth .button:hover{transform:none}}
+
+
+/* LOGIN PAGE CONTRAST GUARD — keep the authentication screen dark and legible
+   regardless of the dashboard light/dark theme overrides. */
+main.auth{
+  color:#eef8ff!important;
+  background-color:#04152d!important;
+  background-image:
+    linear-gradient(115deg,rgba(2,12,29,.78),rgba(3,26,52,.58) 52%,rgba(2,12,29,.78)),
+    url("https://commons.wikimedia.org/wiki/Special:FilePath/Shushtar_Abshar.JPG")!important;
+  background-position:center 48%!important;
+  background-size:cover!important;
+  background-repeat:no-repeat!important;
+}
+main.auth:before{
+  background:linear-gradient(0deg,rgba(1,10,25,.62),rgba(3,19,42,.18) 55%,rgba(1,10,25,.35))!important;
+  backdrop-filter:saturate(1.1)!important;
+}
+main.auth:after{
+  background:radial-gradient(ellipse at 50% 45%,rgba(0,174,255,.18),transparent 58%)!important;
+  opacity:1!important;
+}
+main.auth>.card{
+  color:#f1f8ff!important;
+  background:linear-gradient(145deg,rgba(7,28,53,.96),rgba(4,18,39,.95))!important;
+  border:1px solid rgba(85,204,244,.42)!important;
+  box-shadow:0 28px 85px rgba(0,5,20,.52),0 0 38px rgba(0,167,231,.12),inset 0 1px rgba(255,255,255,.09)!important;
+  backdrop-filter:blur(24px) saturate(1.2)!important;
+}
+main.auth>.card>.brand{color:#f2fbff!important;text-shadow:0 0 18px rgba(35,190,255,.22)!important}
+main.auth>.card>.brand:before{color:#fff!important}
+main.auth>.card>h1{color:#fff!important}
+main.auth>.card>p{color:#c1d8e9!important}
+main.auth>.card>label{color:#e1f1fc!important}
+main.auth>.card>label>input{
+  color:#f4fbff!important;
+  background:rgba(2,13,29,.82)!important;
+  border:1px solid rgba(112,194,232,.4)!important;
+  box-shadow:inset 0 1px 8px rgba(0,0,0,.2)!important;
+}
+main.auth>.card>label>input::placeholder{color:#91abc2!important;opacity:1!important}
+main.auth>.card>label>input:focus{border-color:#35c8f1!important;box-shadow:0 0 0 3px rgba(25,188,235,.16)!important}
+main.auth>.card>.button{
+  color:#fff!important;
+  background:linear-gradient(110deg,#0878d0,#08b8df 58%,#2379f2)!important;
+  border:1px solid rgba(140,226,255,.55)!important;
+  box-shadow:0 10px 28px rgba(0,145,235,.3),inset 0 1px rgba(255,255,255,.24)!important;
+  text-shadow:0 1px 1px rgba(0,30,70,.25)!important;
+}
+main.auth>.card>.error{color:#ffd9df!important;background:rgba(145,27,48,.25)!important;border-color:rgba(255,112,130,.38)!important}
+main.auth>.card:after{color:#8bcce9!important;border-color:rgba(130,185,218,.2)!important}
+@media(max-width:600px){
+  main.auth{min-height:100svh!important;padding:18px 15px!important;background-position:56% center!important}
+  main.auth>.card{padding:27px 22px!important;border-radius:23px!important}
+}
