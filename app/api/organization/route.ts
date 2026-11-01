@@ -12,11 +12,11 @@ export async function GET(){
  let chart=setting?.value;if(!chart||chart.version!==2&&chart.version!==3)chart=empty();
  if(!Array.isArray(chart.areas))chart={...chart,version:3,areas:areaNames.map((title,i)=>({id:"a"+i,title,leader_name:"",bases:[]}))};
  chart={...chart,version:3,commanders:(Array.isArray(chart.commanders)?chart.commanders:empty().commanders).map((x:any)=>({...x,sections:(Array.isArray(x.sections)?x.sections:[]).map((section:any)=>({...section,...(String(section.title||"").trim()==="متنا"?{personnel:Array.isArray(section.personnel)?section.personnel.filter((p:any)=>typeof p==="string"):[]}:{})}))})),areas:chart.areas.map((a:any)=>({...a,leader_name:typeof a.leader_name==="string"?a.leader_name:"",bases:(Array.isArray(a.bases)?a.bases:[]).map((v:any)=>({...v,leader_name:typeof v.leader_name==="string"?v.leader_name:""}))}))};
- return NextResponse.json({chart,can_edit:ctx.profile.role==="main_admin"});
+ return NextResponse.json({chart,can_edit:["main_admin","deputy"].includes(ctx.profile.role)});
 }
 export async function PATCH(req:Request){
  const ctx=await getCurrentContext();if(!ctx)return NextResponse.json({message:"ابتدا وارد سامانه شوید."},{status:401});
- if(ctx.profile.role!=="main_admin")return NextResponse.json({message:"فقط مدیر اصلی می‌تواند چارت را تغییر دهد."},{status:403});
+ if(!["main_admin","deputy"].includes(ctx.profile.role))return NextResponse.json({message:"فقط مدیر اصلی می‌تواند چارت را تغییر دهد."},{status:403});
  let b:any;try{b=await req.json()}catch{return NextResponse.json({message:"اطلاعات نامعتبر است."},{status:400})}
  const c=b?.chart;const validText=(v:any)=>typeof v==="string"&&v.length<=100;
  const validSections=(x:any)=>Array.isArray(x.sections)&&x.sections.length<=30&&x.sections.every((s:any)=>validText(s.title)&&validText(s.name)&&(s.personnel===undefined||Array.isArray(s.personnel)&&s.personnel.length<=100&&s.personnel.every(validText)));
