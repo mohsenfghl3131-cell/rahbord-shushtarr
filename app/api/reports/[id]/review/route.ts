@@ -1,6 +1,6 @@
 import {NextResponse} from "next/server";
 import {createClient} from "@supabase/supabase-js";
-import {getCurrentContext} from "@/lib/auth";
+import {getCurrentContext} from "@/lib/auth";\nimport {sendTelegramAnnouncement} from "@/lib/telegram-notifications";
 
 const reviewRoles=["main_admin","deputy","battalion_commander","area_manager"];
 const db=()=>createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.SUPABASE_SERVICE_ROLE_KEY!);
@@ -56,7 +56,7 @@ export async function PATCH(request:Request,{params}:{params:Promise<{id:string}
 
   const database=db();
   const {data:report}=await database.from("reports")
-    .select("id,area_id,status,category_id,categories(group_id,category_groups(id,responsible_user_id))")
+    .select("id,title,area_id,status,category_id,categories(group_id,category_groups(id,responsible_user_id))")
     .eq("id",id).is("deleted_at",null).maybeSingle();
   if(!report)return NextResponse.json({message:"گزارش پیدا نشد."},{status:404});
 
