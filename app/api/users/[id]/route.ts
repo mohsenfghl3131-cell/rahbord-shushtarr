@@ -38,6 +38,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     if ((id === ctx.user.id || target.user_code === "ADMIN001") && body.role !== "main_admin") {
       return NextResponse.json({ message: "نقش مدیر اصلی برای این حساب قابل تغییر نیست." }, { status: 400 });
     }
+    if (["main_admin", "deputy"].includes(body.role) && !["main_admin", "deputy"].includes(ctx.profile.role)) return NextResponse.json({ message: "تخصیص نقش مدیر اصلی یا معاونت فقط توسط مدیر اصلی یا معاونت مجاز است." }, { status: 403 });
     patch.role = body.role;
   }
 
