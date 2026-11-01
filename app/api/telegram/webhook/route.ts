@@ -1,7 +1,8 @@
 import {NextResponse} from "next/server";
 import {createClient} from "@supabase/supabase-js";
 
-export const runtime = "edge";
+// Use the default Node.js runtime. OpenNext Cloudflare cannot bundle this
+// route as an Edge runtime function in the current Worker configuration.
 const db=()=>createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.SUPABASE_SERVICE_ROLE_KEY!);
 
 export async function POST(request:Request){
