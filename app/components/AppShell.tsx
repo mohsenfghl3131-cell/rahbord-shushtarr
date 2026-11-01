@@ -39,7 +39,8 @@ const roles: Record<string, string> = {
   deputy: "معاون",
   battalion_commander: "فرمانده گردان",
   area_manager: "مدیر حوزه",
-  area_force: "نیروی حوزه"
+  area_force: "نیروی حوزه",
+  section_manager: "مسئول بخش"
 };
 
 const pageTitles: Record<string, string> = {
