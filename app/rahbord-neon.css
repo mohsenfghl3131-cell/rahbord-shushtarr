@@ -1236,3 +1236,151 @@ html[data-theme] body main.auth.auth > form.card.card:after{
  html[data-theme] body main.auth.auth > form.card.card{padding:25px 20px!important}
  html[data-theme] body main.auth.auth > form.card.card h1{font-size:27px!important}
 }
+
+
+/* ===== RAHBORD VISUAL POLISH — refined command workspace ===== */
+.unified-shell{
+  --rahbord-line:rgba(92,190,224,.19);
+  --rahbord-glow:rgba(0,190,235,.13);
+  min-height:100vh;
+  background:
+    radial-gradient(ellipse at 12% 4%,rgba(0,178,225,.10),transparent 34%),
+    radial-gradient(ellipse at 88% 82%,rgba(31,99,226,.09),transparent 38%),
+    linear-gradient(145deg,#06172a 0%,#071d32 48%,#041426 100%)!important;
+}
+.unified-shell .main{min-width:0;background:transparent!important}
+.unified-shell .header.unified-header{
+  position:sticky!important;top:0!important;z-index:20!important;
+  min-height:76px!important;padding:12px 22px!important;
+  background:linear-gradient(110deg,rgba(5,24,43,.94),rgba(7,34,55,.88))!important;
+  border-bottom:1px solid rgba(76,198,231,.2)!important;
+  box-shadow:0 12px 34px rgba(0,0,0,.17),inset 0 1px rgba(255,255,255,.035)!important;
+  backdrop-filter:blur(18px) saturate(1.25)!important;
+}
+.unified-shell .header-context span{color:#79b4ce!important;font-size:11px!important;letter-spacing:.35px}
+.unified-shell .header-context b{color:#f0faff!important;font-weight:900!important;letter-spacing:-.25px}
+.unified-shell .sidebar{
+  background:linear-gradient(180deg,rgba(5,25,44,.98),rgba(3,17,33,.99))!important;
+  border-inline-end:1px solid rgba(70,190,225,.2)!important;
+  box-shadow:12px 0 42px rgba(0,0,0,.2),inset -1px 0 rgba(255,255,255,.025)!important;
+}
+.unified-shell .sidebar .brand{padding:21px 17px!important;border-bottom:1px solid var(--rahbord-line)!important}
+.unified-shell .sidebar .brand-mark{
+  border-radius:15px!important;background:linear-gradient(145deg,#08c7e9,#2869ed)!important;
+  box-shadow:0 0 24px rgba(0,190,245,.3),inset 0 1px rgba(255,255,255,.35)!important;
+}
+.unified-shell .sidebar .brand-copy b{color:#eaf8ff!important;font-weight:950!important}
+.unified-shell .sidebar .brand-copy small{color:#83a9bd!important}
+.unified-shell .sidebar-section>span{
+  color:#679bb5!important;font-size:10px!important;font-weight:900!important;
+  letter-spacing:.7px!important;padding-inline:13px!important;
+}
+.unified-shell .sidebar nav a{
+  position:relative!important;margin:4px 8px!important;padding:11px 12px!important;
+  border:1px solid transparent!important;border-radius:13px!important;
+  color:#b8cede!important;background:transparent!important;
+  transition:background .2s ease,border-color .2s ease,transform .2s ease,box-shadow .2s ease!important;
+}
+.unified-shell .sidebar nav a:hover{
+  color:#effaff!important;background:rgba(22,139,185,.12)!important;
+  border-color:rgba(65,190,226,.2)!important;transform:translateX(-2px)!important;
+}
+.unified-shell .sidebar nav a.active{
+  color:#f5fcff!important;
+  background:linear-gradient(100deg,rgba(0,176,220,.23),rgba(37,105,220,.12))!important;
+  border-color:rgba(55,205,239,.36)!important;
+  box-shadow:0 5px 20px rgba(0,160,210,.10),inset 3px 0 #29d5f3!important;
+}
+.unified-shell .sidebar nav a.active .nav-icon{color:#63eaff!important;text-shadow:0 0 12px rgba(49,213,255,.5)!important}
+.unified-shell .sidebar .nav-icon{width:25px!important;min-width:25px!important;font-size:17px!important}
+.unified-shell .sidebar-profile{border-top:1px solid var(--rahbord-line)!important;background:rgba(1,12,25,.28)!important}
+.unified-shell .content{min-width:0;animation:rahbord-enter .35s ease both}
+.unified-shell :is(.panel,.form-panel,.stat-card,.user-card,.area-card,.setting-card,.mission-card,.score-card,.chart-card,.filter-panel,.table-wrap){
+  border:1px solid rgba(92,177,211,.2)!important;
+  border-radius:19px!important;
+  box-shadow:0 12px 32px rgba(0,0,0,.16),inset 0 1px rgba(255,255,255,.045)!important;
+  backdrop-filter:blur(12px)!important;
+  transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease!important;
+}
+.unified-shell .stat-card{
+  position:relative!important;overflow:hidden!important;
+  background:linear-gradient(145deg,rgba(12,47,72,.9),rgba(6,29,49,.94))!important;
+}
+.unified-shell .stat-card:before{
+  content:"";position:absolute;inset:0 0 auto;height:2px;
+  background:linear-gradient(90deg,transparent,#22d2f2,#477eff,transparent);opacity:.75;
+}
+.unified-shell .stat-card strong{font-weight:950!important;letter-spacing:-.7px!important;text-shadow:0 0 20px rgba(30,194,235,.14)!important}
+.unified-shell .panel h2,.unified-shell .panel h3,.unified-shell .form-panel h2,.unified-shell .form-panel h3{
+  color:#eaf7ff!important;font-weight:900!important;letter-spacing:-.2px!important;
+}
+.unified-shell :is(input,select,textarea){
+  border-radius:12px!important;transition:border-color .18s ease,box-shadow .18s ease!important;
+}
+.unified-shell :is(button,.button,.btn,[role="button"],a.button,a.btn){
+  transition:filter .18s ease,transform .18s ease,box-shadow .18s ease!important;
+}
+.unified-shell :is(button,.button,.btn,[role="button"],a.button,a.btn):hover:not(:disabled){
+  filter:brightness(1.08)!important;
+}
+.unified-shell :is(button,.button,.btn,[role="button"],a.button,a.btn):focus-visible,
+.unified-shell :is(input,select,textarea):focus-visible{
+  outline:2px solid #42d9f5!important;outline-offset:3px!important;
+}
+.unified-shell .notification-panel{
+  border:1px solid rgba(72,197,230,.32)!important;border-radius:18px!important;
+  background:linear-gradient(155deg,rgba(7,31,52,.99),rgba(3,18,35,.99))!important;
+  box-shadow:0 22px 60px rgba(0,0,0,.42),0 0 24px rgba(0,180,230,.1)!important;
+  backdrop-filter:blur(20px)!important;
+}
+.unified-shell ::-webkit-scrollbar{width:8px;height:8px}
+.unified-shell ::-webkit-scrollbar-track{background:rgba(1,13,26,.25)}
+.unified-shell ::-webkit-scrollbar-thumb{background:rgba(73,157,190,.38);border-radius:20px;border:2px solid transparent;background-clip:padding-box}
+.unified-shell ::-webkit-scrollbar-thumb:hover{background:rgba(54,202,231,.62);background-clip:padding-box}
+@keyframes rahbord-enter{from{opacity:.72;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+
+/* Light appearance remains airy but keeps the same visual hierarchy */
+html[data-theme="light"] .unified-shell{
+  background:
+    radial-gradient(ellipse at 10% 0%,rgba(25,174,220,.12),transparent 36%),
+    radial-gradient(ellipse at 90% 90%,rgba(69,123,226,.08),transparent 38%),
+    linear-gradient(145deg,#eef8fc,#e6f2f8 52%,#f7fbfe)!important;
+}
+html[data-theme="light"] .unified-shell .header.unified-header{
+  background:rgba(248,253,255,.9)!important;border-bottom-color:#d4e7f0!important;
+  box-shadow:0 10px 28px rgba(29,83,111,.08)!important;
+}
+html[data-theme="light"] .unified-shell .header-context b{color:#163c56!important}
+html[data-theme="light"] .unified-shell .header-context span{color:#64879c!important}
+html[data-theme="light"] .unified-shell .sidebar{
+  background:linear-gradient(180deg,#f7fcff,#eaf5fa)!important;
+  border-inline-end-color:#d4e8f1!important;box-shadow:8px 0 30px rgba(30,91,120,.08)!important;
+}
+html[data-theme="light"] .unified-shell .sidebar .brand-copy b{color:#173f59!important}
+html[data-theme="light"] .unified-shell .sidebar .brand-copy small{color:#64859a!important}
+html[data-theme="light"] .unified-shell .sidebar-section>span{color:#64899e!important}
+html[data-theme="light"] .unified-shell .sidebar nav a{color:#355c73!important}
+html[data-theme="light"] .unified-shell .sidebar nav a:hover{background:#e1f3fa!important;color:#164d6b!important}
+html[data-theme="light"] .unified-shell .sidebar nav a.active{
+  color:#075276!important;background:linear-gradient(100deg,#d8f4fb,#e5efff)!important;
+  border-color:#a9dce9!important;box-shadow:inset 3px 0 #079fc9,0 5px 16px rgba(25,120,155,.08)!important;
+}
+html[data-theme="light"] .unified-shell .stat-card{
+  background:linear-gradient(145deg,#fff,#edf8fc)!important;
+  box-shadow:0 10px 26px rgba(31,91,119,.08),inset 0 1px #fff!important;
+}
+html[data-theme="light"] .unified-shell .panel h2,
+html[data-theme="light"] .unified-shell .panel h3,
+html[data-theme="light"] .unified-shell .form-panel h2,
+html[data-theme="light"] .unified-shell .form-panel h3{color:#173e58!important}
+html[data-theme="light"] .unified-shell .notification-panel{
+  background:linear-gradient(155deg,#fff,#eff8fc)!important;border-color:#cce4ef!important;
+  box-shadow:0 22px 55px rgba(29,83,111,.17)!important;
+}
+@media(max-width:700px){
+  .unified-shell .header.unified-header{min-height:62px!important;padding:8px 10px!important}
+  .unified-shell .content{padding:14px 12px!important}
+  .unified-shell :is(.panel,.form-panel,.stat-card,.user-card,.area-card,.setting-card,.mission-card,.score-card,.chart-card){border-radius:16px!important}
+  .unified-shell .sidebar nav a{padding:12px!important;margin:4px 6px!important}
+}
+@media(prefers-reduced-motion:reduce){.unified-shell .content{animation:none!important}}
