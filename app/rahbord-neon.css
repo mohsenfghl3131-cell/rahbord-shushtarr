@@ -1184,3 +1184,55 @@ html body main.auth>.card>label>input{background:#061727!important;color:#fff!im
 html body main.auth>.card>label>input::placeholder{color:#b9cede!important;-webkit-text-fill-color:#b9cede!important;opacity:1!important}
 html body main.auth>.card>.button{color:#fff!important;-webkit-text-fill-color:#fff!important}
 html body main.auth>.card:after{color:#a6d8e9!important;-webkit-text-fill-color:#a6d8e9!important;opacity:1!important}
+
+
+/* ABSOLUTE LOGIN DARK THEME — final override for every theme */
+html[data-theme] body main.auth.auth{
+ min-height:100svh!important;background-color:#031326!important;
+ background-image:linear-gradient(125deg,rgba(0,10,24,.86),rgba(2,22,42,.78) 52%,rgba(0,10,24,.88)),url("https://commons.wikimedia.org/wiki/Special:FilePath/Panorama_Watermill_Array_Shushtar.jpg")!important;
+ background-position:center!important;background-size:cover!important;background-repeat:no-repeat!important;
+ color:#f8fcff!important;
+}
+html[data-theme] body main.auth.auth > form.card.card{
+ width:min(470px,100%)!important;padding:clamp(25px,4vw,38px)!important;
+ display:flex!important;flex-direction:column!important;gap:14px!important;
+ background:linear-gradient(145deg,rgba(7,32,54,.99),rgba(2,17,34,.99))!important;
+ border:1px solid rgba(66,211,247,.72)!important;border-radius:24px!important;
+ box-shadow:0 28px 90px rgba(0,0,0,.65),0 0 38px rgba(0,190,240,.2)!important;
+ color:#fff!important;opacity:1!important;backdrop-filter:blur(22px)!important;
+}
+html[data-theme] body main.auth.auth > form.card.card *{
+ opacity:1!important;text-shadow:none!important;
+}
+html[data-theme] body main.auth.auth > form.card.card .brand{
+ color:#63e8ff!important;-webkit-text-fill-color:#63e8ff!important;font-weight:950!important;font-size:20px!important;
+}
+html[data-theme] body main.auth.auth > form.card.card h1{
+ color:#fff!important;-webkit-text-fill-color:#fff!important;font-size:30px!important;font-weight:950!important;line-height:1.6!important;
+}
+html[data-theme] body main.auth.auth > form.card.card p{
+ color:#eaf5fc!important;-webkit-text-fill-color:#eaf5fc!important;font-size:14px!important;font-weight:650!important;line-height:2!important;
+}
+html[data-theme] body main.auth.auth > form.card.card label{
+ color:#fff!important;-webkit-text-fill-color:#fff!important;font-size:14px!important;font-weight:900!important;line-height:2!important;
+}
+html[data-theme] body main.auth.auth > form.card.card input{
+ min-height:53px!important;background:#041426!important;color:#fff!important;-webkit-text-fill-color:#fff!important;
+ border:1px solid #63839a!important;border-radius:13px!important;font-size:15px!important;
+}
+html[data-theme] body main.auth.auth > form.card.card input::placeholder{
+ color:#c4d5e1!important;-webkit-text-fill-color:#c4d5e1!important;opacity:1!important;
+}
+html[data-theme] body main.auth.auth > form.card.card button{
+ min-height:55px!important;color:#fff!important;-webkit-text-fill-color:#fff!important;
+ background:linear-gradient(110deg,#087fc4,#08b9d8 58%,#356cf1)!important;
+ border:1px solid #70e5ff!important;border-radius:14px!important;font-weight:950!important;
+}
+html[data-theme] body main.auth.auth > form.card.card:after{
+ color:#b5d9e8!important;-webkit-text-fill-color:#b5d9e8!important;
+}
+@media(max-width:600px){
+ html[data-theme] body main.auth.auth{padding:16px!important}
+ html[data-theme] body main.auth.auth > form.card.card{padding:25px 20px!important}
+ html[data-theme] body main.auth.auth > form.card.card h1{font-size:27px!important}
+}
