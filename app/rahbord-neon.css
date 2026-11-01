@@ -1093,3 +1093,60 @@ html[data-theme="light"] .unified-shell .sidebar{background:rgba(247,252,255,.94
  .auth .card p{font-size:12px!important}
  .auth .card input{min-height:52px!important}
 }
+
+
+/* ===== LIGHT THEME: LOGIN + APP BACKGROUNDS ===== */
+html[data-theme="light"] .auth{
+ background-color:#dff4fb!important;
+ background-image:
+  linear-gradient(115deg,rgba(231,248,255,.52),rgba(235,250,255,.24) 48%,rgba(222,243,255,.58)),
+  url("https://commons.wikimedia.org/wiki/Special:FilePath/Panorama_Watermill_Array_Shushtar.jpg")!important;
+ background-position:center!important;background-size:cover!important;background-repeat:no-repeat!important;
+}
+html[data-theme="light"] .auth:before{
+ background:linear-gradient(180deg,rgba(240,251,255,.24),rgba(221,243,251,.46)),
+ radial-gradient(ellipse at 50% 45%,rgba(255,255,255,.28),transparent 68%)!important;
+}
+html[data-theme="light"] .auth:after{
+ background:linear-gradient(135deg,rgba(255,255,255,.14),transparent 45%,rgba(39,144,184,.08))!important;opacity:1!important;
+}
+html[data-theme="light"] .auth .card{
+ color:#173c55!important;
+ background:linear-gradient(145deg,rgba(255,255,255,.91),rgba(237,249,255,.88))!important;
+ border:1px solid rgba(255,255,255,.88)!important;
+ box-shadow:0 25px 75px rgba(20,77,105,.2),0 0 35px rgba(29,166,204,.12),inset 0 1px #fff!important;
+ backdrop-filter:blur(24px) saturate(1.25)!important;
+}
+html[data-theme="light"] .auth .card .brand{color:#087ca7!important;text-shadow:none!important}
+html[data-theme="light"] .auth .card h1{color:#123a56!important;text-shadow:none!important}
+html[data-theme="light"] .auth .card p{color:#45677d!important}
+html[data-theme="light"] .auth .card label{color:#234d67!important}
+html[data-theme="light"] .auth .card input{
+ color:#163e58!important;background:rgba(255,255,255,.88)!important;
+ border:1px solid #b9d7e6!important;box-shadow:inset 0 1px 3px rgba(25,75,100,.06)!important;
+}
+html[data-theme="light"] .auth .card input::placeholder{color:#6e8da0!important}
+html[data-theme="light"] .auth .card:after{color:#5d8195!important;border-top-color:#c9e0eb!important}
+html[data-theme="light"] .unified-shell{
+ background:linear-gradient(145deg,#f0f9fd,#e8f4fa 52%,#f7fbfe)!important;
+}
+html[data-theme="light"] .unified-shell .content{
+ background:transparent!important;
+}
+html[data-theme="light"] .unified-shell .panel,
+html[data-theme="light"] .unified-shell .stat-card,
+html[data-theme="light"] .unified-shell .form-panel,
+html[data-theme="light"] .unified-shell .user-card,
+html[data-theme="light"] .unified-shell .area-card,
+html[data-theme="light"] .unified-shell .setting-card,
+html[data-theme="light"] .unified-shell .table-wrap,
+html[data-theme="light"] .unified-shell .filter-panel,
+html[data-theme="light"] .unified-shell .mission-card,
+html[data-theme="light"] .unified-shell .score-card,
+html[data-theme="light"] .unified-shell .chart-card{
+ background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(242,250,254,.96))!important;
+ color:#173e58!important;border-color:#d2e6f0!important;
+}
+@media(max-width:600px){
+ html[data-theme="light"] .auth{background-position:center!important}
+}
