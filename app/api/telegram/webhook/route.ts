@@ -39,7 +39,7 @@ export async function POST(request:Request){
     await reply(token,chatId,"✅ گروه سامانه راهبرد شوشتر ثبت شد. حالا در هر تاپیک، دستور /bind نام‌بخش را بفرست. نمونه: /bind شمسا");
     return NextResponse.json({ok:true});
   }
-  if(!sectionNames.includes(section)){
+  const isAnnouncementTopic=["اعلان","اعلانات","اعلان‌ها"].includes(section);\n  if(!sectionNames.includes(section)&&!isAnnouncementTopic){
     await reply(token,chatId,"نام بخش معتبر نیست. یکی از این نام‌ها را دقیقاً بفرست: "+sectionNames.join("، "),threadId);
     return NextResponse.json({ok:true});
   }
