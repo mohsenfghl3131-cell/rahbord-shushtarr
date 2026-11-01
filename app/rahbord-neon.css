@@ -1404,3 +1404,32 @@ html[data-theme] .auth .card label .password-visibility-toggle{
   box-shadow:0 0 8px rgba(0,190,230,.16)!important;
 }
 .auth .card label .password-visibility-toggle svg{display:block!important;width:12px!important;height:12px!important;flex:none!important}
+
+
+/* Prominent, responsive attachment download area on report details */
+.report-download-panel{
+  display:block!important;margin-top:24px!important;padding:20px!important;
+  border:1px solid rgba(38,190,230,.42)!important;border-radius:20px!important;
+  background:linear-gradient(135deg,rgba(5,77,105,.20),rgba(21,61,125,.16))!important;
+  box-shadow:0 12px 32px rgba(0,130,190,.10),inset 0 1px rgba(255,255,255,.06)!important;
+}
+.report-download-heading{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;margin-bottom:16px!important}
+.report-download-heading h3{margin:5px 0!important;font-size:18px!important;font-weight:900!important}
+.report-download-heading p{margin:0!important;color:var(--rb-muted,#7896aa)!important;font-size:12px!important}
+.download-count{flex:none!important;padding:7px 12px!important;border-radius:999px!important;background:rgba(0,180,220,.13)!important;border:1px solid rgba(53,210,245,.28)!important;color:#35cfee!important;font-size:12px!important;font-weight:850!important}
+.report-download-list{display:grid!important;gap:10px!important}
+.report-download-item{display:flex!important;align-items:center!important;gap:12px!important;min-width:0!important;padding:12px!important;border-radius:14px!important;background:rgba(4,25,44,.34)!important;border:1px solid rgba(105,180,210,.18)!important}
+.report-download-file-icon{width:38px!important;height:38px!important;flex:none!important;display:grid!important;place-items:center!important;border-radius:11px!important;background:rgba(0,190,225,.13)!important;color:#49dafa!important;font-size:21px!important}
+.report-download-file-info{display:grid!important;gap:4px!important;min-width:0!important;flex:1!important}
+.report-download-file-info strong{overflow-wrap:anywhere!important;font-size:13px!important;color:inherit!important}
+.report-download-file-info small{font-size:11px!important;opacity:.72!important}
+.report-download-button{flex:none!important;min-height:40px!important;padding:8px 14px!important;border-radius:11px!important;font-size:12px!important;font-weight:850!important}
+html[data-theme="light"] .report-download-item{background:rgba(255,255,255,.72)!important;border-color:rgba(64,140,175,.2)!important}
+html[data-theme="light"] .report-download-file-info strong{color:#17435e!important}
+@media(max-width:560px){
+ .report-download-panel{padding:14px!important}
+ .report-download-heading h3{font-size:15px!important}
+ .report-download-item{flex-wrap:wrap!important}
+ .report-download-file-info{flex:1 1 calc(100% - 55px)!important}
+ .report-download-button{width:100%!important;min-height:42px!important}
+}
