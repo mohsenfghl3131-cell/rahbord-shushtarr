@@ -56,9 +56,11 @@ export async function POST(request:Request){
     await reply(token,chatId,"این گروه با گروه ثبت‌شده در سامانه متفاوت است. برای تغییر گروه، از تنظیمات تلگرام سامانه اقدام کنید.",threadId);
     return NextResponse.json({ok:true});
   }
-  const topicMap={...(settings.topic_map||{}),[section]:String(threadId)};
-  const {error}=await db().from("telegram_integration_settings").update({topic_map:topicMap,updated_at:new Date().toISOString()}).eq("id",true);
+  const patch=isAnnouncementTopic
+    ?{announcements_topic_id:String(threadId),updated_at:new Date().toISOString()}
+    :{topic_map:{...(settings.topic_map||{}),[section]:String(threadId)},updated_at:new Date().toISOString()};
+  const {error}=await db().from("telegram_integration_settings").update(patch).eq("id",true);
   if(error){await reply(token,chatId,"ذخیره شناسه تاپیک انجام نشد.",threadId);return NextResponse.json({ok:true});}
-  await reply(token,chatId,"✅ تاپیک «"+section+"» برای ارسال گزارش‌ها ثبت شد.",threadId);
+  await reply(token,chatId,isAnnouncementTopic?"✅ تاپیک «اعلانات» برای اعلان‌های سامانه ثبت شد.":"✅ تاپیک «"+section+"» برای ارسال گزارش‌ها ثبت شد.",threadId);
   return NextResponse.json({ok:true});
 }
