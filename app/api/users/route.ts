@@ -46,7 +46,7 @@ export async function POST(request:Request){
   const displayName=String(b.display_name??"").trim();
   const password=String(b.password??"");
   const role=String(b.role??"area_force");
-  const groupIds: string[] = Array.isArray(b.group_ids) ? Array.from(new Set(b.group_ids.filter((x: unknown): x is string => typeof x === "string" && x.trim()).map((x: string) => x.trim()))) : [];
+  const groupIds: string[] = Array.isArray(b.group_ids) ? Array.from(new Set(b.group_ids.filter((x: unknown): x is string => typeof x === "string" && x.trim().length > 0).map((x: string) => x.trim()))) : [];
   const areaIds: string[] = Array.isArray(b.area_ids)
     ? Array.from(
         new Set(
