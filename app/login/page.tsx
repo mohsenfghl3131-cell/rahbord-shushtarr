@@ -35,7 +35,7 @@ export default function LoginPage() {
       <form className="card" onSubmit={submit}>
         <div className="brand">راهبرد شوشتر</div>
         <h1>خوش آمدید</h1>
-        <p>برای ورود به مرکز فرماندهی و مدیریت گزارش‌ها، مشخصات حساب خود را وارد کنید.</p>
+        <p>برای ورود امن به سامانه راهبرد شوشتر، مشخصات حساب خود را وارد کنید.</p>
         <label>
           کد کاربری
           <input value={code} onChange={(e) => setCode(e.target.value)} autoComplete="username" placeholder="کد کاربری خود را وارد کنید" required />
