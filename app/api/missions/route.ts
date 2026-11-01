@@ -48,6 +48,7 @@ export async function POST(request:Request){
  }
  if(error||!data)return NextResponse.json({message:"ثبت مأموریت انجام نشد: "+(error?.message??"پاسخ پایگاه‌داده خالی بود.")},{status:500});
  await admin.from("audit_logs").insert({user_id:ctx.user.id,action:"mission.create",entity_type:"mission",entity_id:data.id,metadata:{group_id:groupId,title,target_value:target,unit,deadline_at:deadlineAt?.toISOString()??null}});
+ try{await sendTelegramAnnouncement("🎯 مأموریت جدید تعریف شد\\nبخش: "+group.name+"\\nعنوان: "+title+"\\nسهمیه: "+target+" "+unit);}catch{}
  return NextResponse.json({id:data.id},{status:201});
 }
 
@@ -66,6 +67,7 @@ export async function PATCH(request:Request){
  const {data,error}=await admin.from("mission_scores").upsert({mission_id:missionId,area_id:areaId,actual_value:actual,notes,entered_by:ctx.user.id,updated_at:new Date().toISOString()},{onConflict:"mission_id,area_id"}).select("id").single();
  if(error)return NextResponse.json({message:"ثبت عملکرد انجام نشد."},{status:500});
  await admin.from("audit_logs").insert({user_id:ctx.user.id,action:"mission.score",entity_type:"mission",entity_id:missionId,metadata:{area_id:areaId,actual_value:actual,target_value:mission.target_value}});
+ try{await sendTelegramAnnouncement("📊 عملکرد مأموریت ثبت شد\\nمأموریت: "+mission.title+"\\nمقدار ثبت‌شده: "+actual);}catch{}
  return NextResponse.json({ok:true,id:data.id});
 }
 
