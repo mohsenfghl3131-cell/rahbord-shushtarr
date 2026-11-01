@@ -583,3 +583,57 @@ html[data-theme="dark"] .content>.dashboard-shortcuts a small{font-size:9px!impo
  html[data-theme="dark"] .content>.dashboard-shortcuts a>span{width:34px!important;height:34px!important;flex-basis:34px!important;font-size:17px!important}
  html[data-theme="dark"] .content>.dashboard-shortcuts a b{font-size:9px!important}
 }
+
+/* Glass navigation refresh: unified sidebar and top header */
+.unified-shell .sidebar{width:276px!important;padding:20px 14px 15px!important;background:linear-gradient(165deg,rgba(255,255,255,.92),rgba(235,246,255,.9))!important;border-left:1px solid rgba(91,151,196,.25)!important;box-shadow:-16px 0 48px rgba(22,65,110,.12),inset -1px 0 rgba(255,255,255,.8)!important;backdrop-filter:blur(26px) saturate(1.35)!important}
+.unified-shell .sidebar .brand{min-height:64px;padding:2px 7px 17px!important;border-bottom:1px solid rgba(105,157,196,.22)!important;align-items:center}
+.unified-shell .sidebar .brand-mark{width:46px;height:46px;border-radius:15px;background:linear-gradient(145deg,#087fce,#13c6df 58%,#4169ff)!important;box-shadow:0 8px 22px rgba(0,151,218,.24),0 0 0 5px rgba(23,177,226,.07)!important}
+.unified-shell .sidebar .brand-copy b{font-size:14px!important;font-weight:900}.unified-shell .sidebar .brand-copy small{font-size:8px!important;color:#7189a1!important}
+.unified-shell .sidebar-controls{position:absolute;top:31px;left:12px;z-index:2}
+.unified-shell .sidebar-collapse{width:29px;height:29px;border-radius:10px;border:1px solid rgba(75,159,202,.25)!important;background:rgba(255,255,255,.62)!important;color:#2879a8!important;box-shadow:0 4px 12px rgba(28,91,135,.08)}
+.unified-shell .sidebar-scroll{padding:17px 2px 12px!important;scrollbar-color:rgba(64,153,197,.35) transparent}
+.unified-shell .sidebar-section{margin-bottom:20px}.unified-shell .sidebar-section>span{color:#7690a8!important;font-size:8px!important;font-weight:900!important;letter-spacing:.5px;padding:0 11px 9px!important}
+.unified-shell .sidebar nav{gap:5px!important}.unified-shell .sidebar nav a{min-height:44px!important;padding:7px 9px!important;gap:10px!important;border:1px solid transparent!important;border-radius:13px!important;color:#526c84!important;font-size:10px!important;font-weight:700!important;transition:transform .18s,background .18s,border-color .18s,box-shadow .18s!important}
+.unified-shell .sidebar nav a .nav-icon{width:31px!important;height:31px!important;flex:0 0 31px!important;border-radius:10px!important;background:rgba(222,239,250,.78)!important;color:#347b9f!important;font-size:15px!important}
+.unified-shell .sidebar nav a:hover{transform:translateX(-2px);background:rgba(222,245,255,.75)!important;border-color:rgba(49,170,218,.2)!important;box-shadow:0 5px 16px rgba(27,119,166,.07)!important}
+.unified-shell .sidebar nav a.active{color:#075f9c!important;background:linear-gradient(105deg,rgba(190,239,255,.88),rgba(226,232,255,.85))!important;border-color:rgba(38,164,216,.34)!important;box-shadow:inset -3px 0 #08bde0,0 7px 20px rgba(32,139,194,.1)!important}
+.unified-shell .sidebar nav a.active .nav-icon{color:#fff!important;background:linear-gradient(145deg,#08aeda,#386bfa)!important;box-shadow:0 4px 13px rgba(17,142,217,.24)!important}
+.unified-shell .sidebar-profile{border-top:1px solid rgba(105,157,196,.22)!important;padding-top:12px!important}.unified-shell .sidebar-user{background:rgba(255,255,255,.66)!important;border:1px solid rgba(108,164,201,.23)!important;border-radius:13px!important;backdrop-filter:blur(12px)}
+.unified-shell .sidebar-logout{border:1px solid rgba(222,104,124,.18);border-radius:11px!important;background:rgba(255,241,244,.72)!important;color:#b84e64!important;font-weight:800}
+.unified-shell .unified-header{min-height:72px;height:auto!important;padding:10px clamp(14px,2.4vw,34px)!important;gap:14px!important;background:rgba(250,253,255,.78)!important;border-bottom:1px solid rgba(106,159,197,.22)!important;box-shadow:0 8px 28px rgba(31,77,116,.055)!important;backdrop-filter:blur(24px) saturate(1.35)!important}
+.unified-shell .header-context{min-width:0;gap:4px}.unified-shell .header-context span{font-size:8px!important;color:#8096aa!important}.unified-shell .header-context b{font-size:13px!important;font-weight:900;color:#183b59!important}
+.unified-shell .theme-toggle,.unified-shell .notification-bell,.unified-shell .menu-toggle,.unified-shell .header-back-button{min-height:39px;border-radius:12px!important;border:1px solid rgba(92,157,197,.25)!important;background:rgba(255,255,255,.72)!important;color:#286b92!important;box-shadow:0 5px 16px rgba(33,99,143,.08),inset 0 1px rgba(255,255,255,.9)!important;backdrop-filter:blur(14px)}
+.unified-shell .theme-toggle{padding:0 12px!important;display:flex;align-items:center;gap:7px}.unified-shell .notification-bell{width:41px;height:39px}
+.unified-shell .header-profile{border:1px solid rgba(85,163,198,.25)!important;background:rgba(255,255,255,.68)!important;color:#345a75!important;border-radius:13px!important;padding:8px 12px!important;box-shadow:0 5px 15px rgba(33,99,143,.06)}
+.unified-shell .notification-panel{border:1px solid rgba(87,164,204,.28)!important;border-radius:18px!important;box-shadow:0 22px 60px rgba(22,62,96,.18)!important;backdrop-filter:blur(25px)!important}
+.unified-shell .sidebar-mobile-back{display:none}
+html[data-theme="dark"] .unified-shell .sidebar{background:linear-gradient(165deg,rgba(5,24,43,.95),rgba(6,34,56,.93) 55%,rgba(4,18,35,.98))!important;border-left-color:rgba(49,202,244,.24)!important;box-shadow:-18px 0 55px rgba(0,0,0,.32),inset -1px 0 rgba(255,255,255,.045)!important}
+html[data-theme="dark"] .unified-shell .sidebar .brand{border-bottom-color:rgba(72,190,226,.2)!important}html[data-theme="dark"] .unified-shell .sidebar .brand-copy b{color:#effaff}html[data-theme="dark"] .unified-shell .sidebar .brand-copy small{color:#8eafc5!important}
+html[data-theme="dark"] .unified-shell .sidebar-controls .sidebar-collapse{background:rgba(11,48,72,.85)!important;border-color:rgba(66,207,245,.3)!important;color:#83eaff!important}
+html[data-theme="dark"] .unified-shell .sidebar-section>span{color:#78a9c4!important}html[data-theme="dark"] .unified-shell .sidebar nav a{color:#b4ccdc!important}
+html[data-theme="dark"] .unified-shell .sidebar nav a .nav-icon{color:#75dff5!important;background:rgba(20,68,95,.58)!important}
+html[data-theme="dark"] .unified-shell .sidebar nav a:hover{background:rgba(12,103,137,.22)!important;border-color:rgba(55,206,241,.2)!important;box-shadow:0 5px 18px rgba(0,172,222,.08)!important}
+html[data-theme="dark"] .unified-shell .sidebar nav a.active{color:#f3fcff!important;background:linear-gradient(105deg,rgba(0,197,225,.2),rgba(54,87,192,.22))!important;border-color:rgba(55,219,255,.37)!important;box-shadow:inset -3px 0 #29e2f2,0 0 22px rgba(0,194,238,.12)!important}
+html[data-theme="dark"] .unified-shell .sidebar nav a.active .nav-icon{background:linear-gradient(145deg,#04b9d9,#3d6fff)!important;color:white!important}
+html[data-theme="dark"] .unified-shell .sidebar-profile{border-top-color:rgba(72,190,226,.2)!important}html[data-theme="dark"] .unified-shell .sidebar-user{background:rgba(12,43,66,.72)!important;border-color:rgba(75,174,212,.23)!important}html[data-theme="dark"] .unified-shell .sidebar-user b{color:#edfaff}html[data-theme="dark"] .unified-shell .sidebar-user small{color:#91b3c9!important}
+html[data-theme="dark"] .unified-shell .sidebar-logout{color:#ff9ba9!important;background:rgba(112,31,52,.22)!important;border-color:rgba(255,112,138,.2)!important}
+html[data-theme="dark"] .unified-shell .unified-header{background:rgba(4,17,32,.78)!important;border-bottom-color:rgba(57,195,234,.2)!important;box-shadow:0 9px 30px rgba(0,0,0,.2)!important}
+html[data-theme="dark"] .unified-shell .header-context span{color:#83a9bf!important}html[data-theme="dark"] .unified-shell .header-context b{color:#f0fbff!important}
+html[data-theme="dark"] .unified-shell .theme-toggle,html[data-theme="dark"] .unified-shell .notification-bell,html[data-theme="dark"] .unified-shell .menu-toggle,html[data-theme="dark"] .unified-shell .header-back-button{background:linear-gradient(145deg,rgba(12,53,79,.86),rgba(7,29,49,.9))!important;border-color:rgba(65,204,240,.34)!important;color:#dff9ff!important;box-shadow:0 5px 18px rgba(0,0,0,.17),0 0 17px rgba(0,180,230,.08),inset 0 1px rgba(255,255,255,.08)!important}
+html[data-theme="dark"] .unified-shell .header-profile{background:rgba(12,46,68,.7)!important;border-color:rgba(69,193,226,.25)!important;color:#e4f8ff!important}
+html[data-theme="dark"] .unified-shell .menu-toggle span{background:#b5f1ff!important}html[data-theme="dark"] .unified-shell .notification-panel{background:rgba(5,22,40,.96)!important;border-color:rgba(65,204,240,.3)!important;color:#e9f8ff!important}
+html[data-theme="dark"] .unified-shell .notification-row b,html[data-theme="dark"] .unified-shell .notification-summary b{color:#eafaff!important}html[data-theme="dark"] .unified-shell .notification-row span,html[data-theme="dark"] .unified-shell .notification-summary small{color:#a7c6d8!important}
+@media(max-width:1100px) and (min-width:701px){.unified-shell .sidebar{width:250px!important}.unified-shell .main{margin-right:250px!important;width:calc(100% - 250px)!important}}
+@media(max-width:700px){
+ .unified-shell .unified-header{min-height:64px!important;padding:9px 12px!important;gap:9px!important}
+ .unified-shell .header-context b{font-size:11px!important;max-width:36vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .unified-shell .header-context span{font-size:7px!important}.unified-shell .header-spacer{flex:1;min-width:0}
+ .unified-shell .theme-toggle{min-width:38px;width:39px;padding:0!important;justify-content:center}.unified-shell .theme-toggle small{display:none}
+ .unified-shell .notification-bell{width:38px;min-width:38px;height:38px}.unified-shell .header-profile{max-width:92px;padding:7px 8px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:8px!important}
+ .unified-shell .sidebar{width:min(310px,88vw)!important;padding:17px 12px 14px!important}.unified-shell .sidebar.open{box-shadow:-22px 0 65px rgba(0,0,0,.35)!important}
+ .unified-shell .sidebar-mobile-back{display:flex!important;align-items:center;gap:5px;margin-right:auto;border:1px solid rgba(80,165,205,.25);border-radius:10px;background:rgba(255,255,255,.6);color:#32789a;padding:7px 9px;font:inherit;font-size:9px}
+ html[data-theme="dark"] .unified-shell .sidebar-mobile-back{background:rgba(10,49,74,.75);border-color:rgba(66,207,245,.3);color:#b6f3ff}
+ .unified-shell .sidebar-controls{left:10px;top:27px}.unified-shell .sidebar-scroll{padding-top:15px!important}.unified-shell .sidebar nav a{min-height:45px!important}
+ .unified-shell .sidebar-backdrop{background:rgba(1,10,22,.62)!important;backdrop-filter:blur(5px)!important}
+}
+@media(prefers-reduced-motion:reduce){.unified-shell .sidebar nav a{transition:none!important}.unified-shell .sidebar nav a:hover{transform:none}}
