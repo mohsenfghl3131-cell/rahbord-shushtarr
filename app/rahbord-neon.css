@@ -1015,3 +1015,81 @@ html[data-theme="light"] .unified-shell .sidebar{background:rgba(247,252,255,.94
  background-position:center!important;background-size:cover!important;background-repeat:no-repeat!important;
 }
 @media(max-width:600px){.auth{background-position:center center!important;background-size:cover!important}}
+
+
+/* ===== LOGIN REDESIGN: HIGH CONTRAST SHUSHTAR WATERFALLS ===== */
+.auth{
+ position:relative!important;isolation:isolate!important;overflow:hidden!important;
+ min-height:100svh!important;width:100%!important;padding:clamp(18px,4vw,42px)!important;
+ display:flex!important;align-items:center!important;justify-content:center!important;
+ background-color:#03172b!important;
+ background-image:linear-gradient(115deg,rgba(1,12,28,.76),rgba(2,24,46,.54) 48%,rgba(1,12,28,.78)),url("https://commons.wikimedia.org/wiki/Special:FilePath/Panorama_Watermill_Array_Shushtar.jpg")!important;
+ background-position:center!important;background-size:cover!important;background-repeat:no-repeat!important;
+}
+.auth:before{
+ content:""!important;position:absolute!important;inset:0!important;z-index:-1!important;
+ background:linear-gradient(180deg,rgba(1,13,29,.22),rgba(0,13,29,.62)),radial-gradient(ellipse at 50% 45%,rgba(0,190,235,.2),transparent 66%)!important;
+ opacity:1!important;backdrop-filter:none!important;
+}
+.auth:after{content:""!important;position:absolute!important;inset:0!important;z-index:-1!important;pointer-events:none!important;
+ background:repeating-linear-gradient(0deg,rgba(90,220,255,.025) 0 1px,transparent 1px 4px)!important;opacity:.32!important}
+.auth .card{
+ position:relative!important;z-index:2!important;width:min(470px,100%)!important;
+ margin:auto!important;padding:clamp(26px,4vw,42px)!important;
+ display:flex!important;flex-direction:column!important;gap:13px!important;
+ color:#f2fbff!important;text-align:right!important;
+ background:linear-gradient(145deg,rgba(7,31,55,.94),rgba(3,19,39,.96))!important;
+ border:1px solid rgba(75,211,246,.56)!important;border-radius:26px!important;
+ box-shadow:0 28px 90px rgba(0,0,0,.55),0 0 48px rgba(0,174,230,.2),inset 0 1px rgba(255,255,255,.13)!important;
+ backdrop-filter:blur(22px) saturate(1.3)!important;
+}
+.auth .card:after{content:"SHUSHTAR  /  RAHBORD SYSTEM"!important;display:block!important;
+ margin-top:12px!important;padding-top:17px!important;border-top:1px solid rgba(125,204,231,.22)!important;
+ color:#91b8cf!important;font-size:9px!important;font-weight:800!important;letter-spacing:2px!important;text-align:center!important;opacity:1!important}
+.auth .card .brand{
+ display:flex!important;align-items:center!important;gap:11px!important;
+ color:#74eaff!important;font-size:20px!important;font-weight:950!important;
+ text-shadow:0 0 20px rgba(35,205,255,.3)!important;margin:0 0 3px!important
+}
+.auth .card .brand:before{
+ content:"ر"!important;display:grid!important;place-items:center!important;flex:0 0 46px!important;height:46px!important;
+ border-radius:14px!important;color:#fff!important;font-size:24px!important;font-weight:950!important;
+ background:linear-gradient(145deg,#05c8e8,#2867ef)!important;
+ box-shadow:0 0 25px rgba(0,196,255,.4),inset 0 1px rgba(255,255,255,.4)!important
+}
+.auth .card h1{display:block!important;visibility:visible!important;opacity:1!important;
+ color:#fff!important;font-size:clamp(25px,4vw,31px)!important;font-weight:950!important;
+ line-height:1.55!important;margin:6px 0 0!important;text-shadow:0 2px 18px rgba(0,0,0,.25)!important}
+.auth .card p{display:block!important;visibility:visible!important;opacity:1!important;
+ color:#c2d9e9!important;font-size:13px!important;font-weight:500!important;line-height:2.05!important;margin:0 0 9px!important}
+.auth .card label{display:block!important;visibility:visible!important;opacity:1!important;
+ color:#e3f5ff!important;font-size:12px!important;font-weight:850!important;line-height:1.9!important;margin:3px 0!important}
+.auth .card input{
+ display:block!important;width:100%!important;min-height:54px!important;margin-top:7px!important;padding:13px 15px!important;
+ color:#f5fbff!important;background:rgba(2,15,31,.82)!important;
+ border:1px solid rgba(112,180,212,.48)!important;border-radius:14px!important;
+ font-family:inherit!important;font-size:14px!important;font-weight:650!important;outline:none!important;
+ box-shadow:inset 0 2px 8px rgba(0,0,0,.2)!important
+}
+.auth .card input::placeholder{color:#8daabd!important;opacity:1!important}
+.auth .card input:focus{border-color:#38dcf5!important;box-shadow:0 0 0 3px rgba(31,195,235,.18),0 0 20px rgba(0,185,235,.12)!important}
+.auth .card button,.auth .card .button{
+ width:100%!important;min-height:56px!important;margin-top:8px!important;
+ display:flex!important;align-items:center!important;justify-content:center!important;
+ color:#fff!important;background:linear-gradient(110deg,#087ed0,#08b9db 55%,#356cf1)!important;
+ border:1px solid rgba(117,227,255,.72)!important;border-radius:15px!important;
+ font-family:inherit!important;font-size:14px!important;font-weight:950!important;
+ box-shadow:0 12px 30px rgba(0,145,225,.3),0 0 20px rgba(0,188,240,.15),inset 0 1px rgba(255,255,255,.32)!important;
+ cursor:pointer!important
+}
+.auth .card button:hover{filter:brightness(1.1)!important;transform:translateY(-2px)!important}
+.auth .card button:disabled{opacity:.65!important;cursor:wait!important}
+.auth .card .error{display:block!important;color:#ffdce3!important;background:rgba(126,20,47,.35)!important;border:1px solid rgba(255,118,145,.5)!important;border-radius:13px!important;padding:12px!important;line-height:1.9!important}
+@media(max-width:600px){
+ .auth{padding:18px 14px!important;background-position:center!important}
+ .auth .card{width:100%!important;max-width:440px!important;padding:25px 21px!important;border-radius:22px!important;gap:11px!important}
+ .auth .card .brand{font-size:18px!important}
+ .auth .card h1{font-size:25px!important}
+ .auth .card p{font-size:12px!important}
+ .auth .card input{min-height:52px!important}
+}
