@@ -4233,3 +4233,62 @@ html:not([data-theme="dark"]) .app-shell.unified-shell{
       url("https://commons.wikimedia.org/wiki/Special:FilePath/Shushtar_Historical_Hydraulic_System_Darafsh_(55).jpg")!important;
   }
 }
+
+
+/* Organization poster PDF: portrait-friendly, readable two-battalion layout */
+@media print{
+  body:has(.org-poster) .org-poster{
+    box-sizing:border-box!important;
+    min-height:0!important;
+    height:auto!important;
+    padding:5mm 7mm!important;
+    overflow:visible!important;
+    break-after:page!important;
+    page-break-after:always!important;
+  }
+  body:has(.org-poster) .org-poster-head{
+    padding:0 0 3mm!important;
+    margin:0 0 2mm!important;
+  }
+  body:has(.org-poster) .org-emblem{
+    width:11mm!important;height:11mm!important;
+    margin:2mm auto!important;font-size:15pt!important;
+  }
+  body:has(.org-poster) .org-poster-head h2{font-size:16pt!important;line-height:1.5!important}
+  body:has(.org-poster) .org-poster-head p{font-size:8pt!important}
+  body:has(.org-poster) .org-tree{width:100%!important;align-items:stretch!important}
+  body:has(.org-poster) .org-node{
+    width:100%!important;max-width:none!important;
+    padding:3mm!important;gap:1.5mm!important;
+    border-radius:3mm!important;box-shadow:none!important;
+    background:#f3f8fc!important;
+  }
+  body:has(.org-poster) .org-node small{font-size:8pt!important;line-height:1.4!important}
+  body:has(.org-poster) .org-node b{font-size:12pt!important;line-height:1.5!important}
+  body:has(.org-poster) .org-node strong{font-size:10pt!important;line-height:1.5!important}
+  body:has(.org-poster) .org-connector{height:5mm!important;flex:0 0 5mm!important}
+  body:has(.org-poster) .org-commanders{
+    display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+    gap:4mm!important;width:100%!important;
+  }
+  body:has(.org-poster) .org-branch{
+    display:flex!important;flex-direction:column!important;
+    align-items:stretch!important;width:100%!important;
+    break-inside:avoid!important;page-break-inside:avoid!important;
+  }
+  body:has(.org-poster) .org-branch>.org-node{width:100%!important}
+  body:has(.org-poster) .org-sections{
+    display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    gap:2mm!important;width:100%!important;
+  }
+  body:has(.org-poster) .org-section-node{
+    min-width:0!important;padding:3mm 1.5mm!important;
+    border-radius:2mm!important;background:#f7fafc!important;
+    box-shadow:none!important;break-inside:avoid!important;
+  }
+  body:has(.org-poster) .org-section-node span{font-size:9pt!important;line-height:1.5!important}
+  body:has(.org-poster) .org-section-node b{font-size:8pt!important;line-height:1.5!important;overflow-wrap:anywhere!important}
+  body:has(.org-poster) .org-metna-person-chip{font-size:7pt!important}
+  body:has(.org-poster) .org-areas-poster{display:none!important}
+  body:has(.org-poster) .org-poster-foot{display:none!important}
+}
