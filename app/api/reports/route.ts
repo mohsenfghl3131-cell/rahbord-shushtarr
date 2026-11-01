@@ -94,5 +94,6 @@ export async function POST(request:Request){
   const {data,error}=await db.from("reports").insert({title,body:text,area_id:areaId,category_id:categoryId,creator_id:ctx.user.id,status:"pending"}).select("id").single();
   if(error||!data)return NextResponse.json({message:"ثبت گزارش انجام نشد."},{status:500});
   await db.from("audit_logs").insert({user_id:ctx.user.id,action:"report.create",entity_type:"report",entity_id:data.id,metadata:{area_id:areaId,category_id:categoryId}});
+  try{await sendTelegramAnnouncement("🆕 گزارش جدید ثبت شد\nعنوان: "+title+"\nوضعیت: در انتظار بررسی");}catch{}
   return NextResponse.json({id:data.id},{status:201});
 }
