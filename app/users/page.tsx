@@ -10,33 +10,38 @@ const roleLabels: Record<string, string> = {
   battalion_commander: "فرمانده گردان",
   area_manager: "مسئول مجازی حوزه",
   area_force: "نیروی حوزه",
+  section_manager: "مسئول بخش",
 };
 const roleOptions = Object.entries(roleLabels);
 
 export default function Users() {
   const [users, setUsers] = useState<any[]>([]);
   const [areas, setAreas] = useState<any[]>([]);
+  const [groups, setGroups] = useState<any[]>([]);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
   const [busy, setBusy] = useState("");
   const [deleting, setDeleting] = useState("");
   const [editing, setEditing] = useState<any>(null);
-  const [draft, setDraft] = useState({ display_name: "", role: "area_force", area_ids: [] as string[] });
+  const [draft, setDraft] = useState({ display_name: "", role: "area_force", area_ids: [] as string[], group_ids: [] as string[] });
 
   async function load() {
     setError("");
-    const [usersRes, meRes, areasRes] = await Promise.all([
+    const [usersRes, meRes, areasRes, groupsRes] = await Promise.all([
       fetch("/api/users"),
       fetch("/api/me"),
       fetch("/api/areas"),
+      fetch("/api/categories"),
     ]);
     const usersData = await usersRes.json();
     const meData = await meRes.json();
     const areasData = areasRes.ok ? await areasRes.json() : { areas: [] };
+    const groupsData = groupsRes.ok ? await groupsRes.json() : { groups: [] };
     if (!usersRes.ok) throw new Error(usersData.message || "دریافت کاربران انجام نشد.");
     setUsers(usersData.users ?? []);
     setAreas(areasData.areas ?? []);
+    setGroups(groupsData.groups ?? []);
     setIsAdmin(meData.profile?.role === "main_admin");
   }
 
@@ -48,6 +53,7 @@ export default function Users() {
       display_name: user.display_name ?? "",
       role: user.role ?? "area_force",
       area_ids: (user.user_area_access ?? []).map((x: any) => x.area_id).filter(Boolean),
+      group_ids: (user.category_group_responsibles ?? []).map((x: any) => x.group_id).filter(Boolean),
     });
     setError("");
     setNotice("");
@@ -129,6 +135,8 @@ export default function Users() {
     }));
   }
 
+  function toggleGroup(id: string) { setDraft(current => ({ ...current, group_ids: current.group_ids.includes(id) ? current.group_ids.filter(x => x !== id) : [...current.group_ids, id] })); }
+
   return <AppShell><main className="shell unified-page">
     <div className="topbar">
       <div><span className="eyebrow">راهبرد شوشتر</span><h1>مدیریت کاربران</h1><p>مدیریت حساب‌ها، نقش‌ها و دسترسی حوزه‌ای</p></div>
@@ -141,7 +149,7 @@ export default function Users() {
       <div className="form-step"><span>✎</span><div><b>ویرایش کاربر: {editing.user_code}</b><small>نام نمایشی، نقش و حوزه‌های مجاز را تنظیم کنید.</small></div></div>
       <label>نام و نام خانوادگی<input value={draft.display_name} onChange={e => setDraft(x => ({ ...x, display_name: e.target.value }))} /></label>
       <label>نقش کاربر<select value={draft.role} onChange={e => setDraft(x => ({ ...x, role: e.target.value }))}>{roleOptions.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label>
-      <div className="area-access-list">
+      {draft.role === "section_manager" ? <div className="area-access-list"><b>بخش‌های تحت مسئولیت</b><small>مسئول بخش به حوزه‌ای وابسته نیست و فقط گزارش‌های این بخش‌ها را می‌بیند.</small><div className="area-access-options">{groups.map(group => <label key={group.id} className="area-access-option"><input type="checkbox" checked={draft.group_ids.includes(group.id)} onChange={() => toggleGroup(group.id)} /><span>{group.name}</span></label>)}</div></div> : <div className="area-access-list">
         <b>حوزه‌های مجاز</b>
         <div className="area-access-options">
           {areas.map(area => <label key={area.id} className="area-access-option">
@@ -149,7 +157,7 @@ export default function Users() {
             <span>{area.name}</span>
           </label>)}
         </div>
-      </div>
+      </div>}
       <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 14 }}>
         <button className="button" disabled={busy === editing.id || !draft.display_name.trim()} onClick={saveEdit}>{busy === editing.id ? "در حال ذخیره…" : "ذخیره تغییرات"}</button>
         <button className="small-btn" onClick={() => setEditing(null)}>انصراف</button>
@@ -161,7 +169,7 @@ export default function Users() {
         <div className="avatar">{user.display_name?.[0] ?? "ک"}</div>
         <div className="user-info">
           <b>{user.display_name}</b><small>{user.user_code}</small><span>{roleLabels[user.role] ?? user.role}</span>
-          <small>{(user.user_area_access ?? []).map((a: any) => a.areas?.name).filter(Boolean).join("، ") || "بدون حوزه تخصیص‌یافته"}</small>
+          <small>{user.role === "section_manager" ? (user.category_group_responsibles ?? []).map((g: any) => g.category_groups?.name).filter(Boolean).join("، ") || "بدون بخش تخصیص‌یافته" : (user.user_area_access ?? []).map((a: any) => a.areas?.name).filter(Boolean).join("، ") || "بدون حوزه تخصیص‌یافته"}</small>
         </div>
         <div className={user.is_active ? "active-dot" : "inactive-dot"}>{user.is_active ? "فعال" : "غیرفعال"}</div>
         {isAdmin && <div className="user-actions">
