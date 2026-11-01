@@ -31,6 +31,7 @@ const nav: readonly NavItem[] = [
   { label: "گزارش ماهانه و تحلیلی", href: "/analytics", icon: "⌁", roles: ["main_admin", "deputy", "battalion_commander", "area_manager"] },
   { label: "لاگ‌ها", href: "/audit", icon: "◷", roles: ["main_admin", "deputy", "battalion_commander"] },
   { label: "مدیریت پیام روز", href: "/daily-message", icon: "✦", roles: ["main_admin", "deputy", "battalion_commander"] },
+  { label: "اتصال تلگرام", href: "/telegram", icon: "➤", roles: ["main_admin", "deputy", "battalion_commander"] },
   { label: "تنظیمات", href: "/settings", icon: "⚙", roles: ["main_admin", "deputy", "battalion_commander"] }
 ] as const;
 
@@ -61,6 +62,7 @@ const pageTitles: Record<string, string> = {
   "/analytics": "گزارش عملکرد ماهانه و تحلیلی",
   "/audit": "لاگ‌های سامانه",
   "/settings": "تنظیمات",
+  "/telegram": "اتصال تلگرام",
   "/daily-message": "مدیریت پیام روز"
 };
 
@@ -153,7 +155,7 @@ export default function AppShell({ children }: Props) {
     ["/dashboard", "/reports/new", "/reports/mine", "/reports"].includes(item.href)
   );
   const management = visible.filter((item) =>
-    ["/messages", "/scores", "/performance", "/users", "/forces", "/organization", "/areas", "/bases", "/categories", "/files", "/analytics", "/audit", "/daily-message", "/settings"].includes(item.href)
+    ["/messages", "/scores", "/performance", "/users", "/forces", "/organization", "/areas", "/bases", "/categories", "/files", "/analytics", "/audit", "/daily-message", "/telegram", "/settings"].includes(item.href)
   );
 
   return (
