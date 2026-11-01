@@ -43,7 +43,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
   let groupIds: string[] | null = null;
   if (Array.isArray(body.group_ids)) {
-    groupIds = Array.from(new Set((body.group_ids as unknown[]).filter((v): v is string => typeof v === "string" && v.trim()).map(v => v.trim())));
+    groupIds = Array.from(new Set((body.group_ids as unknown[]).filter((v): v is string => typeof v === "string" && v.trim().length > 0).map(v => v.trim())));
     const { data: validGroups, error: groupError } = await admin.from("category_groups").select("id").in("id", groupIds).eq("is_active", true);
     if (groupError || (validGroups ?? []).length !== groupIds.length) return NextResponse.json({ message: "یک یا چند بخش انتخاب‌شده معتبر نیست." }, { status: 400 });
     if ((body.role ?? target.role) === "section_manager" && groupIds.length === 0) return NextResponse.json({ message: "برای مسئول بخش حداقل یک بخش انتخاب کنید." }, { status: 400 });
