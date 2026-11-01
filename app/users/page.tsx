@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const roleLabels: Record<string, string> = {
   main_admin: "مدیر اصلی",
-  deputy: "معاون",
+  deputy: "معاونت",
   battalion_commander: "فرمانده گردان",
   area_manager: "مسئول مجازی حوزه",
   area_force: "نیروی حوزه",
@@ -42,7 +42,7 @@ export default function Users() {
     setUsers(usersData.users ?? []);
     setAreas(areasData.areas ?? []);
     setGroups(groupsData.groups ?? []);
-    setIsAdmin(meData.profile?.role === "main_admin");
+    setIsAdmin(["main_admin", "deputy"].includes(meData.profile?.role));
   }
 
   useEffect(() => { load().catch(e => setError(e.message)); }, []);
