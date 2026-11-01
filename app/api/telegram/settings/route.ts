@@ -8,7 +8,7 @@ export async function GET(){
  if(!roles.includes(ctx.profile.role))return NextResponse.json({message:"دسترسی ندارید."},{status:403});
  const{data,error}=await db().from("telegram_integration_settings").select("chat_id,topic_map,letters_topic_id,announcements_topic_id,reports_enabled,letters_enabled,announcements_enabled").eq("id",true).maybeSingle();
  if(error&&error.code!=="PGRST116")return NextResponse.json({message:"جدول تنظیمات تلگرام هنوز ایجاد نشده است؛ ابتدا Migration را اجرا کنید."},{status:503});
- return NextResponse.json({settings:data??{chat_id:"",topic_map:{},letters_topic_id:"",announcements_topic_id:"",reports_enabled:false,letters_enabled:false,announcements_enabled:false},bot_configured:!!process.env.TELEGRAM_BOT_TOKEN});
+ return NextResponse.json({settings:data??{chat_id:"",topic_map:{},letters_topic_id:"",announcements_topic_id:"",reports_enabled:true,letters_enabled:false,announcements_enabled:false},bot_configured:!!process.env.TELEGRAM_BOT_TOKEN});
 }
 export async function PATCH(req:Request){
  const ctx=await getCurrentContext();if(!ctx)return NextResponse.json({message:"احراز هویت لازم است."},{status:401});
@@ -19,7 +19,7 @@ export async function PATCH(req:Request){
  const letters=String(b.letters_topic_id??"").trim(),ann=String(b.announcements_topic_id??"").trim();
  for(const v of [letters,ann])if(v&&!/^\d{1,30}$/.test(v))return NextResponse.json({message:"شناسه موضوع نامه یا اعلان نامعتبر است."},{status:400});
  if(chat&&!/^-?\d{1,30}$/.test(chat))return NextResponse.json({message:"شناسه گروه نامعتبر است."},{status:400});
- const payload={id:true,chat_id:chat||null,topic_map:clean,letters_topic_id:letters||null,announcements_topic_id:ann||null,reports_enabled:!!b.reports_enabled,letters_enabled:!!b.letters_enabled,announcements_enabled:!!b.announcements_enabled,updated_at:new Date().toISOString(),updated_by:ctx.user.id};
+ const payload={id:true,chat_id:chat||null,topic_map:clean,letters_topic_id:letters||null,announcements_topic_id:ann||null,reports_enabled:true,letters_enabled:!!b.letters_enabled,announcements_enabled:!!b.announcements_enabled,updated_at:new Date().toISOString(),updated_by:ctx.user.id};
  const{error}=await db().from("telegram_integration_settings").upsert(payload,{onConflict:"id"});
  if(error)return NextResponse.json({message:"ذخیره تنظیمات تلگرام انجام نشد."},{status:500});
  return NextResponse.json({ok:true});
