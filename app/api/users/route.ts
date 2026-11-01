@@ -67,8 +67,8 @@ export async function POST(request:Request){
     return NextResponse.json({message:"کد کاربری فقط می‌تواند شامل حروف انگلیسی، عدد، نقطه، خط تیره و زیرخط باشد."},{status:400});
   }
 
-  if(!["main_admin","deputy"].includes(ctx.profile.role)&&role==="main_admin"){
-    return NextResponse.json({message:"ایجاد مدیر اصلی فقط توسط مدیر اصلی مجاز است."},{status:403});
+  if(!["main_admin","deputy"].includes(ctx.profile.role)&&["main_admin","deputy"].includes(role)){
+    return NextResponse.json({message:"ایجاد حساب مدیر اصلی یا معاونت فقط توسط مدیر اصلی یا معاونت مجاز است."},{status:403});
   }
 
   const admin=db();
