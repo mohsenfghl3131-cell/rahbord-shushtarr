@@ -77,8 +77,24 @@ export default function NewUser() {
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (loading) return;
-    setLoading(true);
     setError("");
+    if (!form.user_code.trim() || !form.display_name.trim()) {
+      setError("کد کاربری و نام و نام خانوادگی را وارد کنید.");
+      return;
+    }
+    if (form.password.length < 8) {
+      setError("رمز عبور باید حداقل ۸ کاراکتر باشد.");
+      return;
+    }
+    if (!/^[A-Za-z0-9._-]+$/.test(form.user_code.trim())) {
+      setError("کد کاربری فقط می‌تواند شامل حروف انگلیسی، عدد، نقطه، خط تیره و زیرخط باشد.");
+      return;
+    }
+    if (form.role === "section_manager" && form.group_ids.length === 0) {
+      setError("برای مسئول بخش، حداقل یک بخش انتخاب کنید.");
+      return;
+    }
+    setLoading(true);
     try {
       const response = await fetch("/api/users", {
         method: "POST",
@@ -170,9 +186,10 @@ export default function NewUser() {
               )) : <p>حوزه فعالی برای تخصیص وجود ندارد.</p>}
             </div>}
             {error && <div className="error">{error}</div>}
-            <button className="button" disabled={loading || !form.user_code.trim() || !form.display_name.trim() || form.password.length < 8}>
+            <button type="submit" className="button" disabled={loading}>
               {loading ? "در حال ایجاد…" : "ایجاد کاربر"}
             </button>
+            <small className="form-hint">برای فعال شدن ثبت، کد کاربری، نام و رمز حداقل ۸ کاراکتری را کامل کنید. در صورت ناقص بودن اطلاعات، دلیل آن همین‌جا نمایش داده می‌شود.</small>
           </form>
         )}
       </main>
