@@ -3,7 +3,7 @@ import {createClient} from "@supabase/supabase-js";
 
 export const runtime = "nodejs";
 const db=()=>createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.SUPABASE_SERVICE_ROLE_KEY!);
-const sectionNames=["شمسا","متنا","مپتا","نسرا"];
+const sectionNames=["شمسا","متنا","مپتا","نسرا","رسانه محله","رصد"];
 
 async function reply(token:string,chatId:string,text:string,threadId?:number){
   await fetch("https://api.telegram.org/bot"+token+"/sendMessage",{
