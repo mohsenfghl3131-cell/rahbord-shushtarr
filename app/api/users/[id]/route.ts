@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { getCurrentContext } from "@/lib/auth";
 
-const roles = ["main_admin", "deputy", "battalion_commander", "area_manager", "area_force"];
+const roles = ["main_admin", "deputy", "battalion_commander", "area_manager", "area_force", "section_manager"];
 const db = () => createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -19,7 +19,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   }
 
   const admin = db();
-  const { data: target } = await admin.from("profiles").select("id,user_code").eq("id", id).maybeSingle();
+  const { data: target } = await admin.from("profiles").select("id,user_code,role").eq("id", id).maybeSingle();
   if (!target) return NextResponse.json({ message: "کاربر پیدا نشد." }, { status: 404 });
 
   const deactivateRequested: boolean = body.is_active === false;
@@ -41,6 +41,14 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     patch.role = body.role;
   }
 
+  let groupIds: string[] | null = null;
+  if (Array.isArray(body.group_ids)) {
+    groupIds = Array.from(new Set((body.group_ids as unknown[]).filter((v): v is string => typeof v === "string" && v.trim()).map(v => v.trim())));
+    const { data: validGroups, error: groupError } = await admin.from("category_groups").select("id").in("id", groupIds).eq("is_active", true);
+    if (groupError || (validGroups ?? []).length !== groupIds.length) return NextResponse.json({ message: "یک یا چند بخش انتخاب‌شده معتبر نیست." }, { status: 400 });
+    if ((body.role ?? target.role) === "section_manager" && groupIds.length === 0) return NextResponse.json({ message: "برای مسئول بخش حداقل یک بخش انتخاب کنید." }, { status: 400 });
+  }
+
   // Validate all requested area IDs before changing the profile to avoid partial updates.
   let areaIds: string[] | null = null;
   if (Array.isArray(body.area_ids)) {
@@ -54,6 +62,8 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
       return NextResponse.json({ message: "یک یا چند حوزه انتخاب‌شده معتبر نیست." }, { status: 400 });
     }
   }
+
+  if ((body.role ?? target.role) === "section_manager" && Array.isArray(body.area_ids) && body.area_ids.length > 0) return NextResponse.json({ message: "مسئول بخش نباید به حوزه‌ای متصل باشد." }, { status: 400 });
 
   const { error } = await admin.from("profiles").update(patch).eq("id", id);
   if (error) return NextResponse.json({ message: "ویرایش اطلاعات کاربر انجام نشد." }, { status: 500 });
@@ -69,12 +79,18 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     }
   }
 
+  if (groupIds !== null) {
+    const { error: removeGroupsError } = await admin.from("category_group_responsibles").delete().eq("user_id", id);
+    if (removeGroupsError) return NextResponse.json({ message: "به‌روزرسانی مسئولیت بخش‌ها انجام نشد." }, { status: 500 });
+    if (groupIds.length) { const { error: addGroupsError } = await admin.from("category_group_responsibles").insert(groupIds.map(group_id => ({ user_id: id, group_id }))); if (addGroupsError) return NextResponse.json({ message: "ثبت بخش‌های تحت مسئولیت انجام نشد." }, { status: 500 }); }
+  }
+
   await admin.from("audit_logs").insert({
     user_id: ctx.user.id,
     action: "user.update",
     entity_type: "profile",
     entity_id: id,
-    metadata: { ...patch, area_ids: areaIds ?? undefined },
+    metadata: { ...patch, area_ids: areaIds ?? undefined, group_ids: groupIds ?? undefined },
   });
 
   return NextResponse.json({ ok: true });
@@ -119,6 +135,7 @@ export async function DELETE(_request: Request, { params }: { params: Promise<{ 
   if (authError) return NextResponse.json({ message: "حذف حساب ورود کاربر انجام نشد؛ " + authError.message }, { status: 500 });
 
   await admin.from("user_area_access").delete().eq("user_id", id);
+  await admin.from("category_group_responsibles").delete().eq("user_id", id);
   await admin.from("profiles").delete().eq("id", id);
 
   return NextResponse.json({ ok: true });
