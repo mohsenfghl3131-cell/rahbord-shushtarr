@@ -232,7 +232,7 @@ export default function AppShell({ children }: Props) {
             <span />
           </button>
 
-          {pathname !== "/dashboard" && <button type="button" className="header-back-button" aria-label="بازگشت به صفحه قبل" title="بازگشت" onClick={() => { if (window.history.length > 1) router.back(); else router.push("/dashboard"); }}>← <span>بازگشت</span></button>}
+          <button type="button" className="header-back-button" aria-label="بازگشت به صفحه قبل" title="بازگشت" onClick={() => { if (window.history.length > 1) router.back(); else if (pathname !== "/dashboard") router.push("/dashboard"); }}>← <span>بازگشت</span></button>
 
           <div className="header-context">
             <span>سامانه مدیریت و پایش</span>
