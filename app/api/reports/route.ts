@@ -87,7 +87,7 @@ export async function POST(request:Request){
   if(!title||!text||!areaId||!categoryId)return NextResponse.json({message:"عنوان، متن، حوزه و دسته‌بندی الزامی است."},{status:400});
   if(!canUseArea(ctx,areaId))return NextResponse.json({message:"شما به این حوزه دسترسی ندارید."},{status:403});
   const db=admin();
-  const {data:category}=await db.from("categories").select("id,group_id,category_groups!inner(id,is_active)").eq("id",categoryId).eq("is_active",true).maybeSingle();
+  const {data:category}=await db.from("categories").select("id,name,group_id,category_groups!inner(id,name,is_active)").eq("id",categoryId).eq("is_active",true).maybeSingle();
   if(!category)return NextResponse.json({message:"دسته‌بندی معتبر نیست."},{status:400});
   if(ctx.responsibleGroupIds.length>0 && !["main_admin","deputy","battalion_commander"].includes(ctx.profile.role) && !ctx.responsibleGroupIds.includes(category.group_id)){
     return NextResponse.json({message:"شما فقط مجاز به ثبت گزارش در بخش مسئولیت خود هستید."},{status:403});
@@ -95,6 +95,41 @@ export async function POST(request:Request){
   const {data,error}=await db.from("reports").insert({title,body:text,area_id:areaId,category_id:categoryId,creator_id:ctx.user.id,status:"pending"}).select("id").single();
   if(error||!data)return NextResponse.json({message:"ثبت گزارش انجام نشد."},{status:500});
   await db.from("audit_logs").insert({user_id:ctx.user.id,action:"report.create",entity_type:"report",entity_id:data.id,metadata:{area_id:areaId,category_id:categoryId}});
-  try{await sendTelegramAnnouncement("🆕 گزارش جدید ثبت شد\nعنوان: "+title+"\nوضعیت: در انتظار بررسی");}catch{}
-  return NextResponse.json({id:data.id},{status:201});
+  let telegramSent=false;
+  let telegramReason="not_configured";
+  try{
+    const {data:settings}=await db.from("telegram_integration_settings")
+      .select("chat_id,topic_map,reports_enabled").eq("id",true).maybeSingle();
+    if(!settings?.reports_enabled) telegramReason="reports_disabled";
+    else if(!settings.chat_id) telegramReason="group_not_configured";
+    else {
+      const group:any=Array.isArray((category as any).category_groups)?(category as any).category_groups[0]:(category as any).category_groups;
+      const sectionName=String(group?.name||"");
+      const threadId=Number(settings.topic_map?.[sectionName]);
+      if(!threadId) telegramReason="topic_not_bound";
+      else {
+        const {data:area}=await db.from("areas").select("name").eq("id",areaId).maybeSingle();
+        const message=[
+          "🆕 گزارش جدید ثبت شد",
+          "🏷 بخش: "+(sectionName||"نامشخص"),
+          "📂 موضوع: "+String((category as any).name||"نامشخص"),
+          "📍 حوزه: "+String(area?.name||"نامشخص"),
+          "📝 عنوان: "+title,
+          "",
+          text.length>3200?text.slice(0,3200)+"…":text,
+          "",
+          "وضعیت: در انتظار بررسی",
+          "سامانه راهبرد شوشتر"
+        ].join("\n");
+        const response=await fetch("https://api.telegram.org/bot"+process.env.TELEGRAM_BOT_TOKEN+"/sendMessage",{
+          method:"POST",headers:{"content-type":"application/json"},
+          body:JSON.stringify({chat_id:settings.chat_id,message_thread_id:threadId,text:message,disable_web_page_preview:true})
+        });
+        const result=await response.json().catch(()=>({}));
+        telegramSent=!!(response.ok&&result.ok);
+        telegramReason=telegramSent?"sent":"telegram_api_error";
+      }
+    }
+  }catch{telegramReason="telegram_send_failed";}
+  return NextResponse.json({id:data.id,telegram_sent:telegramSent,telegram_reason:telegramReason},{status:201});
 }
