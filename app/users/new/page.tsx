@@ -50,7 +50,7 @@ export default function NewUser() {
         if (!active) return;
         const allowedRoles = me.profile.role === "main_admin" ? roleOptions : roleOptions.filter(([value]) => value !== "main_admin");
         setRoles(allowedRoles);
-        setForm(current => ({ ...current, role: allowedRoles[0][0] }));
+        setForm(current => ({ ...current, role: allowedRoles.some(([value]) => value === "area_force") ? "area_force" : allowedRoles[0][0] }));
         setAreas(areaData.areas ?? []);
         setGroups(groupData.groups ?? []);
       } catch (e: any) {
