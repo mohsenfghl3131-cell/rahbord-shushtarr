@@ -1171,3 +1171,16 @@ html[data-theme="light"] body .auth{
  background-image:linear-gradient(115deg,rgba(215,239,249,.18),rgba(235,249,255,.08) 48%,rgba(215,239,249,.2)),url("https://commons.wikimedia.org/wiki/Special:FilePath/Panorama_Watermill_Array_Shushtar.jpg")!important;
 }
 html[data-theme="light"] body .auth:before{background:rgba(223,242,250,.24)!important}
+
+
+/* LOGIN DARK MODE ENFORCEMENT — keep dark regardless of selected site theme */
+html body main.auth{background:#06172b!important;background-image:linear-gradient(120deg,rgba(2,12,27,.82),rgba(3,24,45,.72) 52%,rgba(2,12,27,.84)),url("https://commons.wikimedia.org/wiki/Special:FilePath/Panorama_Watermill_Array_Shushtar.jpg")!important;background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important;color:#f7fbff!important}
+html body main.auth>.card{background:linear-gradient(145deg,#08223a,#031326)!important;color:#f7fbff!important;border:1px solid rgba(82,213,248,.68)!important;box-shadow:0 28px 90px rgba(0,0,0,.58),0 0 38px rgba(0,183,235,.2)!important}
+html body main.auth>.card>.brand{color:#7cecff!important;-webkit-text-fill-color:#7cecff!important;opacity:1!important}
+html body main.auth>.card>h1{color:#fff!important;-webkit-text-fill-color:#fff!important;opacity:1!important;font-weight:950!important;text-shadow:0 2px 14px #001326!important}
+html body main.auth>.card>p{color:#e2eff8!important;-webkit-text-fill-color:#e2eff8!important;opacity:1!important;font-weight:650!important}
+html body main.auth>.card>label{color:#f5faff!important;-webkit-text-fill-color:#f5faff!important;opacity:1!important;font-weight:900!important}
+html body main.auth>.card>label>input{background:#061727!important;color:#fff!important;-webkit-text-fill-color:#fff!important;border:1px solid #5b829b!important}
+html body main.auth>.card>label>input::placeholder{color:#b9cede!important;-webkit-text-fill-color:#b9cede!important;opacity:1!important}
+html body main.auth>.card>.button{color:#fff!important;-webkit-text-fill-color:#fff!important}
+html body main.auth>.card:after{color:#a6d8e9!important;-webkit-text-fill-color:#a6d8e9!important;opacity:1!important}
