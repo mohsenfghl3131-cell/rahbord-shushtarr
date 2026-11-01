@@ -881,3 +881,129 @@ html[data-theme="dark"] .unified-shell :is(button,.button,.btn,[role="button"]){
 html[data-theme="dark"] .unified-shell :is(button[type="submit"],.primary,.btn-primary,.submit-button,.save-btn){color:#fff!important;background:linear-gradient(115deg,#087fca,#1265d9 58%,#3b6df1)!important;border-color:#1c9fd1!important}
 html[data-theme="dark"] .unified-shell :is(.danger,.btn-danger,.red-btn,.delete-button){color:#ffc0c9!important;background:linear-gradient(145deg,#4a1c30,#321729)!important;border-color:rgba(255,112,138,.32)!important}
 html[data-theme="dark"] .unified-shell :is(.success,.btn-success,.green-btn){color:#aaf3ce!important;background:linear-gradient(145deg,#123d35,#0c302c)!important;border-color:rgba(66,205,143,.3)!important}
+
+
+/* ===== RAHBORD SHUSHTAR / GLOBAL VISUAL POLISH 2026 ===== */
+:root{
+ --rb-night:#061626;--rb-deep:#081e32;--rb-glass:rgba(8,31,52,.78);
+ --rb-line:rgba(82,190,225,.24);--rb-cyan:#38dcf5;--rb-blue:#438cff;
+ --rb-shadow:0 18px 48px rgba(0,12,28,.18);
+}
+html{scroll-behavior:smooth}
+body{font-feature-settings:"ss01" on}
+::selection{background:rgba(25,190,230,.3);color:inherit}
+.unified-shell{min-height:100svh}
+.unified-shell .main{min-width:0}
+.unified-shell .content,.unified-shell .shell{width:100%;max-width:1540px}
+.unified-shell .panel,.unified-shell .stat-card,.unified-shell .form-panel,
+.unified-shell .user-card,.unified-shell .area-card,.unified-shell .setting-card,
+.unified-shell .table-wrap,.unified-shell .filter-panel,.unified-shell .mission-card,
+.unified-shell .score-card,.unified-shell .chart-card{
+ border-radius:20px!important;transition:border-color .2s,box-shadow .2s,transform .2s;
+}
+html[data-theme="dark"] .unified-shell .panel,
+html[data-theme="dark"] .unified-shell .stat-card,
+html[data-theme="dark"] .unified-shell .form-panel,
+html[data-theme="dark"] .unified-shell .user-card,
+html[data-theme="dark"] .unified-shell .area-card,
+html[data-theme="dark"] .unified-shell .setting-card,
+html[data-theme="dark"] .unified-shell .table-wrap,
+html[data-theme="dark"] .unified-shell .filter-panel,
+html[data-theme="dark"] .unified-shell .mission-card,
+html[data-theme="dark"] .unified-shell .score-card,
+html[data-theme="dark"] .unified-shell .chart-card{
+ background:linear-gradient(145deg,rgba(10,35,57,.91),rgba(5,21,38,.94))!important;
+ border:1px solid rgba(76,184,220,.25)!important;
+ box-shadow:0 14px 36px rgba(0,0,0,.2),inset 0 1px rgba(255,255,255,.045)!important;
+ backdrop-filter:blur(16px);
+}
+html[data-theme="dark"] .unified-shell .panel:hover,
+html[data-theme="dark"] .unified-shell .stat-card:hover,
+html[data-theme="dark"] .unified-shell .user-card:hover,
+html[data-theme="dark"] .unified-shell .area-card:hover{
+ border-color:rgba(56,220,245,.48)!important;
+ box-shadow:0 18px 42px rgba(0,0,0,.26),0 0 22px rgba(0,190,240,.08)!important;
+}
+.unified-shell .topbar{gap:14px;margin-bottom:18px;flex-wrap:wrap}
+.unified-shell .topbar h1{font-weight:900;letter-spacing:-.5px}
+.unified-shell .eyebrow,.unified-shell .panel-eyebrow{letter-spacing:.15px}
+.unified-shell .button,.unified-shell button.button,.unified-shell .btn{
+ min-height:42px;border-radius:13px!important;padding:10px 18px!important;
+ font-size:12px!important;font-weight:900!important;
+ background:linear-gradient(115deg,#087fc4,#08b9d8 58%,#386ff0)!important;
+ border:1px solid rgba(112,224,255,.48)!important;color:#fff!important;
+ box-shadow:0 8px 22px rgba(0,151,220,.2),inset 0 1px rgba(255,255,255,.22)!important;
+}
+.unified-shell .button:hover,.unified-shell button.button:hover,.unified-shell .btn:hover{
+ transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,174,235,.28),0 0 16px rgba(38,206,242,.15)!important;
+}
+.unified-shell :is(input,select,textarea){border-radius:12px!important;min-height:44px}
+.unified-shell textarea{min-height:110px;line-height:1.9}
+.unified-shell :is(input,select,textarea):focus-visible{outline:0!important;border-color:#27c8ed!important;box-shadow:0 0 0 3px rgba(30,190,230,.15)!important}
+.unified-shell .form-panel{padding:clamp(17px,2.5vw,28px)!important}
+.unified-shell .form-panel label{line-height:1.9}
+.unified-shell .area-access-list{gap:10px}
+.unified-shell .area-access-list label{border:1px solid rgba(86,169,202,.2);border-radius:13px!important;padding:13px!important;min-width:0}
+.unified-shell .area-access-list label:has(input:checked){border-color:#26bfe8;background:rgba(20,161,206,.13)}
+.unified-shell :is(.error,.notice){border-radius:13px!important;line-height:1.9}
+.unified-shell .header.unified-header{height:76px;padding-inline:clamp(12px,2.3vw,30px);gap:13px}
+.unified-shell .header-context b{font-weight:900}
+.unified-shell .header-profile{max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.unified-shell .sidebar{backdrop-filter:blur(24px)}
+.unified-shell .sidebar-section>span{font-size:10px;font-weight:900;letter-spacing:.4px}
+.unified-shell .sidebar nav a{min-height:43px;border-radius:12px!important;font-weight:750}
+.unified-shell .sidebar nav a .nav-icon{flex:0 0 25px}
+.unified-shell .notification-panel{border-radius:18px!important;backdrop-filter:blur(22px)}
+.unified-shell :is(.report-row,.recent-row,.audit-row,.private-file){min-width:0}
+.unified-shell :is(.report-row,.recent-row,.audit-row,.private-file)>*{min-width:0}
+.unified-shell :is(.report-row b,.recent-row b,.private-file b){overflow-wrap:anywhere}
+.unified-shell :is(.empty-state,.notice,.error,.form-hint){line-height:1.95;overflow-wrap:anywhere}
+html[data-theme="light"] .unified-shell .panel,
+html[data-theme="light"] .unified-shell .stat-card,
+html[data-theme="light"] .unified-shell .form-panel,
+html[data-theme="light"] .unified-shell .user-card,
+html[data-theme="light"] .unified-shell .area-card,
+html[data-theme="light"] .unified-shell .setting-card{
+ border-radius:19px!important;border:1px solid #d7e7f0!important;
+ box-shadow:0 12px 30px rgba(28,82,116,.075)!important;
+}
+html[data-theme="light"] .unified-shell .button,
+html[data-theme="light"] .unified-shell button.button,
+html[data-theme="light"] .unified-shell .btn{color:#fff!important}
+html[data-theme="light"] .unified-shell .form-panel label{color:#294d65!important}
+html[data-theme="light"] .unified-shell :is(input,select,textarea){background:#f7fbfe!important;color:#173e58!important;border-color:#ccdfeb!important}
+html[data-theme="light"] .unified-shell .sidebar{background:rgba(247,252,255,.94)!important}
+@media(max-width:900px){
+ .unified-shell .header.unified-header{height:68px}
+ .unified-shell .header-context span{font-size:9px}
+ .unified-shell .header-context b{font-size:12px}
+ .unified-shell .content,.unified-shell .shell{padding:15px}
+}
+@media(max-width:700px){
+ .unified-shell .sidebar{position:fixed!important;inset:0 0 0 auto!important;width:min(310px,86vw)!important;height:100dvh!important;max-height:100dvh!important;z-index:30!important;transform:translateX(110%);transition:transform .25s ease!important;display:flex!important;overflow:hidden!important}
+ .unified-shell .sidebar.open{transform:translateX(0)!important}
+ .unified-shell .sidebar-scroll{flex:1;min-height:0;overflow-y:auto!important;overscroll-behavior:contain}
+ .unified-shell .sidebar-backdrop{position:fixed!important;inset:0!important;z-index:29!important;background:rgba(0,8,20,.64)!important;backdrop-filter:blur(4px)}
+ .unified-shell .sidebar nav{grid-template-columns:1fr!important}
+ .unified-shell .header.unified-header{padding:9px 12px!important;gap:9px!important}
+ .unified-shell .header-context{min-width:0;flex:1}
+ .unified-shell .header-context b{display:block;max-width:44vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ .unified-shell .header-profile{display:none!important}
+ .unified-shell .theme-toggle{padding:8px!important}
+ .unified-shell .theme-toggle small{display:none}
+ .unified-shell .content,.unified-shell .shell{padding:12px!important}
+ .unified-shell .topbar h1{font-size:20px!important}
+ .unified-shell .panel,.unified-shell .stat-card,.unified-shell .form-panel{border-radius:16px!important}
+ .unified-shell .stats{gap:9px!important}
+ .unified-shell .stat-card{padding:14px!important;min-width:0}
+ .unified-shell .stat-card strong{font-size:25px!important}
+ .unified-shell .dashboard-grid,.unified-shell .settings-grid{grid-template-columns:minmax(0,1fr)!important}
+ .unified-shell .report-card{min-width:0}
+ .unified-shell .report-actions{flex-wrap:wrap}
+ .unified-shell :is(table,.table-wrap){max-width:100%;overflow-x:auto}
+ .unified-shell .area-access-list{grid-template-columns:minmax(0,1fr)!important}
+ .unified-shell :is(.panel,.form-panel,.stat-card,.user-card,.area-card){min-width:0}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
