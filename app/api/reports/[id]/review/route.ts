@@ -89,6 +89,8 @@ export async function PATCH(request:Request,{params}:{params:Promise<{id:string}
     metadata:{reason:status==="rejected"?reason:null}
   });
 
+  try{await sendTelegramAnnouncement((status==="approved"?"✅ گزارش تأیید شد":"⛔ گزارش رد شد")+"\nعنوان: "+String((report as any).title||"گزارش")+(status==="rejected"?"\nدلیل: "+reason:""));}catch{}
+
   let telegram:{sent:boolean;reason?:string}|undefined;
   if(status==="approved"){
     try{telegram=await sendApprovedReport(database,id);}
