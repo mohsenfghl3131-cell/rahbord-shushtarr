@@ -48,7 +48,7 @@ export default function NewUser() {
           throw new Error("شما مجاز به ایجاد کاربر نیستید.");
         }
         if (!active) return;
-        const allowedRoles = me.profile.role === "main_admin" ? roleOptions : roleOptions.filter(([value]) => value !== "main_admin");
+        const allowedRoles = ["main_admin", "deputy"].includes(me.profile.role) ? roleOptions : roleOptions.filter(([value]) => !["main_admin", "deputy"].includes(value));
         setRoles(allowedRoles);
         setForm(current => ({ ...current, role: allowedRoles.some(([value]) => value === "area_force") ? "area_force" : allowedRoles[0][0] }));
         setAreas(areaData.areas ?? []);
