@@ -802,7 +802,7 @@ html[data-theme="light"] .unified-shell .content>.welcome-pro :is(p,small,.welco
   min-height:100svh!important;
   color:#173b56!important;
   background-color:#eaf2f8!important;
-  background-image:linear-gradient(115deg,rgba(7,28,49,.58),rgba(10,54,82,.34) 52%,rgba(5,25,48,.58)),url("https://commons.wikimedia.org/wiki/Special:FilePath/Shushtar_Abshar.JPG")!important;
+  background-image:linear-gradient(115deg,rgba(7,28,49,.58),rgba(10,54,82,.34) 52%,rgba(5,25,48,.58)),url("https://commons.wikimedia.org/wiki/Special:FilePath/Shushtar_Historical_Hydraulic_System_Panorama.jpg")!important;
   background-position:center!important;background-size:cover!important;background-repeat:no-repeat!important;
 }
 .auth:before{background:linear-gradient(0deg,rgba(3,22,40,.3),rgba(3,22,40,.08) 55%,rgba(3,22,40,.24))!important;backdrop-filter:saturate(1.12)!important}
@@ -845,7 +845,7 @@ html[data-theme="light"] .unified-shell .content>.welcome-pro :is(p,small,.welco
 /* DARK THEME: the same login controls, with deliberate high contrast */
 html[data-theme="dark"] .auth{
   color:#eaf8ff!important;background-color:#04172c!important;
-  background-image:linear-gradient(115deg,rgba(1,12,29,.82),rgba(3,25,51,.68) 52%,rgba(1,12,29,.82)),url("https://commons.wikimedia.org/wiki/Special:FilePath/Shushtar_Abshar.JPG")!important;
+  background-image:linear-gradient(115deg,rgba(1,12,29,.82),rgba(3,25,51,.68) 52%,rgba(1,12,29,.82)),url("https://commons.wikimedia.org/wiki/Special:FilePath/Shushtar_Historical_Hydraulic_System_Panorama.jpg")!important;
 }
 html[data-theme="dark"] .auth:before{background:linear-gradient(0deg,rgba(0,9,24,.5),rgba(0,9,24,.12) 55%,rgba(0,9,24,.35))!important}
 html[data-theme="dark"] .auth .card{
@@ -1007,3 +1007,11 @@ html[data-theme="light"] .unified-shell .sidebar{background:rgba(247,252,255,.94
 @media(prefers-reduced-motion:reduce){
  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+
+
+/* Login waterfall background: use verified Shushtar Historical Hydraulic System photo */
+.auth{
+ background-image:linear-gradient(115deg,rgba(1,12,29,.76),rgba(3,25,51,.52) 52%,rgba(1,12,29,.76)),url("https://commons.wikimedia.org/wiki/Special:FilePath/Shushtar_Historical_Hydraulic_System_Panorama.jpg")!important;
+ background-position:center!important;background-size:cover!important;background-repeat:no-repeat!important;
+}
+@media(max-width:600px){.auth{background-position:center center!important;background-size:cover!important}}
