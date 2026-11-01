@@ -4531,3 +4531,46 @@ html body main.auth form.card input{background:#061727!important;color:#fff!impo
 html body main.auth form.card input::placeholder{color:#b8cbd9!important;-webkit-text-fill-color:#b8cbd9!important;opacity:1!important}
 html body main.auth form.card button{color:#fff!important;-webkit-text-fill-color:#fff!important}
 html body main.auth form.card:after{color:#9cc9dc!important;-webkit-text-fill-color:#9cc9dc!important;opacity:1!important}
+
+
+/* LOGIN: ALWAYS DARK, HIGH-CONTRAST — independent of selected app theme */
+html body main.auth.auth{
+ background:#041426!important;
+ background-image:linear-gradient(135deg,rgba(1,12,26,.78),rgba(3,24,45,.66)),url("https://commons.wikimedia.org/wiki/Special:FilePath/Panorama_Watermill_Array_Shushtar.jpg")!important;
+ background-position:center!important;background-size:cover!important;background-repeat:no-repeat!important;
+}
+html body main.auth.auth > form.card.card{
+ background:linear-gradient(145deg,rgba(8,35,59,.98),rgba(3,19,37,.99))!important;
+ color:#f7fbff!important;opacity:1!important;
+ border:1px solid rgba(65,211,247,.7)!important;
+ box-shadow:0 26px 80px rgba(0,0,0,.58),0 0 38px rgba(0,184,235,.2)!important;
+ backdrop-filter:blur(20px)!important;
+}
+html body main.auth.auth > form.card.card .brand{
+ color:#65e6ff!important;-webkit-text-fill-color:#65e6ff!important;opacity:1!important;text-shadow:none!important;
+}
+html body main.auth.auth > form.card.card h1{
+ color:#fff!important;-webkit-text-fill-color:#fff!important;opacity:1!important;
+ font-weight:950!important;text-shadow:0 2px 12px rgba(0,0,0,.4)!important;
+}
+html body main.auth.auth > form.card.card p{
+ color:#e4f1fa!important;-webkit-text-fill-color:#e4f1fa!important;opacity:1!important;
+ font-weight:650!important;text-shadow:none!important;
+}
+html body main.auth.auth > form.card.card label{
+ color:#f4f9ff!important;-webkit-text-fill-color:#f4f9ff!important;opacity:1!important;
+ font-weight:900!important;text-shadow:none!important;
+}
+html body main.auth.auth > form.card.card input{
+ color:#fff!important;-webkit-text-fill-color:#fff!important;
+ background:#061626!important;border:1px solid #52758e!important;opacity:1!important;
+}
+html body main.auth.auth > form.card.card input::placeholder{
+ color:#b9cddd!important;-webkit-text-fill-color:#b9cddd!important;opacity:1!important;
+}
+html body main.auth.auth > form.card.card button{
+ color:#fff!important;-webkit-text-fill-color:#fff!important;opacity:1!important;
+}
+html body main.auth.auth > form.card.card:after{
+ color:#a9d5e7!important;-webkit-text-fill-color:#a9d5e7!important;opacity:1!important;
+}
