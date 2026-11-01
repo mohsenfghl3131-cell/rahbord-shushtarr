@@ -1,6 +1,7 @@
 import {NextResponse} from "next/server";
 import {createClient} from "@supabase/supabase-js";
-import {getCurrentContext,canUseArea} from "@/lib/auth";\nimport {sendTelegramAnnouncement} from "@/lib/telegram-notifications";
+import {getCurrentContext,canUseArea} from "@/lib/auth";
+import {sendTelegramAnnouncement} from "@/lib/telegram-notifications";
 
 function admin(){return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.SUPABASE_SERVICE_ROLE_KEY!)}
 
