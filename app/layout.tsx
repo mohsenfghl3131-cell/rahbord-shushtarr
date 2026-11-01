@@ -2,9 +2,9 @@ import type {Metadata,Viewport} from "next";
 import "./globals.css";
 import "./rahbord-neon.css";
 export const metadata:Metadata={
- title:{default:"راهبرد شوشتر | مرکز عملیات",template:"%s | راهبرد شوشتر"},
+ title:{default:"سامانه راهبرد شوشتر",template:"%s | سامانه راهبرد شوشتر"},
  description:"مرکز یکپارچه مدیریت، گزارش‌دهی، پایش و تحلیل راهبرد شوشتر",
- applicationName:"راهبرد شوشتر",
+ applicationName:"سامانه راهبرد شوشتر",
  manifest:"/manifest.webmanifest",
  appleWebApp:{capable:true,title:"راهبرد شوشتر",statusBarStyle:"default"}
 };
