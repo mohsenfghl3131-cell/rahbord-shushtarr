@@ -795,3 +795,89 @@ html[data-theme="light"] .unified-shell .content>.welcome-pro :is(p,small,.welco
  html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro>.panel{padding:15px!important}
  html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro .trend-chart{height:205px!important}
 }
+
+
+/* AUTH + CONTROL PALETTE — loaded after globals.css so theme rules win predictably */
+.auth{
+  min-height:100svh!important;
+  color:#173b56!important;
+  background-color:#eaf2f8!important;
+  background-image:linear-gradient(115deg,rgba(7,28,49,.58),rgba(10,54,82,.34) 52%,rgba(5,25,48,.58)),url("https://commons.wikimedia.org/wiki/Special:FilePath/Shushtar_Abshar.JPG")!important;
+  background-position:center!important;background-size:cover!important;background-repeat:no-repeat!important;
+}
+.auth:before{background:linear-gradient(0deg,rgba(3,22,40,.3),rgba(3,22,40,.08) 55%,rgba(3,22,40,.24))!important;backdrop-filter:saturate(1.12)!important}
+.auth:after{background:radial-gradient(ellipse at 50% 42%,rgba(20,178,224,.12),transparent 60%)!important;opacity:1!important}
+.auth .card{
+  width:min(460px,100%)!important;padding:clamp(25px,4vw,38px)!important;
+  color:#173b56!important;background:rgba(250,253,255,.97)!important;
+  border:1px solid rgba(255,255,255,.88)!important;border-radius:26px!important;
+  box-shadow:0 26px 85px rgba(2,20,39,.32),0 0 35px rgba(22,159,205,.12)!important;
+  backdrop-filter:blur(24px) saturate(1.25)!important;
+}
+.auth .card .brand{color:#087cae!important;font-size:20px!important;font-weight:950!important;text-shadow:none!important;border:0!important}
+.auth .card h1{color:#123b58!important;font-size:clamp(24px,4vw,29px)!important;font-weight:900!important}
+.auth .card p{color:#526f84!important;font-size:13px!important;line-height:2.1!important}
+.auth .card label{display:block!important;color:#234b66!important;font-size:12px!important;font-weight:850!important}
+.auth .card input{
+  width:100%!important;min-height:52px!important;padding:13px 15px!important;margin-top:8px!important;
+  color:#173b56!important;background:#f1f7fb!important;border:1px solid #c8dce9!important;
+  border-radius:14px!important;box-shadow:inset 0 2px 7px rgba(23,59,86,.06)!important;
+  font-size:14px!important;font-weight:650!important;outline:0!important;
+}
+.auth .card input::placeholder{color:#7891a4!important;opacity:1!important}
+.auth .card input:focus{border-color:#0b9fc9!important;box-shadow:0 0 0 3px rgba(8,160,205,.15)!important}
+.auth .card button,.auth .card .button{
+  width:100%!important;min-height:54px!important;margin-top:12px!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  color:#fff!important;background:linear-gradient(110deg,#0878c5,#08aeca 58%,#2869e9)!important;
+  border:1px solid rgba(28,160,207,.65)!important;border-radius:14px!important;
+  font-size:14px!important;font-weight:900!important;text-shadow:0 1px 1px rgba(0,30,70,.22)!important;
+  box-shadow:0 10px 26px rgba(5,125,190,.24),inset 0 1px rgba(255,255,255,.28)!important;
+}
+.auth .card button:hover{filter:brightness(1.06)!important;transform:translateY(-1px)!important}
+.auth .card button:disabled{opacity:.62!important;filter:saturate(.65)!important;cursor:wait!important}
+.auth .card .error{color:#a3213c!important;background:#fff0f2!important;border:1px solid #f2c3cd!important}
+.auth .card:after{display:block!important;color:#668ca4!important;border-top:1px solid #dce8ef!important;padding-top:18px!important;margin-top:25px!important;font-size:9px!important;letter-spacing:2px!important;text-align:center!important;opacity:1!important}
+.auth :is(a,button,label,input){-webkit-tap-highlight-color:transparent}
+.auth :is(button,input):focus-visible{outline:3px solid rgba(10,165,211,.32)!important;outline-offset:3px!important}
+@media(max-width:600px){.auth{padding:18px 15px!important;background-position:56% center!important}.auth .card{padding:27px 22px!important;border-radius:23px!important}.auth .card p{font-size:12px!important}}
+
+/* DARK THEME: the same login controls, with deliberate high contrast */
+html[data-theme="dark"] .auth{
+  color:#eaf8ff!important;background-color:#04172c!important;
+  background-image:linear-gradient(115deg,rgba(1,12,29,.82),rgba(3,25,51,.68) 52%,rgba(1,12,29,.82)),url("https://commons.wikimedia.org/wiki/Special:FilePath/Shushtar_Abshar.JPG")!important;
+}
+html[data-theme="dark"] .auth:before{background:linear-gradient(0deg,rgba(0,9,24,.5),rgba(0,9,24,.12) 55%,rgba(0,9,24,.35))!important}
+html[data-theme="dark"] .auth .card{
+  color:#effaff!important;background:linear-gradient(145deg,rgba(7,29,54,.97),rgba(3,17,37,.97))!important;
+  border-color:rgba(74,198,237,.42)!important;box-shadow:0 28px 90px rgba(0,0,0,.48),0 0 40px rgba(0,171,224,.13),inset 0 1px rgba(255,255,255,.08)!important;
+}
+html[data-theme="dark"] .auth .card .brand{color:#83eaff!important;text-shadow:0 0 18px rgba(35,190,255,.2)!important}
+html[data-theme="dark"] .auth .card h1{color:#f4fbff!important}
+html[data-theme="dark"] .auth .card p{color:#b5ccdd!important}
+html[data-theme="dark"] .auth .card label{color:#d9effb!important}
+html[data-theme="dark"] .auth .card input{color:#f4fbff!important;background:rgba(1,12,29,.88)!important;border-color:rgba(107,190,229,.4)!important;box-shadow:inset 0 2px 8px rgba(0,0,0,.22)!important}
+html[data-theme="dark"] .auth .card input::placeholder{color:#91abc2!important}
+html[data-theme="dark"] .auth .card input:focus{border-color:#35c8f1!important;box-shadow:0 0 0 3px rgba(25,188,235,.18)!important}
+html[data-theme="dark"] .auth .card button,html[data-theme="dark"] .auth .card .button{color:#fff!important;background:linear-gradient(110deg,#0878d0,#08b8df 58%,#3475f4)!important;border-color:rgba(115,220,255,.55)!important;box-shadow:0 10px 28px rgba(0,145,235,.3),inset 0 1px rgba(255,255,255,.25)!important}
+html[data-theme="dark"] .auth .card .error{color:#ffd9df!important;background:rgba(145,27,48,.28)!important;border-color:rgba(255,112,130,.42)!important}
+html[data-theme="dark"] .auth .card:after{color:#8bcce9!important;border-top-color:rgba(130,185,218,.22)!important}
+
+/* Shared readable controls for both workspace themes */
+.unified-shell :is(button,.button,.btn,[role="button"],input[type="button"],input[type="submit"],input[type="reset"]){
+  font-family:inherit!important;font-weight:800;transition:background .18s,border-color .18s,color .18s,box-shadow .18s,transform .18s;
+}
+.unified-shell :is(button,.button,.btn,[role="button"]):focus-visible{outline:3px solid rgba(10,165,211,.32)!important;outline-offset:2px!important}
+html[data-theme="light"] .unified-shell :is(button,.button,.btn,[role="button"],input[type="button"],input[type="submit"],input[type="reset"]){color:#17435e!important}
+html[data-theme="light"] .unified-shell :is(button[type="submit"],.primary,.btn-primary,.submit-button,.save-btn){color:#fff!important}
+html[data-theme="dark"] .unified-shell :is(.panel,.stat-card,.form-panel,.setting-card,.user-card,.area-card,.report-card,.mission-card,.score-card,.table-wrap,.data-table-wrap,.chart-card,.quick-actions a,.dashboard-shortcuts a,.notification-card,.empty-state,.filter-panel,.modal-card,.dialog-card){
+  color:#e8f6ff!important;background:linear-gradient(145deg,rgba(8,30,51,.96),rgba(5,21,39,.96))!important;border-color:rgba(74,160,196,.25)!important;
+}
+html[data-theme="dark"] .unified-shell :is(h1,h2,h3,h4,h5,strong,b,.panel-title,.card-title,.section-title){color:#eaf8ff!important;text-shadow:none!important}
+html[data-theme="dark"] .unified-shell :is(p,label,small,.muted,.subtitle,.description,.helper-text,.field-hint){color:#a8c3d5}
+html[data-theme="dark"] .unified-shell :is(input,select,textarea){color:#effaff!important;background:#071c31!important;border-color:#31566f!important}
+html[data-theme="dark"] .unified-shell :is(input,select,textarea)::placeholder{color:#8ba9bc!important;opacity:1!important}
+html[data-theme="dark"] .unified-shell :is(button,.button,.btn,[role="button"]){color:#dff8ff!important;background:linear-gradient(145deg,#103d5a,#0a2b46)!important;border:1px solid rgba(71,189,224,.34)!important}
+html[data-theme="dark"] .unified-shell :is(button[type="submit"],.primary,.btn-primary,.submit-button,.save-btn){color:#fff!important;background:linear-gradient(115deg,#087fca,#1265d9 58%,#3b6df1)!important;border-color:#1c9fd1!important}
+html[data-theme="dark"] .unified-shell :is(.danger,.btn-danger,.red-btn,.delete-button){color:#ffc0c9!important;background:linear-gradient(145deg,#4a1c30,#321729)!important;border-color:rgba(255,112,138,.32)!important}
+html[data-theme="dark"] .unified-shell :is(.success,.btn-success,.green-btn){color:#aaf3ce!important;background:linear-gradient(145deg,#123d35,#0c302c)!important;border-color:rgba(66,205,143,.3)!important}
