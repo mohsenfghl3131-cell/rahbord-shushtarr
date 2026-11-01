@@ -710,3 +710,88 @@ html[data-theme="light"] .unified-shell .sidebar-backdrop{background:rgba(18,43,
  html[data-theme="light"] .unified-shell .sidebar{background:linear-gradient(160deg,#fff,#f0f8fe)!important}
  html[data-theme="light"] .unified-shell .unified-header{background:rgba(255,255,255,.97)!important}
 }
+
+
+/* DASHBOARD LIGHT THEME — restore contrast for statistics, charts and panels */
+html[data-theme="light"] .unified-shell .content>.stats>.stat-card{
+  color:#173b56!important;
+  background:linear-gradient(145deg,#ffffff 0%,#f3faff 72%,#eaf6ff 100%)!important;
+  border:1px solid #cbdfea!important;
+  box-shadow:0 10px 26px rgba(28,79,117,.09),inset 0 1px #fff!important;
+}
+html[data-theme="light"] .unified-shell .content>.stats>.stat-card:after{
+  background:radial-gradient(circle,#cceeff 0%,rgba(204,238,255,0) 72%)!important;opacity:.58!important;
+}
+html[data-theme="light"] .unified-shell .content>.stats>.stat-card>span{
+  color:#365d78!important;font-weight:800!important;opacity:1!important;
+}
+html[data-theme="light"] .unified-shell .content>.stats>.stat-card>strong{
+  color:#075b91!important;font-weight:950!important;text-shadow:none!important;
+}
+html[data-theme="light"] .unified-shell .content>.stats>.stat-card>small{
+  color:#627f95!important;opacity:1!important;
+}
+html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro>.panel{
+  color:#173b56!important;
+  background:linear-gradient(145deg,#ffffff 0%,#f7fbff 100%)!important;
+  border:1px solid #d2e2ed!important;
+  box-shadow:0 12px 30px rgba(27,76,112,.08),inset 0 1px #fff!important;
+}
+html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro>.panel :is(h1,h2,h3,h4,b,strong){
+  color:#173f5d!important;text-shadow:none!important;opacity:1!important;
+}
+html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro>.panel :is(p,small,span,label,.panel-eyebrow){
+  color:#58768d!important;opacity:1!important;
+}
+html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro>.panel .panel-title a,
+html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro>.panel .panel-title>a{
+  color:#087db5!important;font-weight:850!important;
+}
+html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro .trend-chart{
+  background:linear-gradient(180deg,#f8fcff,#edf7fd)!important;
+  border:1px solid #d7e8f2!important;border-radius:16px!important;
+}
+html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro .trend-col b{color:#174d70!important}
+html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro .trend-col small{color:#58768d!important}
+html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro .trend-col i{
+  background:linear-gradient(180deg,#12bfdc,#087ed0 58%,#405ff0)!important;
+  box-shadow:0 5px 14px rgba(8,126,208,.22)!important;
+}
+html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro .report-status-total :is(span,small){color:#58768d!important}
+html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro .report-status-total strong{color:#075b91!important}
+html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro .report-status-item :is(b,strong,small){color:#36566f!important}
+html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro .report-status-item-top strong{color:#174665!important}
+html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro .report-status-rate>div{background:#fff!important}
+html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro .report-status-rate :is(strong,small){color:#174665!important}
+html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro .report-status-stack{background:#e7eff5!important}
+html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro .area-rank-main strong{color:#173f5d!important}
+html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro .area-rank-main small{color:#637f94!important}
+html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro .area-rank-main>b{color:#0876b5!important}
+html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro .rank-number{color:#66869d!important}
+html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro .area-bar{background:#e5eff6!important}
+html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro .area-bar i{background:linear-gradient(90deg,#12b8d8,#2875e8)!important}
+html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro .empty-state{color:#58768d!important;background:#f2f8fc!important;border-color:#dce9f1!important}
+html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro .recent-row{
+  color:#244b66!important;border-bottom-color:#e3edf4!important;background:transparent!important;
+}
+html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro .recent-row :is(b,strong){color:#173f5d!important}
+html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro .recent-row :is(small,time){color:#668196!important}
+html[data-theme="light"] .unified-shell .content>.dashboard-shortcuts a{
+  color:#173f5d!important;background:linear-gradient(145deg,#fff,#f0f8fd)!important;
+  border:1px solid #d2e3ed!important;box-shadow:0 8px 22px rgba(25,78,115,.07)!important;
+}
+html[data-theme="light"] .unified-shell .content>.dashboard-shortcuts a b{color:#173f5d!important}
+html[data-theme="light"] .unified-shell .content>.dashboard-shortcuts a small{color:#668196!important}
+html[data-theme="light"] .unified-shell .content>.dashboard-shortcuts a>span{
+  color:#087bb4!important;background:linear-gradient(145deg,#e3f6ff,#e9edff)!important;
+}
+html[data-theme="light"] .unified-shell .content>.welcome-pro{
+  color:#173b56!important;background:linear-gradient(120deg,#fff,#edf8ff 62%,#f2f0ff)!important;
+}
+html[data-theme="light"] .unified-shell .content>.welcome-pro :is(h1,strong){color:#123d5c!important}
+html[data-theme="light"] .unified-shell .content>.welcome-pro :is(p,small,.welcome-meta){color:#58768d!important}
+@media(max-width:700px){
+ html[data-theme="light"] .unified-shell .content>.stats>.stat-card{min-height:116px!important;padding:14px!important}
+ html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro>.panel{padding:15px!important}
+ html[data-theme="light"] .unified-shell .content>.dashboard-grid-pro .trend-chart{height:205px!important}
+}
