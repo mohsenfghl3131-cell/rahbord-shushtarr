@@ -637,3 +637,76 @@ html[data-theme="dark"] .unified-shell .notification-row b,html[data-theme="dark
  .unified-shell .sidebar-backdrop{background:rgba(1,10,22,.62)!important;backdrop-filter:blur(5px)!important}
 }
 @media(prefers-reduced-motion:reduce){.unified-shell .sidebar nav a{transition:none!important}.unified-shell .sidebar nav a:hover{transform:none}}
+
+
+/* LIGHT MODE FINAL OVERRIDE — ensure the entire workspace stays readable */
+html[data-theme="light"]{
+ color-scheme:light;
+ --bg:#f2f7fc;--surface:#ffffff;--surface2:#f7fbff;--ink:#17344d;--muted:#647f95;--line:#d8e6f1;
+}
+html[data-theme="light"] body{background:#f2f7fc!important;color:#17344d!important}
+html[data-theme="light"] body:before{opacity:.18!important}
+html[data-theme="light"] .unified-shell,
+html[data-theme="light"] .unified-shell .main,
+html[data-theme="light"] .unified-shell .content{color:#17344d!important}
+html[data-theme="light"] .unified-shell .sidebar{
+ background:linear-gradient(160deg,#ffffff 0%,#f3f9ff 58%,#edf6fd 100%)!important;
+ color:#17344d!important;border-left:1px solid #d6e6f1!important;
+}
+html[data-theme="light"] .unified-shell .sidebar :is(b,strong,.brand-copy b,.sidebar-user b){color:#173b56!important}
+html[data-theme="light"] .unified-shell .sidebar :is(small,.brand-copy small,.sidebar-user small,.sidebar-section>span){color:#70899e!important}
+html[data-theme="light"] .unified-shell .sidebar nav a{color:#36566f!important;background:transparent!important}
+html[data-theme="light"] .unified-shell .sidebar nav a .nav-icon{color:#28799e!important;background:#e5f2fa!important}
+html[data-theme="light"] .unified-shell .sidebar nav a.active{
+ color:#075c91!important;background:linear-gradient(105deg,#dff5ff,#e9edff)!important;
+ border-color:#b7dff0!important;box-shadow:inset -3px 0 #08aeca,0 5px 16px rgba(28,111,160,.09)!important;
+}
+html[data-theme="light"] .unified-shell .sidebar nav a.active .nav-icon{color:#fff!important;background:linear-gradient(145deg,#08aeda,#386bfa)!important}
+html[data-theme="light"] .unified-shell .sidebar-user{background:rgba(255,255,255,.9)!important;border-color:#d9e8f2!important}
+html[data-theme="light"] .unified-shell .sidebar-logout{color:#a52e46!important;background:#fff1f3!important;border-color:#f2cbd2!important}
+html[data-theme="light"] .unified-shell .unified-header{
+ background:rgba(255,255,255,.94)!important;color:#173b56!important;border-bottom:1px solid #dce8f1!important;
+}
+html[data-theme="light"] .unified-shell .header-context :is(b,span){color:#244b67!important}
+html[data-theme="light"] .unified-shell .header-profile{color:#315873!important;background:#fff!important;border-color:#d4e5f0!important}
+html[data-theme="light"] .unified-shell :is(.theme-toggle,.notification-bell,.menu-toggle,.header-back-button,.sidebar-collapse){
+ color:#175777!important;background:linear-gradient(145deg,#fff,#eaf6fd)!important;border:1px solid #c7e0ee!important;
+}
+html[data-theme="light"] .unified-shell .menu-toggle span{background:#176b91!important}
+html[data-theme="light"] .unified-shell .notification-panel{
+ color:#173b56!important;background:rgba(255,255,255,.98)!important;border:1px solid #d5e6f0!important;
+}
+html[data-theme="light"] .unified-shell .notification-panel :is(b,strong){color:#173b56!important}
+html[data-theme="light"] .unified-shell .notification-panel :is(small,span){color:#58758b}
+html[data-theme="light"] .unified-shell :is(.panel,.stat-card,.form-panel,.setting-card,.user-card,.area-card,.report-card,.mission-card,.score-card,.table-wrap,.data-table-wrap,.chart-card,.quick-actions a,.dashboard-shortcuts a,.notification-card,.empty-state,.filter-panel,.modal-card,.dialog-card){
+ color:#1b3b53!important;background-color:#fff!important;border-color:#dce8f1!important;
+}
+html[data-theme="light"] .unified-shell :is(h1,h2,h3,h4,h5,strong,b,.panel-title,.card-title,.section-title,.stat-card strong,.quick-actions b,.dashboard-shortcuts b){color:#173b56!important;text-shadow:none!important}
+html[data-theme="light"] .unified-shell :is(p,label,small,.muted,.subtitle,.description,.helper-text,.field-hint,.stat-card span,.stat-card small){color:#627d92}
+html[data-theme="light"] .unified-shell :is(input,select,textarea){
+ color:#173b56!important;background:#fff!important;border:1px solid #cbdde9!important;
+ caret-color:#087dbb;box-shadow:inset 0 1px 2px rgba(25,69,101,.04)!important;
+}
+html[data-theme="light"] .unified-shell :is(input,select,textarea)::placeholder{color:#8a9eae!important;opacity:1!important}
+html[data-theme="light"] .unified-shell :is(input,select,textarea):focus{
+ border-color:#38a9d7!important;box-shadow:0 0 0 3px rgba(28,159,211,.13)!important;outline:0!important;
+}
+html[data-theme="light"] .unified-shell :is(table,thead,tbody,tr,td,th){color:#294a62!important;border-color:#e0eaf1!important}
+html[data-theme="light"] .unified-shell th{background:#edf6fc!important;color:#244c67!important}
+html[data-theme="light"] .unified-shell tr:nth-child(even){background:#f8fbfe}
+html[data-theme="light"] .unified-shell :is(button,input[type="button"],input[type="submit"],input[type="reset"],a.button,a.btn,.button,.btn,.small-btn,[role="button"]){
+ color:#16435f!important;background:linear-gradient(145deg,#fff,#eaf5fc)!important;border:1px solid #c7dfed!important;
+ text-shadow:none!important;opacity:1!important;
+}
+html[data-theme="light"] .unified-shell :is(button[type="submit"],input[type="submit"],.primary,.btn-primary,.submit-button,.save-btn){
+ color:#fff!important;background:linear-gradient(115deg,#087acb,#1769e8 58%,#397cf4)!important;border-color:#176fc9!important;
+}
+html[data-theme="light"] .unified-shell :is(.danger,.btn-danger,.red-btn,.delete-button){color:#a52e46!important;background:linear-gradient(145deg,#fff5f5,#ffe8eb)!important;border-color:#efc0c8!important}
+html[data-theme="light"] .unified-shell :is(.success,.btn-success,.green-btn){color:#087447!important;background:linear-gradient(145deg,#f1fff7,#e0f8eb)!important;border-color:#b6e5c9!important}
+html[data-theme="light"] .unified-shell :is(button,a.button,a.btn,.button,.btn,.small-btn,[role="button"]):disabled{color:#8395a4!important;background:#edf2f6!important;border-color:#dbe3e9!important}
+html[data-theme="light"] .unified-shell :is(.badge,.pill,.status-badge){text-shadow:none!important}
+html[data-theme="light"] .unified-shell .sidebar-backdrop{background:rgba(18,43,62,.38)!important}
+@media(max-width:700px){
+ html[data-theme="light"] .unified-shell .sidebar{background:linear-gradient(160deg,#fff,#f0f8fe)!important}
+ html[data-theme="light"] .unified-shell .unified-header{background:rgba(255,255,255,.97)!important}
+}
