@@ -1150,3 +1150,24 @@ html[data-theme="light"] .unified-shell .chart-card{
 @media(max-width:600px){
  html[data-theme="light"] .auth{background-position:center!important}
 }
+
+
+/* LIGHT LOGIN: force readable ink, including inherited/utility text colors */
+html[data-theme="light"] body .auth .card,
+html[data-theme="light"] body .auth .card :is(h1,p,label,.brand){
+ color:#102f48!important;
+ -webkit-text-fill-color:#102f48!important;
+ text-shadow:none!important;opacity:1!important;
+}
+html[data-theme="light"] body .auth .card .brand{color:#08769b!important;-webkit-text-fill-color:#08769b!important}
+html[data-theme="light"] body .auth .card h1{color:#102f48!important;-webkit-text-fill-color:#102f48!important;font-weight:950!important}
+html[data-theme="light"] body .auth .card p{color:#365a70!important;-webkit-text-fill-color:#365a70!important;font-weight:600!important}
+html[data-theme="light"] body .auth .card label{color:#1b425c!important;-webkit-text-fill-color:#1b425c!important;font-weight:900!important}
+html[data-theme="light"] body .auth .card input{color:#102f48!important;-webkit-text-fill-color:#102f48!important}
+html[data-theme="light"] body .auth .card input::placeholder{color:#607f91!important;-webkit-text-fill-color:#607f91!important;opacity:1!important}
+html[data-theme="light"] body .auth .card button{color:#fff!important;-webkit-text-fill-color:#fff!important}
+html[data-theme="light"] body .auth .card:after{color:#52768b!important;-webkit-text-fill-color:#52768b!important;opacity:1!important}
+html[data-theme="light"] body .auth{
+ background-image:linear-gradient(115deg,rgba(215,239,249,.18),rgba(235,249,255,.08) 48%,rgba(215,239,249,.2)),url("https://commons.wikimedia.org/wiki/Special:FilePath/Panorama_Watermill_Array_Shushtar.jpg")!important;
+}
+html[data-theme="light"] body .auth:before{background:rgba(223,242,250,.24)!important}
