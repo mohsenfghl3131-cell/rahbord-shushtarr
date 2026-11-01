@@ -54,15 +54,16 @@ export default function LoginPage() {
               style={{ width: "100%", boxSizing: "border-box" }}
             />
             <button
+              className="password-visibility-toggle"
               type="button"
               onClick={() => setShowPassword((visible) => !visible)}
               aria-label={showPassword ? "پنهان کردن رمز عبور" : "نمایش رمز عبور"}
               aria-pressed={showPassword}
               title={showPassword ? "پنهان کردن رمز" : "نمایش رمز"}
-              style={{ position: "absolute", left: -29, top: "50%", transform: "translateY(-50%)", width: 23, height: 23, minWidth: 23, minHeight: 23, padding: 0, margin: 0, display: "grid", placeItems: "center", borderRadius: 7, background: "rgba(22,157,204,.12)", border: "1px solid rgba(53,200,241,.3)", color: "inherit", boxShadow: "none", cursor: "pointer" }}
+              style={{ position: "absolute", left: -25, top: "50%", transform: "translateY(-50%)" }}
             >
               {showPassword ? (
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M3 3l18 18M10.6 10.7a2 2 0 002.7 2.7M9.9 5.2A10.8 10.8 0 0112 5c5.2 0 8.8 4.2 10 7-.4 1-1.2 2.2-2.4 3.3M6.2 6.3C3.8 7.8 2.5 10 2 12c1.2 2.8 4.8 7 10 7 1.4 0 2.7-.3 3.8-.8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               ) : (
