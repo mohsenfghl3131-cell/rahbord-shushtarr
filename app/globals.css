@@ -4469,3 +4469,52 @@ main.auth>.card:after{color:#8bcce9!important;border-color:rgba(130,185,218,.2)!
   main.auth{min-height:100svh!important;padding:18px 15px!important;background-position:56% center!important}
   main.auth>.card{padding:27px 22px!important;border-radius:23px!important}
 }
+
+
+/* CHART EXPORT LEGIBILITY FIX — black typography in poster and PDF/print */
+.org-poster,
+.org-area-print-pages,
+.org-area-print-sheet{
+ color:#000!important;
+}
+.org-poster :is(h1,h2,h3,h4,p,span,b,strong,small,div,a){
+ text-shadow:none!important;
+}
+.org-poster-head>span,
+.org-poster-head h2,
+.org-poster-head p,
+.org-node small,
+.org-node b,
+.org-node strong,
+.org-section-node span,
+.org-section-node b,
+.org-poster-foot,
+.org-area-poster-card h4,
+.org-area-poster-card small,
+.org-area-open-hint{
+ color:#000!important;
+ opacity:1!important;
+}
+.org-area-print-sheet,
+.org-area-print-sheet :is(h1,h2,h3,h4,p,span,b,strong,small,div,a){
+ color:#000!important;
+ opacity:1!important;
+ text-shadow:none!important;
+}
+.org-area-print-sheet :is(.org-area-print-header span,.org-area-print-index,.org-area-print-command small,.org-area-print-leaders small,.org-area-print-base-leader small,.org-area-print-section-title,.org-area-print-base-head>span,.org-area-print-unit span,.org-area-print-personnel small,.org-area-print-footer){
+ color:#000!important;
+ opacity:1!important;
+}
+.org-area-print-sheet :is(.org-area-print-command b,.org-area-print-leaders b,.org-area-print-base-leader b,.org-area-print-unit b,.org-area-print-base-head h4){
+ color:#000!important;font-weight:800!important;
+}
+@media print{
+ .org-poster,.org-poster *,.org-area-print-pages,.org-area-print-pages *{
+  color:#000!important;opacity:1!important;text-shadow:none!important;
+  -webkit-text-fill-color:#000!important;
+ }
+ .org-poster,.org-area-print-sheet{
+  background:#fff!important;
+  -webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;
+ }
+}
