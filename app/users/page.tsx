@@ -148,7 +148,7 @@ export default function Users() {
     {editing && isAdmin && <section className="form-panel" style={{ marginTop: 18 }}>
       <div className="form-step"><span>✎</span><div><b>ویرایش کاربر: {editing.user_code}</b><small>نام نمایشی، نقش و حوزه‌های مجاز را تنظیم کنید.</small></div></div>
       <label>نام و نام خانوادگی<input value={draft.display_name} onChange={e => setDraft(x => ({ ...x, display_name: e.target.value }))} /></label>
-      <label>نقش کاربر<select value={draft.role} onChange={e => setDraft(x => ({ ...x, role: e.target.value }))}>{roleOptions.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label>
+      <label>نقش کاربر<select value={draft.role} onChange={e => setDraft(x => ({ ...x, role: e.target.value, area_ids: e.target.value === "section_manager" ? [] : x.area_ids, group_ids: e.target.value === "section_manager" ? x.group_ids : [] }))}>{roleOptions.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label>
       {draft.role === "section_manager" ? <div className="area-access-list"><b>بخش‌های تحت مسئولیت</b><small>مسئول بخش به حوزه‌ای وابسته نیست و فقط گزارش‌های این بخش‌ها را می‌بیند.</small><div className="area-access-options">{groups.map(group => <label key={group.id} className="area-access-option"><input type="checkbox" checked={draft.group_ids.includes(group.id)} onChange={() => toggleGroup(group.id)} /><span>{group.name}</span></label>)}</div></div> : <div className="area-access-list">
         <b>حوزه‌های مجاز</b>
         <div className="area-access-options">
