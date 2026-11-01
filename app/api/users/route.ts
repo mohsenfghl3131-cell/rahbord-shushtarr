@@ -23,7 +23,7 @@ export async function GET(){
 
   const {data,error}=await db()
     .from("profiles")
-    .select("id,user_code,display_name,role,is_active,created_at,user_area_access(area_id,areas(id,name))")
+    .select("id,user_code,display_name,role,is_active,created_at,user_area_access(area_id,areas(id,name)),category_group_responsibles(group_id,category_groups(id,name))")
     .order("created_at",{ascending:false});
 
   if(error)return NextResponse.json({message:"خطا در دریافت کاربران."},{status:500});
