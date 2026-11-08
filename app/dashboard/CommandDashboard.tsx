@@ -36,9 +36,9 @@ function LineChart({ labels, values, label }: { labels: string[]; values: number
   </div>;
 }
 
-export default function CommandDashboard() {
+export default function CommandDashboard({ initialAreaId, detailOnly = false }: { initialAreaId?: string; detailOnly?: boolean }) {
   const [areas, setAreas] = useState<Area[]>([]);
-  const [selectedArea, setSelectedArea] = useState<string | null>(null);
+  const [selectedArea, setSelectedArea] = useState<string | null>(initialAreaId ?? null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -94,7 +94,7 @@ export default function CommandDashboard() {
         {chosen ? (
           <div className="command-selected-area">
             <div className="command-detail-toolbar">
-              <button type="button" onClick={() => setSelectedArea(null)}>→ بازگشت به فهرست حوزه‌ها</button>
+              <Link href="/dashboard">→ بازگشت به فهرست حوزه‌ها</Link>
               <span>نمایش جزئیات حوزه</span>
             </div>
             <div className="command-selected-heading">
@@ -152,15 +152,17 @@ export default function CommandDashboard() {
               {chosen.report_count > chosen.reports.length && <p className="command-report-more">۳۰ گزارش اخیر نمایش داده شده‌اند؛ برای مشاهده همه گزارش‌ها از پیوند بالا استفاده کنید.</p>}
             </section>
           </div>
+        ) : detailOnly ? (
+          <div className="empty-state">حوزه موردنظر پیدا نشد یا دسترسی مشاهده آن را ندارید. <Link href="/dashboard">بازگشت به داشبورد</Link></div>
         ) : (
           <div className="command-area-overview">
             <div className="command-overview-heading"><div><span>انتخاب حوزه</span><h3>فهرست حوزه‌ها</h3><small>برای مشاهده مأموریت‌ها، گزارش‌ها و سهم تحقق، روی کارت حوزه بزنید.</small></div><span>{fa(areas.length)} حوزه</span></div>
-            <div className="command-area-grid">{areas.map((area,index)=><button type="button" onClick={()=>setSelectedArea(area.id)} className="command-area-card" key={area.id}>
+            <div className="command-area-grid">{areas.map((area,index)=><Link href={"/dashboard/command/"+area.id} className="command-area-card" key={area.id}>
               <span className="command-area-index">{String(index+1).padStart(2,"0")}</span>
               <span className="command-area-card-main"><b>{area.name}</b><small>{fa(area.report_count)} گزارش · {fa(area.missions.length)} مأموریت</small></span>
               <span className="command-area-card-progress"><b>{fa(area.percent)}٪</b><i><em style={{width:clamp(area.percent)+"%"}}/></i><small>{fa(area.actual)} از {quotaFa(area.quota)}</small></span>
               <span className="command-area-open">جزئیات ←</span>
-            </button>)}</div>
+            </Link>)}</div>
             <div className="command-overview-chart">
               <div><span>مقایسه حوزه‌ها</span><h4>نمودار خطی درصد تحقق سهمیه</h4></div>
               <LineChart labels={areas.map(a=>a.name)} values={areas.map(a=>a.percent)} label="مقایسه درصد تحقق سهمیه حوزه‌ها"/>
