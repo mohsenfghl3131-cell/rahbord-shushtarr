@@ -13,6 +13,7 @@ type Area = {
 };
 
 const fa = (n: number) => Number(n || 0).toLocaleString("fa-IR", { maximumFractionDigits: 2 });
+const quotaFa = (n: number) => Math.ceil(Number(n || 0)).toLocaleString("fa-IR");
 const clamp = (n: number) => Math.max(0, Math.min(100, n));
 const statusText: Record<string, string> = { approved: "تأیید شده", pending: "در انتظار بررسی", rejected: "رد شده" };
 
@@ -101,9 +102,9 @@ export default function CommandDashboard() {
               <div className="command-area-badge">حوزه عملیاتی</div>
             </div>
             <div className="command-detail-kpis">
-              <div><small>سهمیه اختصاص‌یافته حوزه</small><b>{fa(chosen.quota)}</b></div>
+              <div><small>سهمیه اختصاص‌یافته حوزه</small><b>{quotaFa(chosen.quota)}</b></div>
               <div><small>تحقق واقعی حوزه</small><b className="good">{fa(chosen.actual)}</b></div>
-              <div><small>باقی‌مانده سهمیه</small><b className="warn">{fa(chosen.remaining)}</b></div>
+              <div><small>باقی‌مانده سهمیه</small><b className="warn">{quotaFa(chosen.remaining)}</b></div>
               <div><small>درصد تحقق حوزه</small><b>{fa(chosen.percent)}٪</b></div>
             </div>
 
@@ -113,7 +114,7 @@ export default function CommandDashboard() {
                 <div className="command-donut" style={{ background: `conic-gradient(#20c997 0% ${donutPercent}%,rgba(148,163,184,.2) ${donutPercent}% 100%)` }}>
                   <div><b>{fa(chosen.percent)}٪</b><small>تحقق حوزه</small></div>
                 </div>
-                <p>محقق‌شده {fa(chosen.actual)} از {fa(chosen.quota)}</p>
+                <p>محقق‌شده {fa(chosen.actual)} از {quotaFa(chosen.quota)}</p>
                 <div className="command-share-note">سهم تحقق این حوزه از سهمیه کل گردان: <b>{fa(chosen.battalion_contribution_percent)}٪</b></div>
                 <small>سهمیه کل گردان: {fa(chosen.battalion_quota)} · تحقق کل گردان: {fa(chosen.battalion_actual)}</small>
               </article>
@@ -130,7 +131,7 @@ export default function CommandDashboard() {
                 return <article className="command-mission-item" key={m.mission_id}>
                   <div className="command-mission-item-head"><b>{m.title}</b><strong>{fa(percent)}٪</strong></div>
                   <div className="command-progress"><i style={{width: clamp(percent)+"%"}}/></div>
-                  <div className="command-mission-item-stats"><span>سهمیه: {fa(m.quota)}</span><span>تحقق: {fa(m.actual)}</span><span>باقی‌مانده: {fa(Math.max(0,m.quota-m.actual))}</span></div>
+                  <div className="command-mission-item-stats"><span>سهمیه: {quotaFa(m.quota)}</span><span>تحقق: {fa(m.actual)}</span><span>باقی‌مانده: {quotaFa(Math.max(0,m.quota-m.actual))}</span></div>
                 </article>;
               })}</div> : <div className="command-empty-chart">برای این حوزه مأموریت فعالی ثبت نشده است.</div>}
             </section>
@@ -157,7 +158,7 @@ export default function CommandDashboard() {
             <div className="command-area-grid">{areas.map((area,index)=><button type="button" onClick={()=>setSelectedArea(area.id)} className="command-area-card" key={area.id}>
               <span className="command-area-index">{String(index+1).padStart(2,"0")}</span>
               <span className="command-area-card-main"><b>{area.name}</b><small>{fa(area.report_count)} گزارش · {fa(area.missions.length)} مأموریت</small></span>
-              <span className="command-area-card-progress"><b>{fa(area.percent)}٪</b><i><em style={{width:clamp(area.percent)+"%"}}/></i><small>{fa(area.actual)} از {fa(area.quota)}</small></span>
+              <span className="command-area-card-progress"><b>{fa(area.percent)}٪</b><i><em style={{width:clamp(area.percent)+"%"}}/></i><small>{fa(area.actual)} از {quotaFa(area.quota)}</small></span>
               <span className="command-area-open">جزئیات ←</span>
             </button>)}</div>
             <div className="command-overview-chart">
