@@ -117,8 +117,8 @@ export default function CommandDashboard({ initialAreaId, detailOnly = false }: 
                 <b>{fa(chosen.missions.length)} مأموریت</b>
               </div>
               {chosen.missions.length ? <div className="command-mission-grid">{chosen.missions.map(m => {
-                const percent = m.quota ? m.actual / m.quota * 100 : 0;
-                const battalionShare = m.battalion_quota ? m.actual / m.battalion_quota * 100 : 0;
+                const percent = m.quota ? clamp(m.actual / m.quota * 100) : 0;
+                const battalionShare = m.battalion_quota ? clamp(m.actual / m.battalion_quota * 100) : 0;
                 return <article className="command-mission-item" key={m.mission_id}>
                   <div className="command-mission-item-head"><b>{m.title}</b><strong>{fa(percent)}٪ تحقق حوزه</strong></div>
                   <div className="command-progress"><i style={{width: clamp(percent)+"%"}}/></div>
@@ -142,7 +142,7 @@ export default function CommandDashboard({ initialAreaId, detailOnly = false }: 
             <div className="command-area-grid">{areas.map((area,index)=><Link href={"/dashboard/command/"+area.id} className="command-area-card" key={area.id}>
               <span className="command-area-index">{String(index+1).padStart(2,"0")}</span>
               <span className="command-area-card-main"><b>{area.name}</b><small>{fa(area.missions.length)} مأموریت</small></span>
-              <span className="command-area-card-progress"><b>{fa(area.percent)}٪</b><i><em style={{width:clamp(area.percent)+"%"}}/></i><small>{fa(area.actual)} از {quotaFa(area.quota)}</small></span>
+              <span className="command-area-card-progress"><b>{fa(clamp(area.percent))}٪</b><i><em style={{width:clamp(area.percent)+"%"}}/></i><small>{fa(area.actual)} از {quotaFa(area.quota)}</small></span>
               <span className="command-area-open">جزئیات ←</span>
             </Link>)}</div>
             <div className="command-overview-chart">
