@@ -23,7 +23,7 @@ export default function ScoresPage(){
  const visibleGroups=groups.filter(g=>isLeader||(me?.responsible_group_ids??[]).includes(g.id));
  const scoreMap=useMemo(()=>new Map((data.scores??[]).map((s:any)=>[s.mission_id+"_"+s.area_id,s])),[data.scores]);
  const selectedMission=data.missions.find((m:any)=>m.id===selectedId);
- const pct=(a:number,t:number)=>t>0?Math.round(a/t*100):0;
+ const pct=(a:number,t:number)=>t>0?Math.min(100,Math.max(0,Math.round(a/t*100))):0;
  const isClosed=(m:any)=>Boolean(m.deadline_at&&new Date(m.deadline_at).getTime()<=Date.now());
  const dateLabel=(v:string)=>v?new Date(v).toLocaleString("fa-IR",{dateStyle:"short",timeStyle:"short"}):"بدون مهلت";
 
