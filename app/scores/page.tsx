@@ -64,7 +64,7 @@ export default function ScoresPage(){
   ctx.fillStyle="#d9f4ff";ctx.font="22px Tahoma,Arial";ctx.fillText("گزارش تصویری مأموریت",930,205);
   const accent=ctx.createLinearGradient(150,0,930,0);accent.addColorStop(0,"#27d6c1");accent.addColorStop(1,"#54a8ff");ctx.fillStyle=accent;ctx.fillRect(150,250,780,5);
   ctx.fillStyle="#fff";ctx.font="bold 48px Tahoma,Arial";ctx.fillText(String(m.title||"مأموریت"),930,355,850);
-  ctx.fillStyle="#b5d0e2";ctx.font="27px Tahoma,Arial";ctx.fillText(String(m.category_groups?.name||"بخش")+" · هدف هر حوزه: "+Number(m.target_value).toLocaleString("fa-IR")+" "+String(m.unit||""),930,420,850);
+  ctx.fillStyle="#b5d0e2";ctx.font="27px Tahoma,Arial";ctx.fillText(String(m.category_groups?.name||"بخش")+" · سهمیه کل هر گردان: "+Number(m.target_value).toLocaleString("fa-IR")+" "+String(m.unit||""),930,420,850);
   ctx.fillStyle="rgba(255,255,255,.08)";ctx.strokeStyle="rgba(139,216,224,.45)";ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(150,475,780,210,28);ctx.fill();ctx.stroke();
   ctx.textAlign="center";ctx.fillStyle="#a9dbe8";ctx.font="25px Tahoma,Arial";ctx.fillText("درصد تحقق مأموریت",540,555);
   ctx.fillStyle="#fff";ctx.font="bold 76px Tahoma,Arial";ctx.fillText(overall.toLocaleString("fa-IR")+"٪",540,635);
