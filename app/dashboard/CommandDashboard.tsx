@@ -13,6 +13,7 @@ const pct = (n: number) => Math.max(0, Math.min(100, n));
 
 export default function CommandDashboard() {
   const [battalions, setBattalions] = useState<Battalion[]>([]);
+  const [canManageQuota, setCanManageQuota] = useState(false);
   const [scopedAreas, setScopedAreas] = useState<ScopedArea[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -31,6 +32,7 @@ export default function CommandDashboard() {
       if (!response.ok) throw new Error(data.message || "دریافت داشبورد فرماندهی ناموفق بود.");
       setBattalions(data.battalions || []);
       setScopedAreas(data.areas || []);
+      setCanManageQuota(Boolean(data.can_manage));
     } catch (e: any) { setError(e.message || "خطا در دریافت اطلاعات."); }
     finally { setLoading(false); }
   }, []);
@@ -116,8 +118,8 @@ export default function CommandDashboard() {
                     <div className="command-mission-card-title"><div><b>{m.title}</b><small>{m.section} · {m.unit}</small></div><strong>{fa(m.percent)}٪</strong></div>
                     <div className="command-mission-card-stats"><span>سهمیه: {fa(m.quota)}</span><span>محقق‌شده: {fa(m.actual)}</span><span>باقی‌مانده: {fa(m.remaining)}</span></div>
                     <div className="command-progress thin"><i style={{width:pct(m.percent)+"%"}}/></div>
-                    <button type="button" className="command-edit-quota" onClick={() => isEditing ? setEditing(null) : beginEdit(b,m)}>{isEditing ? "بستن ویرایش" : "تنظیم سهمیه این مأموریت"}</button>
-                    {isEditing && <div className="command-quota-editor">
+                    {canManageQuota && <button type="button" className="command-edit-quota" onClick={() => isEditing ? setEditing(null) : beginEdit(b,m)}>{isEditing ? "بستن ویرایش" : "تنظیم سهمیه این مأموریت"}</button>}
+                    {canManageQuota && isEditing && <div className="command-quota-editor">
                       <label>سهمیه کل این مأموریت برای {b.name}<input type="number" min="0" step="0.01" value={draftTotal} onChange={e=>setDraftTotal(e.target.value)}/></label>
                       <div className="command-quota-area-grid">{m.areas.map(a=><label key={a.id}>{a.name}<input type="number" min="0" step="0.01" value={draftAreas[a.id] ?? "0"} onChange={e=>setDraftAreas(prev=>({...prev,[a.id]:e.target.value}))}/></label>)}</div>
                       <small>مجموع تخصیص حوزه‌ها نباید از سهمیه کل مأموریت بیشتر شود.</small>
