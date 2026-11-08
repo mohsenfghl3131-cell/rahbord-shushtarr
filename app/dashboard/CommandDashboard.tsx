@@ -14,22 +14,66 @@ const fa = (n: number) => Number(n || 0).toLocaleString("fa-IR", { maximumFracti
 const quotaFa = (n: number) => Math.ceil(Number(n || 0)).toLocaleString("fa-IR");
 const clamp = (n: number) => Math.max(0, Math.min(100, n));
 
-function LineChart({ labels, values, label }: { labels: string[]; values: number[]; label: string }) {
-  if (!values.length) return <div className="command-empty-chart">هنوز داده‌ای برای رسم نمودار وجود ندارد.</div>;
-  const width = 620, left = 34, right = 586, top = 24, bottom = 160;
-  const max = Math.max(100, ...values.map(v => Math.max(0, v)));
-  const points = values.map((v, i) => ({
-    x: values.length === 1 ? (left + right) / 2 : left + i * ((right - left) / (values.length - 1)),
-    y: bottom - (Math.max(0, v) / max) * (bottom - top)
+type ChartPoint = { label: string; value: number; quota: number; actual: number; href?: string };
+
+function LineChart({ points, label }: { points: ChartPoint[]; label: string }) {
+  const [selected, setSelected] = useState(0);
+  if (!points.length) return <div className="command-empty-chart">هنوز داده‌ای برای رسم نمودار وجود ندارد.</div>;
+  const width = 620, left = 42, right = 586, top = 24, bottom = 160;
+  const max = 100;
+  const coords = points.map((p, i) => ({
+    x: points.length === 1 ? (left + right) / 2 : left + i * ((right - left) / (points.length - 1)),
+    y: bottom - (clamp(p.value) / max) * (bottom - top)
   }));
-  const polyline = points.map(p => p.x + "," + p.y).join(" ");
+  const polyline = coords.map(p => p.x + "," + p.y).join(" ");
+  const activeIndex = Math.min(selected, points.length - 1);
+  const active = points[activeIndex];
   return <div className="command-line-wrap">
-    <svg viewBox={`0 0 ${width} 194`} role="img" aria-label={label}>
-      {[0, .5, 1].map((ratio, i) => <g key={i}><line x1={left} x2={right} y1={top + ratio * (bottom - top)} y2={top + ratio * (bottom - top)} stroke="currentColor" opacity=".13" strokeDasharray="4 5"/><text x="25" y={top + ratio * (bottom - top) + 4} textAnchor="end" fill="currentColor" opacity=".65" fontSize="10">{fa(Math.round(max * (1-ratio)))}</text></g>)}
+    <svg viewBox={`0 0 ${width} 194`} role="group" aria-label={label}>
+      {[0, 50, 100].map((v, i) => { const y = bottom - (v / max) * (bottom - top); return <g key={v}><line x1={left} x2={right} y1={y} y2={y} stroke="currentColor" opacity=".13" strokeDasharray="4 5"/><text x="30" y={y + 4} textAnchor="end" fill="currentColor" opacity=".65" fontSize="10">{fa(v)}٪</text></g>; })}
       <polyline points={polyline} fill="none" stroke="#35baff" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
-      {points.map((p,i)=><g key={i}><circle cx={p.x} cy={p.y} r="5" fill="#35baff" stroke="var(--panel,#101827)" strokeWidth="2"/><text x={p.x} y="183" textAnchor="middle" fill="currentColor" fontSize="9">{labels[i].length > 12 ? labels[i].slice(0,12)+"…" : labels[i]}</text></g>)}
+      {coords.map((p,i)=><g key={i} onClick={()=>setSelected(i)} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();setSelected(i);}}} role="button" tabIndex={0} aria-label={`${points[i].label}: سهمیه ${fa(points[i].quota)}، محقق‌شده ${fa(points[i].actual)}`} style={{cursor:"pointer"}}>
+        <circle cx={p.x} cy={p.y} r="12" fill="transparent"/>
+        <circle cx={p.x} cy={p.y} r={i===activeIndex?7:5} fill={i===activeIndex?"#20c997":"#35baff"} stroke="var(--panel,#101827)" strokeWidth="2"/>
+        <text x={p.x} y="183" textAnchor="middle" fill="currentColor" fontSize="9">{points[i].label.length > 12 ? points[i].label.slice(0,12)+"…" : points[i].label}</text>
+      </g>)}
     </svg>
-    <small>{label}</small>
+    <div className="command-chart-selection">
+      <b>{active.label}</b>
+      <span>سهمیه: {quotaFa(active.quota)}</span>
+      <span>محقق‌شده: {fa(active.actual)}</span>
+      <strong>{fa(clamp(active.value))}٪ تحقق</strong>
+      {active.href ? <Link href={active.href}>ورود به جزئیات حوزه ←</Link> : null}
+    </div>
+    <small>{label} · برای دیدن سهمیه و مقدار تحقق، روی نقطه نمودار بزنید.</small>
+  </div>;
+}
+
+function DonutChart({ quota, actual, percent }: { quota: number; actual: number; percent: number }) {
+  const [selected, setSelected] = useState<"actual" | "remaining">("actual");
+  const radius = 48, circumference = 2 * Math.PI * radius;
+  const achieved = clamp(percent);
+  const achievedLength = circumference * achieved / 100;
+  const remainingLength = circumference - achievedLength;
+  return <div className="command-donut-interactive">
+    <svg viewBox="0 0 140 140" role="group" aria-label="نمودار دایره‌ای سهمیه و تحقق">
+      <circle cx="70" cy="70" r={radius} fill="none" stroke="rgba(148,163,184,.2)" strokeWidth="18"/>
+      <circle cx="70" cy="70" r={radius} fill="none" stroke="#20c997" strokeWidth="18" strokeDasharray={`${achievedLength} ${circumference-achievedLength}`} transform="rotate(-90 70 70)" strokeLinecap="butt" onClick={()=>setSelected("actual")} style={{cursor:"pointer"}}/>
+      <circle cx="70" cy="70" r={radius} fill="none" stroke="#64748b" strokeWidth="18" strokeDasharray={`${remainingLength} ${achievedLength}`} strokeDashoffset={-achievedLength} transform="rotate(-90 70 70)" onClick={()=>setSelected("remaining")} style={{cursor:"pointer"}}/>
+      <text x="70" y="67" textAnchor="middle" fill="currentColor" fontSize="22" fontWeight="700">{fa(achieved)}٪</text>
+      <text x="70" y="84" textAnchor="middle" fill="currentColor" opacity=".7" fontSize="10">تحقق</text>
+    </svg>
+    <div className="command-donut-legend">
+      <button type="button" className={selected==="actual"?"active":""} onClick={()=>setSelected("actual")}><i className="actual"/>محقق‌شده</button>
+      <button type="button" className={selected==="remaining"?"active":""} onClick={()=>setSelected("remaining")}><i className="remaining"/>باقی‌مانده</button>
+    </div>
+    <div className="command-chart-selection">
+      <b>{selected==="actual"?"مقدار محقق‌شده":"مقدار باقی‌مانده"}</b>
+      <span>سهمیه کل: {quotaFa(quota)}</span>
+      <span>محقق‌شده: {fa(actual)}</span>
+      {selected==="remaining" ? <strong>باقی‌مانده: {quotaFa(Math.max(0,quota-actual))}</strong> : <strong>درصد تحقق: {fa(achieved)}٪</strong>}
+    </div>
+    <small>برای مشاهده جزئیات هر بخش، روی قسمت نمودار یا راهنمای آن بزنید.</small>
   </div>;
 }
 
@@ -99,15 +143,12 @@ export default function CommandDashboard({ initialAreaId, detailOnly = false }: 
             <div className="command-detail-analytics">
               <article className="command-chart-card command-donut-card">
                 <h4>امتیاز و تحقق کلی حوزه</h4>
-                <div className="command-donut" style={{ background: `conic-gradient(#20c997 0% ${donutPercent}%,rgba(148,163,184,.2) ${donutPercent}% 100%)` }}>
-                  <div><b>{fa(clamp(chosen.percent))}</b><small>امتیاز از ۱۰۰</small></div>
-                </div>
-                <p>تحقق {fa(chosen.actual)} از سهمیه {quotaFa(chosen.quota)}</p>
-                
+                <DonutChart quota={chosen.quota} actual={chosen.actual} percent={donutPercent}/>
+
               </article>
               <article className="command-chart-card command-line-card">
                 <h4>نمودار خطی تحقق مأموریت‌های حوزه</h4>
-                <LineChart labels={chosen.missions.map(m => m.title)} values={chosen.missions.map(m => m.quota ? clamp(m.actual / m.quota * 100) : 0)} label="درصد تحقق هر مأموریت به ترتیب فهرست مأموریت‌ها"/>
+                <LineChart points={chosen.missions.map(m => ({label:m.title,value:m.quota ? clamp(m.actual/m.quota*100) : 0,quota:m.quota,actual:m.actual}))} label="درصد تحقق مأموریت‌های حوزه"/>
               </article>
             </div>
 
@@ -147,7 +188,7 @@ export default function CommandDashboard({ initialAreaId, detailOnly = false }: 
             </Link>)}</div>
             <div className="command-overview-chart">
               <div><span>مقایسه حوزه‌ها</span><h4>مقایسه امتیاز حوزه‌ها از ۱۰۰</h4></div>
-              <LineChart labels={areas.map(a=>a.name)} values={areas.map(a=>clamp(a.percent))} label="مقایسه امتیاز کلی حوزه‌ها از ۱۰۰"/>
+              <LineChart points={areas.map(a=>({label:a.name,value:clamp(a.percent),quota:a.quota,actual:a.actual,href:"/dashboard/command/"+a.id}))} label="مقایسه امتیاز کلی حوزه‌ها از ۱۰۰"/>
             </div>
           </div>
         )}
