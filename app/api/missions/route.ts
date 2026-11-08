@@ -47,6 +47,17 @@ export async function POST(request:Request){
   data=fallback.data;error=fallback.error;
  }
  if(error||!data)return NextResponse.json({message:"ثبت مأموریت انجام نشد: "+(error?.message??"پاسخ پایگاه‌داده خالی بود.")},{status:500});
+ // Initialize a separate total quota for each battalion and distribute it evenly among its areas.
+ const {data:battalionRows}=await admin.from("battalion_areas").select("battalion_id,area_id");
+ for(const battalionId of ["brothers","sisters"]){
+  const areaRows=(battalionRows??[]).filter((x:any)=>x.battalion_id===battalionId);
+  const {error:quotaError}=await admin.from("mission_battalion_quotas").upsert({mission_id:data.id,battalion_id:battalionId,quota_value:target,updated_by:ctx.user.id},{onConflict:"mission_id,battalion_id"});
+  if(quotaError)continue;
+  if(areaRows.length){
+   const each=target/areaRows.length;
+   await admin.from("mission_area_quotas").upsert(areaRows.map((x:any)=>({mission_id:data.id,area_id:x.area_id,quota_value:each,updated_by:ctx.user.id})),{onConflict:"mission_id,area_id"});
+  }
+ }
  await admin.from("audit_logs").insert({user_id:ctx.user.id,action:"mission.create",entity_type:"mission",entity_id:data.id,metadata:{group_id:groupId,title,target_value:target,unit,deadline_at:deadlineAt?.toISOString()??null}});
  try{await sendTelegramAnnouncement("🎯 مأموریت جدید تعریف شد\nبخش: "+group.name+"\nعنوان: "+title+"\nسهمیه: "+target+" "+unit);}catch{}
  return NextResponse.json({id:data.id},{status:201});
