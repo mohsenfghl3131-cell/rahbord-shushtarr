@@ -8,6 +8,8 @@ export default function ScoresPage(){
  const [error,setError]=useState(""),[notice,setNotice]=useState(""),[saving,setSaving]=useState(""),[selectedId,setSelectedId]=useState("");
  const [missionForm,setMissionForm]=useState({group_id:"",title:"",description:"",target_value:"",unit:"عدد",deadline_at:""});
  const [entry,setEntry]=useState({mission_id:"",area_id:"",actual_value:"",notes:""});
+ const [editingMission,setEditingMission]=useState<any>(null);
+ const [editForm,setEditForm]=useState({title:"",description:"",target_value:"",unit:"عدد",deadline_at:""});
  async function load(){
   const [r,g,m]=await Promise.all([fetch("/api/missions",{cache:"no-store"}),fetch("/api/categories",{cache:"no-store"}),fetch("/api/me",{cache:"no-store"})]);
   const [d,gd,md]=await Promise.all([r.json(),g.json(),m.json()]);
@@ -85,6 +87,23 @@ export default function ScoresPage(){
    if(d.id)setSelectedId(d.id);
   }catch(e:any){setError(e.message||"خطا در ثبت مأموریت.");}finally{setSaving("");}
  }
+ function startEditMission(m:any){
+  setEditingMission(m);
+  setEditForm({title:m.title??"",description:m.description??"",target_value:String(m.target_value??""),unit:m.unit??"عدد",deadline_at:m.deadline_at?new Date(m.deadline_at).toISOString().slice(0,16):""});
+  setError("");setNotice("");
+  document.querySelector(".mission-edit-form")?.scrollIntoView({behavior:"smooth",block:"center"});
+ }
+ async function saveMissionEdit(e:any){
+  e.preventDefault();if(!editingMission)return;
+  setSaving("edit");setError("");setNotice("");
+  try{
+   const deadline=editForm.deadline_at?new Date(editForm.deadline_at).toISOString():null;
+   const r=await fetch("/api/missions",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"edit_mission",mission_id:editingMission.id,...editForm,target_value:Number(editForm.target_value),deadline_at:deadline})});
+   const d=await r.json();if(!r.ok)throw new Error(d.message||"ویرایش مأموریت ناموفق بود.");
+   setNotice(d.message||"مشخصات مأموریت و سهمیه هر دو گردان به‌روزرسانی شد.");
+   setEditingMission(null);await load();
+  }catch(e:any){setError(e.message||"خطا در ویرایش مأموریت.");}finally{setSaving("");}
+ }
  async function saveScore(e:any){
   e.preventDefault();setSaving("score");setError("");setNotice("");
   try{
@@ -117,6 +136,17 @@ export default function ScoresPage(){
    </div>
    <button className="button neon-button" disabled={saving==="mission"||!missionForm.group_id}>{saving==="mission"?"در حال ثبت…":"ثبت مأموریت"}</button>
   </form>}
+  {editingMission&&<form className="panel score-form mission-edit-form" onSubmit={saveMissionEdit}>
+   <div className="panel-title"><div><span className="panel-eyebrow">EDIT MISSION</span><h2>ویرایش مأموریت و سهمیه‌ها</h2><p>تغییر سهمیه کل، سهمیه حوزه‌های هر دو گردان را دوباره و متناسب تقسیم می‌کند.</p></div><button type="button" className="button mission-export-button" onClick={()=>setEditingMission(null)}>انصراف</button></div>
+   <div className="score-form-grid">
+    <label>عنوان مأموریت<input required value={editForm.title} onChange={e=>setEditForm({...editForm,title:e.target.value})}/></label>
+    <label>سهمیه کل هر گردان<input type="number" min="0.01" step="any" required value={editForm.target_value} onChange={e=>setEditForm({...editForm,target_value:e.target.value})}/><small>این مقدار برای هر گردان جداگانه اعمال و بین حوزه‌های همان گردان تقسیم می‌شود.</small></label>
+    <label>واحد اندازه‌گیری<input required value={editForm.unit} onChange={e=>setEditForm({...editForm,unit:e.target.value})}/></label>
+    <label>آخرین مهلت ثبت نمره<input type="datetime-local" value={editForm.deadline_at} onChange={e=>setEditForm({...editForm,deadline_at:e.target.value})}/></label>
+    <label className="score-wide">توضیحات<textarea rows={2} value={editForm.description} onChange={e=>setEditForm({...editForm,description:e.target.value})}/></label>
+   </div>
+   <button className="button neon-button" disabled={saving==="edit"}>{saving==="edit"?"در حال ذخیره…":"ذخیره ویرایش مأموریت و سهمیه‌ها"}</button>
+  </form>}
   <section className="panel score-results">
    <div className="panel-title"><div><span className="panel-eyebrow">MISSION CENTER</span><h2>فهرست کلی مأموریت‌ها</h2></div><span className="score-count">{data.missions.length} مأموریت</span></div>
    {loading?<div className="empty-state">در حال دریافت اطلاعات…</div>:data.missions.length===0?<div className="empty-state">هنوز مأموریتی ثبت نشده است.</div>:
@@ -129,7 +159,8 @@ export default function ScoresPage(){
        <span className="mission-chevron">{selectedId===m.id?"−":"+"}</span>
       </button>
       <div className="score-progress"><span style={{width:Math.min(overall,100)+"%"}}/></div>
-      <div className="mission-export-actions"><button type="button" className="button neon-button mission-export-button" onClick={()=>exportMissionPdf(m)}>خروجی PDF</button><button type="button" className="button mission-export-button mission-poster-button" onClick={()=>exportMissionPoster(m)}>دریافت پوستر</button></div>\n      {canDelete&&<button type="button" className="mission-delete" disabled={saving==="delete"} onClick={()=>deleteMission(m)}>حذف مأموریت</button>}
+      <div className="mission-export-actions"><button type="button" className="button neon-button mission-export-button" onClick={()=>exportMissionPdf(m)}>خروجی PDF</button><button type="button" className="button mission-export-button mission-poster-button" onClick={()=>exportMissionPoster(m)}>دریافت پوستر</button></div>
+      {canCreate&&<button type="button" className="button mission-export-button" onClick={()=>startEditMission(m)}>ویرایش مأموریت و سهمیه</button>}\n      {canDelete&&<button type="button" className="mission-delete" disabled={saving==="delete"} onClick={()=>deleteMission(m)}>حذف مأموریت</button>}
      </article>;
     })}</div>}
   </section>
