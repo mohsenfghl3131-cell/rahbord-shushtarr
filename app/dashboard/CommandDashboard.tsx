@@ -3,10 +3,9 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-type Mission = { mission_id: string; title: string; quota: number; actual: number; battalion_quota: number; battalion_actual: number };
+type Mission = { mission_id: string; title: string; quota: number; actual: number };
 type Area = {
   id: string; name: string; quota: number; actual: number; remaining: number; surplus?: number; percent: number;
-  battalion_quota: number; battalion_actual: number; battalion_contribution_percent: number;
   missions: Mission[];
 };
 
@@ -14,7 +13,6 @@ const fa = (n: number) => Number(n || 0).toLocaleString("fa-IR", { maximumFracti
 const quotaFa = (n: number) => Math.ceil(Number(n || 0)).toLocaleString("fa-IR");
 const clamp = (n: number) => Math.max(0, Math.min(100, n));
 
-type Battalion = { id: string; name: string; quota: number; actual: number; remaining: number; percent: number; areas: Area[]; missions: any[] };
 
 function AreaComparisonChart({ areas }: { areas: Area[] }) {
   const rows = [...areas].sort((a,b) => clamp(b.percent) - clamp(a.percent));
@@ -96,7 +94,6 @@ function DonutChart({ quota, actual, percent }: { quota: number; actual: number;
 
 export default function CommandDashboard({ initialAreaId, detailOnly = false }: { initialAreaId?: string; detailOnly?: boolean }) {
   const [areas, setAreas] = useState<Area[]>([]);
-  const [battalions, setBattalions] = useState<Battalion[]>([]);
   const [selectedArea, setSelectedArea] = useState<string | null>(initialAreaId ?? null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -108,7 +105,6 @@ export default function CommandDashboard({ initialAreaId, detailOnly = false }: 
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "دریافت داشبورد فرماندهی ناموفق بود.");
       setAreas(data.areas || []);
-      setBattalions(data.battalions || []);
     } catch (e: any) {
       setError(e.message || "خطا در دریافت اطلاعات فرماندهی.");
     } finally {
@@ -146,18 +142,6 @@ export default function CommandDashboard({ initialAreaId, detailOnly = false }: 
           <>
             <div className="command-top-kpis">
               <div><small>میانگین تحقق حوزه‌ها</small><b className={overallPercent>=70?"good":overallPercent>0?"warn":""}>{fa(clamp(overallPercent))}٪</b></div>
-              <div><small>مجموع سهمیه حوزه‌ها</small><b>{quotaFa(totals.quota)}</b></div>
-              <div><small>عملکرد ثبت‌شده</small><b>{fa(totals.actual)}</b></div>
-              <div><small>باقی‌مانده تا تحقق سهمیه</small><b>{quotaFa(Math.max(0,totals.quota-totals.actual))}</b></div>
-            </div>
-            <div className="command-battalion-summary">
-              {battalions.map((battalion) => (
-                <article className="command-battalion-summary-card" key={battalion.id}>
-                  <div className="command-battalion-summary-head"><span>{battalion.name}</span><b>{fa(clamp(battalion.percent))}٪</b></div>
-                  <div className="command-battalion-summary-track"><i style={{width:clamp(battalion.percent)+"%"}}/></div>
-                  <div className="command-battalion-summary-foot"><span>تحقق: {fa(battalion.actual)}</span><span>سهمیه: {quotaFa(battalion.quota)}</span><span>حوزه: {fa(battalion.areas?.length||0)}</span></div>
-                </article>
-              ))}
             </div>
           </>
         )}
@@ -197,16 +181,12 @@ export default function CommandDashboard({ initialAreaId, detailOnly = false }: 
               </div>
               {chosen.missions.length ? <div className="command-mission-grid">{chosen.missions.map(m => {
                 const percent = m.quota ? clamp(m.actual / m.quota * 100) : 0;
-                const battalionShare = m.battalion_quota ? clamp(m.actual / m.battalion_quota * 100) : 0;
                 return <article className="command-mission-item" key={m.mission_id}>
                   <div className="command-mission-item-head"><b>{m.title}</b><strong>{fa(percent)}٪ تحقق حوزه</strong></div>
                   <div className="command-progress"><i style={{width: clamp(percent)+"%"}}/></div>
                   <div className="command-mission-item-stats">
                     <span>سهمیه حوزه: {quotaFa(m.quota)}</span>
                     <span>تحقق حوزه: {fa(m.actual)}</span>
-                    <span>سهمیه کل گردان: {quotaFa(m.battalion_quota)}</span>
-                    <span>تحقق کل گردان: {fa(m.battalion_actual)}</span>
-                    <span>میزان تکمیل سهمیه گردان توسط این حوزه: {fa(battalionShare)}٪</span>
                   </div>
                 </article>;
               })}</div> : <div className="command-empty-chart">برای این حوزه مأموریت فعالی ثبت نشده است.</div>}
