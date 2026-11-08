@@ -10,7 +10,7 @@ export default async function CommandAreaPage({ params }: { params: Promise<{ ar
   const { areaId } = await params;
   return (
     <AppShell>
-      <main className="content">
+      <main className="content command-page-shell">
         <CommandDashboard initialAreaId={areaId} detailOnly />
       </main>
     </AppShell>
