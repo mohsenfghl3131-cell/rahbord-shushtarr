@@ -85,8 +85,38 @@ export async function POST(request:Request){
 export async function PATCH(request:Request){
  const ctx=await getCurrentContext();
  if(!ctx)return NextResponse.json({message:"احراز هویت لازم است."},{status:401});
+ const b=await request.json(),admin=db();
+ if(b.action==="edit_mission"){
+  const missionId=String(b.mission_id??""),title=String(b.title??"").trim(),description=String(b.description??"").trim(),unit=String(b.unit??"عدد").trim()||"عدد",target=Number(b.target_value);
+  const deadlineAt=b.deadline_at?new Date(b.deadline_at):null;
+  if(!missionId||!title||!Number.isFinite(target)||target<=0)return NextResponse.json({message:"عنوان و سهمیه معتبر الزامی است."},{status:400});
+  if(b.deadline_at&&(!deadlineAt||Number.isNaN(deadlineAt.getTime())))return NextResponse.json({message:"مهلت واردشده معتبر نیست."},{status:400});
+  const {data:mission}=await admin.from("missions").select("id,group_id,title").eq("id",missionId).maybeSingle();
+  if(!mission)return NextResponse.json({message:"مأموریت پیدا نشد."},{status:404});
+  if(!canManage(ctx,mission.group_id))return NextResponse.json({message:"اجازه ویرایش این مأموریت را ندارید."},{status:403});
+  const update={title,description,target_value:target,unit,deadline_at:deadlineAt?.toISOString()??null};
+  let {error}=await admin.from("missions").update(update).eq("id",missionId);
+  if(error&&String(error.message??"").includes("deadline_at")){
+   const fallback=await admin.from("missions").update({title,description,target_value:target,unit}).eq("id",missionId);error=fallback.error;
+   if(!error&&b.deadline_at)return NextResponse.json({message:"ستون مهلت در پایگاه‌داده فعال نیست؛ سایر تغییرات ذخیره شد اما مهلت تغییر نکرد."},{status:200});
+  }
+  if(error)return NextResponse.json({message:"ویرایش مشخصات مأموریت ناموفق بود: "+error.message},{status:500});
+  const {data:battalionRows}=await admin.from("battalion_areas").select("battalion_id,area_id");
+  for(const battalionId of ["brothers","sisters"]){
+   const areaRows=(battalionRows??[]).filter((x:any)=>x.battalion_id===battalionId);
+   const {error:batchError}=await admin.from("mission_battalion_quotas").upsert({mission_id:missionId,battalion_id:battalionId,quota_value:target,updated_by:ctx.user.id},{onConflict:"mission_id,battalion_id"});
+   if(batchError)return NextResponse.json({message:"ذخیره سهمیه کل گردان ناموفق بود: "+batchError.message},{status:500});
+   if(areaRows.length){
+    const totalCents=Math.round(target*100),baseCents=Math.floor(totalCents/areaRows.length),extraCents=totalCents-baseCents*areaRows.length;
+    const {error:areaError}=await admin.from("mission_area_quotas").upsert(areaRows.map((x:any,index:number)=>({mission_id:missionId,area_id:x.area_id,quota_value:(baseCents+(index<extraCents?1:0))/100,updated_by:ctx.user.id})),{onConflict:"mission_id,area_id"});
+    if(areaError)return NextResponse.json({message:"به‌روزرسانی سهمیه حوزه‌ها ناموفق بود: "+areaError.message},{status:500});
+   }
+  }
+  await admin.from("audit_logs").insert({user_id:ctx.user.id,action:"mission.update",entity_type:"mission",entity_id:missionId,metadata:{title,target_value:target,unit,deadline_at:deadlineAt?.toISOString()??null}});
+  return NextResponse.json({ok:true});
+ }
  if(!canEnter(ctx))return NextResponse.json({message:"دسترسی ثبت عملکرد ندارید."},{status:403});
- const b=await request.json(),missionId=String(b.mission_id??""),areaId=String(b.area_id??""),actual=Number(b.actual_value),notes=String(b.notes??"").trim(),admin=db();
+ const missionId=String(b.mission_id??""),areaId=String(b.area_id??""),actual=Number(b.actual_value),notes=String(b.notes??"").trim();
  if(!missionId||!areaId||!Number.isFinite(actual)||actual<0)return NextResponse.json({message:"مأموریت، حوزه و عدد عملکرد معتبر الزامی است."},{status:400});
  if(ctx.profile.role==="area_manager"&&!ctx.areaIds.includes(areaId))return NextResponse.json({message:"فقط برای حوزه‌های تخصیص‌یافته می‌توانید عدد ثبت کنید."},{status:403});
  if(ctx.profile.role==="battalion_commander"){
