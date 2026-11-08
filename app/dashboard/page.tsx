@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 import { getCurrentContext } from "@/lib/auth";
 import AppShell from "@/app/components/AppShell";
 import DailyMessage from "./DailyMessage";
-import CommandDashboard from "./CommandDashboard";
 
 type AreaStat = {
   name: string;
