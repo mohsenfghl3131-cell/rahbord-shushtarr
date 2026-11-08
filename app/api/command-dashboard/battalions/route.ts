@@ -21,6 +21,13 @@ export async function GET() {
   const { ctx, battalionIds, error } = await access();
   if (error) return error;
   const admin = db();
+  let allowedAreaIds: string[] | null = null;
+  if (ctx!.profile.role === "battalion_commander") {
+    const { data: assignment } = await admin.from("battalion_commander_assignments").select("battalion_id").eq("user_id", ctx!.user.id).maybeSingle();
+    if (!assignment?.battalion_id) return NextResponse.json({ message: "گردان این فرمانده مشخص نشده است." }, { status: 403 });
+    const { data: mapped } = await admin.from("battalion_areas").select("area_id").eq("battalion_id", assignment.battalion_id);
+    allowedAreaIds = (mapped ?? []).map((x: any) => x.area_id);
+  }
   if (ctx!.profile.role === "area_manager" || ctx!.profile.role === "area_force") {
     const { data, error: areaError } = await admin.from("areas").select("id,name,is_active").eq("is_active", true).in("id", ctx!.areaIds.length ? ctx!.areaIds : [EMPTY]);
     if (areaError) return NextResponse.json({ message: "دریافت حوزه‌ها ناموفق بود." }, { status: 500 });
@@ -51,15 +58,14 @@ export async function GET() {
   const scores = scoresRes.data ?? [];
   const battalions = (battalionsRes.data ?? []).map((battalion) => {
     const areaOrder = ["urban-1","urban-2","urban-3","rural-1","rural-2","rural-3","rural-4","rural-5","special-zainab","special-fatemeh"];
-    const areas = (areasByBattalion.get(battalion.id) ?? []).sort((a, b) => areaOrder.indexOf(a.code) - areaOrder.indexOf(b.code));
+    const areas = (areasByBattalion.get(battalion.id) ?? []).filter((a) => !allowedAreaIds || allowedAreaIds.includes(a.id)).sort((a, b) => areaOrder.indexOf(a.code) - areaOrder.indexOf(b.code));
     const areaIds = new Set(areas.map((a) => a.id));
     const missionRows = missions.map((mission: any) => {
       const totalRow = battalionQuotas.find((q) => q.mission_id === mission.id && q.battalion_id === battalion.id);
       const missionAreas = areas.map((area) => {
         const allocation = areaQuotas.find((q) => q.mission_id === mission.id && q.area_id === area.id);
-        const score = scores.find((s) => s.mission_id === mission.id && s.area_id === area.id);
         const quota = Number(allocation?.quota_value ?? 0);
-        const actual = Number(score?.actual_value ?? 0);
+        const actual = scores.filter((s) => s.mission_id === mission.id && s.area_id === area.id).reduce((sum, s) => sum + Number(s.actual_value ?? 0), 0);
         return { id: area.id, name: area.name, quota, actual, remaining: Math.max(0, quota - actual), percent: quota > 0 ? Math.round(actual / quota * 100) : 0 };
       });
       const quota = Number(totalRow?.quota_value ?? 0);
@@ -82,7 +88,26 @@ export async function GET() {
       missions: missionRows
     };
   });
-  return NextResponse.json({ battalions, areas: [], can_manage: Boolean(ctx && SENIOR.includes(ctx.profile.role)), updated_at: new Date().toISOString() });
+  const areaMap = new Map<string, any>();
+  for (const battalion of battalions) {
+    for (const area of battalion.areas) {
+      const rows = battalion.missions.map((m: any) => ({ mission_id: m.id, title: m.title, quota: m.areas.find((x: any) => x.id === area.id)?.quota ?? 0, actual: m.areas.find((x: any) => x.id === area.id)?.actual ?? 0 }));
+      const current = areaMap.get(area.id) ?? { id: area.id, name: area.name, quota: 0, actual: 0, missions: [] as any[] };
+      current.quota += rows.reduce((sum: number, x: any) => sum + x.quota, 0);
+      current.actual += rows.reduce((sum: number, x: any) => sum + x.actual, 0);
+      current.missions.push(...rows);
+      areaMap.set(area.id, current);
+    }
+  }
+  const areaOrder = ["urban-1","urban-2","urban-3","rural-1","rural-2","rural-3","rural-4","rural-5","special-zainab","special-fatemeh"];
+  const areas = [...areaMap.values()].map((a: any) => ({ ...a, remaining: Math.max(0,a.quota-a.actual), surplus: Math.max(0,a.actual-a.quota), percent: a.quota ? Math.round(a.actual/a.quota*100) : 0 })).sort((a: any,b: any) => {
+    const ac = (mapRes.data ?? []).find((x: any) => x.area_id === a.id);
+    const bc = (mapRes.data ?? []).find((x: any) => x.area_id === b.id);
+    const aa = Array.isArray(ac?.areas) ? ac.areas[0] : ac?.areas;
+    const ba = Array.isArray(bc?.areas) ? bc.areas[0] : bc?.areas;
+    return areaOrder.indexOf(aa?.code) - areaOrder.indexOf(ba?.code);
+  });
+  return NextResponse.json({ battalions, areas, can_manage: Boolean(ctx && SENIOR.includes(ctx.profile.role)), updated_at: new Date().toISOString() });
 }
 
 export async function PATCH(request: Request) {
