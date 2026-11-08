@@ -32,7 +32,8 @@ export async function GET(){
  if(error)return NextResponse.json({message:"دریافت مأموریت‌ها ناموفق بود: "+error.message},{status:500});
  const {data:allAreas}=await admin.from("areas").select("id,name,code").eq("is_active",true).order("code");
  const allowedAreaIds=ctx.profile.role==="battalion_commander"?commanderAreaIds:ctx.profile.role==="area_manager"?ctx.areaIds:null;
- const areas=(allAreas??[]).filter((a:any)=>!allowedAreaIds||allowedAreaIds.includes(a.id));
+ const areaOrder=["urban-1","urban-2","urban-3","rural-1","rural-2","rural-3","rural-4","rural-5","special-zainab","special-fatemeh"];
+ const areas=(allAreas??[]).filter((a:any)=>!allowedAreaIds||allowedAreaIds.includes(a.id)).sort((a:any,b:any)=>areaOrder.indexOf(a.code)-areaOrder.indexOf(b.code));
  const {data:scores}=await admin.from("mission_scores").select("id,mission_id,area_id,actual_value,notes,entered_by,updated_at,areas(name),profiles:profiles!mission_scores_entered_by_fkey(display_name)");
  const ids=new Set((missions??[]).map((m:any)=>m.id));
  const visibleScores=(scores??[]).filter((s:any)=>ids.has(s.mission_id)&&(!allowedAreaIds||allowedAreaIds.includes(s.area_id)));
@@ -71,8 +72,8 @@ export async function POST(request:Request){
   const {error:quotaError}=await admin.from("mission_battalion_quotas").upsert({mission_id:data.id,battalion_id:battalionId,quota_value:target,updated_by:ctx.user.id},{onConflict:"mission_id,battalion_id"});
   if(quotaError)return NextResponse.json({message:"ثبت سهمیه کل گردان ناموفق بود: "+quotaError.message},{status:500});
   if(areaRows.length){
-   const each=Math.round((target/areaRows.length)*100)/100;
-   const {error:areaQuotaError}=await admin.from("mission_area_quotas").upsert(areaRows.map((x:any)=>({mission_id:data.id,area_id:x.area_id,quota_value:each,updated_by:ctx.user.id})),{onConflict:"mission_id,area_id"});
+   const totalCents=Math.round(target*100),baseCents=Math.floor(totalCents/areaRows.length),extraCents=totalCents-baseCents*areaRows.length;
+   const {error:areaQuotaError}=await admin.from("mission_area_quotas").upsert(areaRows.map((x:any,index:number)=>({mission_id:data.id,area_id:x.area_id,quota_value:(baseCents+(index<extraCents?1:0))/100,updated_by:ctx.user.id})),{onConflict:"mission_id,area_id"});
    if(areaQuotaError)return NextResponse.json({message:"تقسیم سهمیه بین حوزه‌ها ناموفق بود: "+areaQuotaError.message},{status:500});
   }
  }
