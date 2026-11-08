@@ -50,7 +50,8 @@ export async function GET() {
   const areaQuotas = areaQuotaRes.data ?? [];
   const scores = scoresRes.data ?? [];
   const battalions = (battalionsRes.data ?? []).map((battalion) => {
-    const areas = (areasByBattalion.get(battalion.id) ?? []).sort((a, b) => String(a.code).localeCompare(String(b.code)));
+    const areaOrder = ["urban-1","urban-2","urban-3","rural-1","rural-2","rural-3","rural-4","rural-5","special-zainab","special-fatemeh"];
+    const areas = (areasByBattalion.get(battalion.id) ?? []).sort((a, b) => areaOrder.indexOf(a.code) - areaOrder.indexOf(b.code));
     const areaIds = new Set(areas.map((a) => a.id));
     const missionRows = missions.map((mission: any) => {
       const totalRow = battalionQuotas.find((q) => q.mission_id === mission.id && q.battalion_id === battalion.id);
