@@ -77,7 +77,7 @@ export async function GET() {
         id: mission.id, title: mission.title, unit: mission.unit || "عدد",
         section: (mission as any).category_groups?.name || "بدون بخش",
         quota, actual, remaining: Math.max(0, quota - actual),
-        percent: quota > 0 ? Math.round(actual / quota * 100) : 0,
+        percent: quota > 0 ? Math.min(100, Math.max(0, Math.round(actual / quota * 100))) : 0,
         areas: missionAreas
       };
     });
@@ -103,7 +103,7 @@ export async function GET() {
     }
   }
   const areaOrder = ["urban-1","urban-2","urban-3","rural-1","rural-2","rural-3","rural-4","rural-5","special-zainab","special-fatemeh"];
-  const areas = [...areaMap.values()].map((a: any) => ({ ...a, remaining: Math.max(0,a.quota-a.actual), surplus: Math.max(0,a.actual-a.quota), percent: a.quota ? Math.round(a.actual/a.quota*100) : 0, battalion_quota: a.battalion_quota || 0, battalion_actual: a.battalion_actual || 0, battalion_contribution_percent: a.battalion_quota ? Math.round(a.actual/a.battalion_quota*1000)/10 : 0 })).sort((a: any,b: any) => {
+  const areas = [...areaMap.values()].map((a: any) => {\n    const missionPercents = a.missions.filter((m: any) => Number(m.quota) > 0).map((m: any) => Math.min(100, Math.max(0, Number(m.actual) / Number(m.quota) * 100)));\n    const averageMissionScore = missionPercents.length ? missionPercents.reduce((sum: number, value: number) => sum + value, 0) / missionPercents.length : 0;\n    return { ...a, remaining: Math.max(0,a.quota-a.actual), surplus: Math.max(0,a.actual-a.quota), percent: Math.min(100, Math.max(0, Math.round(averageMissionScore))), battalion_quota: a.battalion_quota || 0, battalion_actual: a.battalion_actual || 0, battalion_contribution_percent: a.battalion_quota ? Math.min(100, Math.max(0, Math.round(a.actual/a.battalion_quota*1000)/10)) : 0 };\n  }).sort((a: any,b: any) => {
     const ac = (mapRes.data ?? []).find((x: any) => x.area_id === a.id);
     const bc = (mapRes.data ?? []).find((x: any) => x.area_id === b.id);
     const aa = Array.isArray(ac?.areas) ? ac.areas[0] : ac?.areas;
