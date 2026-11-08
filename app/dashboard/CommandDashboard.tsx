@@ -1,29 +1,45 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-type Area = { id: string; name: string; quota: number; actual: number; remaining: number; percent: number };
-type Mission = { id: string; title: string; unit: string; section: string; quota: number; actual: number; remaining: number; percent: number; areas: Area[] };
-type Battalion = { id: string; name: string; quota: number; actual: number; remaining: number; surplus: number; percent: number; areas: {id:string;name:string}[]; missions: Mission[] };
-type ScopedArea = { id: string; name: string; is_active?: boolean; quota?: number; actual?: number; remaining?: number; surplus?: number; percent?: number; missions?: {mission_id:string;title:string;quota:number;actual:number}[] };
+type Mission = { mission_id: string; title: string; quota: number; actual: number };
+type Report = { id: string; title: string; status: string; created_at: string; category: string };
+type Area = {
+  id: string; name: string; quota: number; actual: number; remaining: number; surplus?: number; percent: number;
+  battalion_quota: number; battalion_actual: number; battalion_contribution_percent: number;
+  report_count: number; approved_reports: number; pending_reports: number; rejected_reports: number;
+  missions: Mission[]; reports: Report[];
+};
 
 const fa = (n: number) => Number(n || 0).toLocaleString("fa-IR", { maximumFractionDigits: 2 });
-const pct = (n: number) => Math.max(0, Math.min(100, n));
+const clamp = (n: number) => Math.max(0, Math.min(100, n));
+const statusText: Record<string, string> = { approved: "تأیید شده", pending: "در انتظار بررسی", rejected: "رد شده" };
+
+function LineChart({ labels, values, label }: { labels: string[]; values: number[]; label: string }) {
+  if (!values.length) return <div className="command-empty-chart">هنوز داده‌ای برای رسم نمودار وجود ندارد.</div>;
+  const width = 620, left = 34, right = 586, top = 24, bottom = 160;
+  const max = Math.max(100, ...values.map(v => Math.max(0, v)));
+  const points = values.map((v, i) => ({
+    x: values.length === 1 ? (left + right) / 2 : left + i * ((right - left) / (values.length - 1)),
+    y: bottom - (Math.max(0, v) / max) * (bottom - top)
+  }));
+  const polyline = points.map(p => p.x + "," + p.y).join(" ");
+  return <div className="command-line-wrap">
+    <svg viewBox={`0 0 ${width} 194`} role="img" aria-label={label}>
+      {[0, .5, 1].map((ratio, i) => <g key={i}><line x1={left} x2={right} y1={top + ratio * (bottom - top)} y2={top + ratio * (bottom - top)} stroke="currentColor" opacity=".13" strokeDasharray="4 5"/><text x="25" y={top + ratio * (bottom - top) + 4} textAnchor="end" fill="currentColor" opacity=".65" fontSize="10">{fa(Math.round(max * (1-ratio)))}</text></g>)}
+      <polyline points={polyline} fill="none" stroke="#35baff" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+      {points.map((p,i)=><g key={i}><circle cx={p.x} cy={p.y} r="5" fill="#35baff" stroke="var(--panel,#101827)" strokeWidth="2"/><text x={p.x} y="183" textAnchor="middle" fill="currentColor" fontSize="9">{labels[i].length > 12 ? labels[i].slice(0,12)+"…" : labels[i]}</text></g>)}
+    </svg>
+    <small>{label}</small>
+  </div>;
+}
 
 export default function CommandDashboard() {
-  const [battalions, setBattalions] = useState<Battalion[]>([]);
-  const [canManageQuota, setCanManageQuota] = useState(false);
-  const [scopedAreas, setScopedAreas] = useState<ScopedArea[]>([]);
+  const [areas, setAreas] = useState<Area[]>([]);
   const [selectedArea, setSelectedArea] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [expanded, setExpanded] = useState<string | null>(null);
-  const [editing, setEditing] = useState<string | null>(null);
-  const [draftTotal, setDraftTotal] = useState("");
-  const [draftAreas, setDraftAreas] = useState<Record<string,string>>({});
-  const [saving, setSaving] = useState(false);
-  const [notice, setNotice] = useState("");
 
   const load = useCallback(async () => {
     setLoading(true); setError("");
@@ -31,126 +47,126 @@ export default function CommandDashboard() {
       const response = await fetch("/api/command-dashboard/battalions", { cache: "no-store" });
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "دریافت داشبورد فرماندهی ناموفق بود.");
-      setBattalions(data.battalions || []);
-      setScopedAreas(data.areas || []);
-      setCanManageQuota(Boolean(data.can_manage));
-    } catch (e: any) { setError(e.message || "خطا در دریافت اطلاعات."); }
-    finally { setLoading(false); }
+      setAreas(data.areas || []);
+    } catch (e: any) {
+      setError(e.message || "خطا در دریافت اطلاعات فرماندهی.");
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => { load(); }, [load]);
 
-  const beginEdit = (b: Battalion, m: Mission) => {
-    setEditing(b.id + ":" + m.id);
-    setDraftTotal(String(m.quota));
-    setDraftAreas(Object.fromEntries(m.areas.map((a) => [a.id, String(a.quota)])));
-    setNotice("");
-  };
+  const totals = useMemo(() => areas.reduce((acc, area) => ({
+    quota: acc.quota + Number(area.quota || 0),
+    actual: acc.actual + Number(area.actual || 0),
+    reports: acc.reports + Number(area.report_count || 0),
+    pending: acc.pending + Number(area.pending_reports || 0)
+  }), { quota: 0, actual: 0, reports: 0, pending: 0 }), [areas]);
 
-  const save = async (b: Battalion, m: Mission) => {
-    const allocations = m.areas.map((a) => ({ area_id: a.id, quota_value: Number(draftAreas[a.id] ?? 0) }));
-    const total = Number(draftTotal);
-    if (!Number.isFinite(total) || total < 0 || allocations.some((a) => !Number.isFinite(a.quota_value) || a.quota_value < 0)) {
-      setNotice("اعداد سهمیه معتبر نیستند."); return;
-    }
-    if (allocations.reduce((sum, a) => sum + a.quota_value, 0) > total + 0.0001) {
-      setNotice("مجموع سهمیه حوزه‌ها از سهمیه کل گردان بیشتر است."); return;
-    }
-    setSaving(true); setNotice("");
-    try {
-      const response = await fetch("/api/command-dashboard/battalions", {
-        method: "PATCH", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mission_id: m.id, battalion_id: b.id, quota_total: total, allocations })
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || "ذخیره سهمیه انجام نشد.");
-      setEditing(null); setNotice("تغییرات سهمیه با موفقیت ذخیره شد."); await load();
-    } catch (e: any) { setNotice(e.message || "ذخیره سهمیه انجام نشد."); }
-    finally { setSaving(false); }
-  };
+  const chosen = areas.find(area => area.id === selectedArea) || null;
+  const overallPercent = totals.quota ? totals.actual / totals.quota * 100 : 0;
+  const donutPercent = chosen ? clamp(chosen.percent) : clamp(overallPercent);
 
   return (
-    <section className="panel command-dashboard-panel command-pro-panel" style={{ margin: "16px 0 20px", padding: 20 }}>
-      <div className="panel-title">
-        <div><span className="panel-eyebrow">مرکز پایش و ارزیابی عملکرد</span><h2>داشبورد فرماندهی حوزه‌ها</h2><small style={{ color: "var(--muted)", fontSize: 10 }}>سهمیه کل، میزان تحقق، باقیمانده و عملکرد حوزه‌ها</small></div>
-        <span className="command-live">● داده‌های سامانه</span>
+    <section className="panel command-dashboard command-pro-panel">
+      <div className="command-dashboard-head">
+        <div>
+          <span className="panel-eyebrow">مرکز کنترل و پایش هوشمند</span>
+          <h2>داشبورد فرماندهی</h2>
+          <p>{chosen ? "نمای جزئیات و عملکرد حوزه انتخاب‌شده" : "ابتدا حوزه موردنظر را انتخاب کنید تا عملکرد و گزارش‌های آن را ببینید."}</p>
+        </div>
+        <div className="command-live"><i/> داده‌های سامانه</div>
       </div>
-      {loading ? <div className="empty-state">در حال محاسبه عملکرد حوزه‌ها…</div> :
+
+      {loading ? <div className="empty-state">در حال دریافت اطلاعات حوزه‌ها، مأموریت‌ها و گزارش‌ها…</div> :
        error ? <div className="error">{error}</div> :
-       scopedAreas.length > 0 ? (() => {
-         const quota = scopedAreas.reduce((s,a)=>s+Number(a.quota||0),0);
-         const actual = scopedAreas.reduce((s,a)=>s+Number(a.actual||0),0);
-         const remaining = Math.max(0,quota-actual);
-         const percent = quota ? Math.round(actual/quota*100) : 0;
-         const chosen = scopedAreas.find(a=>a.id===selectedArea);
-         const points = scopedAreas.map((a,i)=>({x:36+i*(528/Math.max(1,scopedAreas.length-1)),y:164-(Math.min(100,Number(a.percent||0))/100)*132}));
-         const line = points.map(p=>p.x+","+p.y).join(" ");
-         return <div className="command-area-overview">
-          <div className="command-area-summary"><div><small>سهمیه کل حوزه‌ها</small><strong>{fa(quota)}</strong></div><div><small>محقق‌شده</small><strong className="good">{fa(actual)}</strong></div><div><small>محقق‌نشده</small><strong className="warn">{fa(remaining)}</strong></div><div><small>درصد تحقق</small><strong>{fa(percent)}٪</strong></div></div>
-          <div className="command-area-charts">
-           <div className="command-chart-card"><h3>نسبت تحقق سهمیه‌ها</h3><div className="command-donut" style={{background:"conic-gradient(#26c99a 0% "+(quota?actual/quota*100:0)+"%,rgba(255,255,255,.10) "+(quota?actual/quota*100:0)+"% 100%)"}}><div><b>{fa(percent)}٪</b><small>تحقق کل</small></div></div><p>محقق‌شده: {fa(actual)} · باقی‌مانده: {fa(remaining)}</p></div>
-           <div className="command-chart-card"><h3>مقایسه درصد تحقق حوزه‌ها</h3><svg viewBox="0 0 600 205" role="img" aria-label="نمودار خطی درصد تحقق حوزه‌ها"><path d="M36 32H564 M36 98H564 M36 164H564" stroke="currentColor" opacity=".13" strokeDasharray="4 5" fill="none"/><polyline points={line} fill="none" stroke="#39b8ff" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>{points.map((p,i)=><g key={scopedAreas[i].id}><circle cx={p.x} cy={p.y} r="5" fill="#39b8ff"/><text x={p.x} y="190" textAnchor="middle" fill="currentColor" fontSize="10">{i+1}</text></g>)}</svg><small>شماره‌های نمودار مطابق ترتیب فهرست حوزه‌ها هستند.</small></div>
-          </div>
-          <div className="command-area-grid">{scopedAreas.map((area,index)=><button type="button" onClick={()=>setSelectedArea(selectedArea===area.id?null:area.id)} className={"command-area-card "+(selectedArea===area.id?"active":"")} key={area.id}><span className="command-area-index">{String(index+1).padStart(2,"0")}</span><span className="command-area-name">{area.name}</span><span>{fa(area.actual||0)} از {fa(area.quota||0)} · {fa(area.percent||0)}٪</span><span className="command-area-open">مشاهده جزئیات ↓</span></button>)}</div>
-          {chosen&&<div className="command-area-detail"><h3>{chosen.name}</h3><div className="command-kpi-grid"><div><small>سهمیه</small><strong>{fa(chosen.quota||0)}</strong></div><div><small>محقق‌شده</small><strong>{fa(chosen.actual||0)}</strong></div><div><small>محقق‌نشده</small><strong>{fa(chosen.remaining||0)}</strong></div><div><small>درصد تحقق</small><strong>{fa(chosen.percent||0)}٪</strong></div></div><h4>عملکرد مأموریت‌ها</h4>{(chosen.missions||[]).map(m=><div className="command-mission-performance-row" key={m.mission_id}><b>{m.title}</b><span>{fa(m.actual)} از {fa(m.quota)}</span></div>)}<Link href={"/command-dashboard/"+chosen.id}>بازکردن داشبورد کامل حوزه ←</Link></div>}
-         </div>;
-       })() :
-       battalions.length === 0 ? <div className="empty-state">اطلاعاتی برای نمایش وجود ندارد.</div> :
-       <div className="command-battalion-list">
-        {battalions.map((b) => (
-          <article className="command-battalion-card" key={b.id}>
-            <button type="button" className="command-battalion-head" onClick={() => setExpanded(expanded === b.id ? null : b.id)}>
-              <span><b>{b.name}</b><small>{fa(b.areas.length)} حوزه · {fa(b.missions.length)} مأموریت فعال</small></span>
-              <span className="command-battalion-total">{fa(b.percent)}٪ تحقق <i>{expanded === b.id ? "−" : "+"}</i></span>
-            </button>
-            <div className="command-kpi-grid">
-              <div><small>سهمیه کل گردان</small><strong>{fa(b.quota)}</strong></div>
-              <div><small>محقق‌شده</small><strong className="good">{fa(b.actual)}</strong></div>
-              <div><small>محقق‌نشده</small><strong className="warn">{fa(b.remaining)}</strong></div>
-              <div><small>درصد تحقق</small><strong>{fa(b.percent)}٪</strong></div>
+       areas.length === 0 ? <div className="empty-state">برای این حساب حوزه‌ای جهت نمایش تعریف نشده است.</div> :
+       <>
+        <div className="command-top-kpis">
+          <div><small>سهمیه کل حوزه‌های قابل مشاهده</small><b>{fa(totals.quota)}</b></div>
+          <div><small>میزان تحقق‌یافته</small><b className="good">{fa(totals.actual)}</b></div>
+          <div><small>کل گزارش‌های ثبت‌شده</small><b>{fa(totals.reports)}</b></div>
+          <div><small>گزارش‌های در انتظار بررسی</small><b className="warn">{fa(totals.pending)}</b></div>
+        </div>
+
+        {chosen ? (
+          <div className="command-selected-area">
+            <div className="command-detail-toolbar">
+              <button type="button" onClick={() => setSelectedArea(null)}>→ بازگشت به فهرست حوزه‌ها</button>
+              <span>نمایش جزئیات حوزه</span>
             </div>
-            <div className="command-progress"><i style={{ width: pct(b.percent) + "%" }} /></div>
-            {b.surplus > 0 && <p className="command-surplus">عملکرد بیش از سهمیه: {fa(b.surplus)}</p>}
-            {expanded === b.id && <>
-              <div className="command-area-performance">
-                <h3>عملکرد حوزه‌ها در مجموع مأموریت‌ها</h3>
-                {b.areas.map((area) => {
-                  const target = b.missions.reduce((s,m) => s + (m.areas.find(a => a.id === area.id)?.quota || 0), 0);
-                  const actual = b.missions.reduce((s,m) => s + (m.areas.find(a => a.id === area.id)?.actual || 0), 0);
-                  const remaining = Math.max(0,target-actual);
-                  const percent = target > 0 ? Math.round(actual/target*100) : 0;
-                  return <div className="command-area-performance-row" key={area.id}>
-                    <div className="command-area-performance-title"><b>{area.name}</b><span>{fa(actual)} از {fa(target)}</span></div>
-                    <div className="command-progress thin"><i style={{width:pct(percent)+"%"}}/></div>
-                    <small>{fa(percent)}٪ تحقق · {fa(remaining)} محقق‌نشده</small>
-                    <Link href={"/command-dashboard/" + area.id}>جزئیات حوزه ←</Link>
-                  </div>;
-                })}
+            <div className="command-selected-heading">
+              <div><span>حوزه انتخاب‌شده</span><h3>{chosen.name}</h3><small>گزارش‌ها و عملکرد مأموریت‌های این حوزه</small></div>
+              <div className="command-area-badge">حوزه عملیاتی</div>
+            </div>
+            <div className="command-detail-kpis">
+              <div><small>سهمیه اختصاص‌یافته حوزه</small><b>{fa(chosen.quota)}</b></div>
+              <div><small>تحقق واقعی حوزه</small><b className="good">{fa(chosen.actual)}</b></div>
+              <div><small>باقی‌مانده سهمیه</small><b className="warn">{fa(chosen.remaining)}</b></div>
+              <div><small>درصد تحقق حوزه</small><b>{fa(chosen.percent)}٪</b></div>
+            </div>
+
+            <div className="command-detail-analytics">
+              <article className="command-chart-card command-donut-card">
+                <h4>نمودار دایره‌ای تحقق سهمیه حوزه</h4>
+                <div className="command-donut" style={{ background: `conic-gradient(#20c997 0% ${donutPercent}%,rgba(148,163,184,.2) ${donutPercent}% 100%)` }}>
+                  <div><b>{fa(chosen.percent)}٪</b><small>تحقق حوزه</small></div>
+                </div>
+                <p>محقق‌شده {fa(chosen.actual)} از {fa(chosen.quota)}</p>
+                <div className="command-share-note">سهم تحقق این حوزه از سهمیه کل گردان: <b>{fa(chosen.battalion_contribution_percent)}٪</b></div>
+                <small>سهمیه کل گردان: {fa(chosen.battalion_quota)} · تحقق کل گردان: {fa(chosen.battalion_actual)}</small>
+              </article>
+              <article className="command-chart-card command-line-card">
+                <h4>نمودار خطی تحقق مأموریت‌های حوزه</h4>
+                <LineChart labels={chosen.missions.map(m => m.title)} values={chosen.missions.map(m => m.quota ? clamp(m.actual / m.quota * 100) : 0)} label="درصد تحقق هر مأموریت به ترتیب فهرست مأموریت‌ها"/>
+              </article>
+            </div>
+
+            <section className="command-detail-section">
+              <div className="command-section-heading"><div><span>پایش اجرایی</span><h4>مأموریت‌های حوزه</h4></div><b>{fa(chosen.missions.length)} مأموریت</b></div>
+              {chosen.missions.length ? <div className="command-mission-grid">{chosen.missions.map(m => {
+                const percent = m.quota ? m.actual / m.quota * 100 : 0;
+                return <article className="command-mission-item" key={m.mission_id}>
+                  <div className="command-mission-item-head"><b>{m.title}</b><strong>{fa(percent)}٪</strong></div>
+                  <div className="command-progress"><i style={{width: clamp(percent)+"%"}}/></div>
+                  <div className="command-mission-item-stats"><span>سهمیه: {fa(m.quota)}</span><span>تحقق: {fa(m.actual)}</span><span>باقی‌مانده: {fa(Math.max(0,m.quota-m.actual))}</span></div>
+                </article>;
+              })}</div> : <div className="command-empty-chart">برای این حوزه مأموریت فعالی ثبت نشده است.</div>}
+            </section>
+
+            <section className="command-detail-section">
+              <div className="command-section-heading"><div><span>ردیابی فعالیت</span><h4>گزارش‌های ثبت‌شده حوزه</h4></div><b>{fa(chosen.report_count)} گزارش</b></div>
+              <div className="command-report-status-strip">
+                <span className="approved">تأییدشده: {fa(chosen.approved_reports)}</span>
+                <span className="pending">در انتظار: {fa(chosen.pending_reports)}</span>
+                <span className="rejected">ردشده: {fa(chosen.rejected_reports)}</span>
+                <Link href={"/reports?area_id="+chosen.id}>مشاهده همه گزارش‌ها ←</Link>
               </div>
-              <div className="command-mission-performance">
-                <h3>سهمیه مأموریت‌ها و تخصیص حوزه‌ای</h3>
-                {b.missions.map((m) => {
-                  const key = b.id + ":" + m.id;
-                  const isEditing = editing === key;
-                  return <div className="command-mission-card" key={m.id}>
-                    <div className="command-mission-card-title"><div><b>{m.title}</b><small>{m.section} · {m.unit}</small></div><strong>{fa(m.percent)}٪</strong></div>
-                    <div className="command-mission-card-stats"><span>سهمیه: {fa(m.quota)}</span><span>محقق‌شده: {fa(m.actual)}</span><span>باقی‌مانده: {fa(m.remaining)}</span></div>
-                    <div className="command-progress thin"><i style={{width:pct(m.percent)+"%"}}/></div>
-                    {canManageQuota && <button type="button" className="command-edit-quota" onClick={() => isEditing ? setEditing(null) : beginEdit(b,m)}>{isEditing ? "بستن ویرایش" : "تنظیم سهمیه این مأموریت"}</button>}
-                    {canManageQuota && isEditing && <div className="command-quota-editor">
-                      <label>سهمیه کل این مأموریت برای {b.name}<input type="number" min="0" step="0.01" value={draftTotal} onChange={e=>setDraftTotal(e.target.value)}/></label>
-                      <div className="command-quota-area-grid">{m.areas.map(a=><label key={a.id}>{a.name}<input type="number" min="0" step="0.01" value={draftAreas[a.id] ?? "0"} onChange={e=>setDraftAreas(prev=>({...prev,[a.id]:e.target.value}))}/></label>)}</div>
-                      <small>مجموع تخصیص حوزه‌ها نباید از سهمیه کل مأموریت بیشتر شود.</small>
-                      <button type="button" disabled={saving} onClick={()=>save(b,m)}>{saving ? "در حال ذخیره…" : "ذخیره سهمیه‌ها"}</button>
-                    </div>}
-                  </div>;
-                })}
-              </div>
-            </>}
-          </article>
-        ))}
-       </div>}
-      {notice && <p className="command-notice">{notice}</p>}
+              {chosen.reports.length ? <div className="command-report-list">{chosen.reports.map(report => <Link href={"/reports#"+report.id} className="command-report-row" key={report.id}>
+                <span className={"command-report-status "+(report.status||"")}>{statusText[report.status] || report.status}</span>
+                <span className="command-report-main"><b>{report.title}</b><small>{report.category} · {new Date(report.created_at).toLocaleDateString("fa-IR",{year:"numeric",month:"short",day:"numeric"})}</small></span>
+                <i>←</i>
+              </Link>)}</div> : <div className="command-empty-chart">هنوز گزارشی برای این حوزه ثبت نشده است.</div>}
+              {chosen.report_count > chosen.reports.length && <p className="command-report-more">۳۰ گزارش اخیر نمایش داده شده‌اند؛ برای مشاهده همه گزارش‌ها از پیوند بالا استفاده کنید.</p>}
+            </section>
+          </div>
+        ) : (
+          <div className="command-area-overview">
+            <div className="command-overview-heading"><div><span>انتخاب حوزه</span><h3>فهرست حوزه‌ها</h3><small>برای مشاهده مأموریت‌ها، گزارش‌ها و سهم تحقق، روی کارت حوزه بزنید.</small></div><span>{fa(areas.length)} حوزه</span></div>
+            <div className="command-area-grid">{areas.map((area,index)=><button type="button" onClick={()=>setSelectedArea(area.id)} className="command-area-card" key={area.id}>
+              <span className="command-area-index">{String(index+1).padStart(2,"0")}</span>
+              <span className="command-area-card-main"><b>{area.name}</b><small>{fa(area.report_count)} گزارش · {fa(area.missions.length)} مأموریت</small></span>
+              <span className="command-area-card-progress"><b>{fa(area.percent)}٪</b><i><em style={{width:clamp(area.percent)+"%"}}/></i><small>{fa(area.actual)} از {fa(area.quota)}</small></span>
+              <span className="command-area-open">جزئیات ←</span>
+            </button>)}</div>
+            <div className="command-overview-chart">
+              <div><span>مقایسه حوزه‌ها</span><h4>نمودار خطی درصد تحقق سهمیه</h4></div>
+              <LineChart labels={areas.map(a=>a.name)} values={areas.map(a=>a.percent)} label="مقایسه درصد تحقق سهمیه حوزه‌ها"/>
+            </div>
+          </div>
+        )}
+       </>}
     </section>
   );
 }
