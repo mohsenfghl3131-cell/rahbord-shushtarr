@@ -9,7 +9,7 @@ export default function ScoresPage(){
  const [missionForm,setMissionForm]=useState({group_id:"",title:"",description:"",target_value:"",unit:"عدد",deadline_at:""});
  const [entry,setEntry]=useState({mission_id:"",area_id:"",actual_value:"",notes:""});
  const [editingMission,setEditingMission]=useState<any>(null);
- const [editForm,setEditForm]=useState({title:"",description:"",target_value:"",unit:"عدد",deadline_at:""});
+ const [editForm,setEditForm]=useState({title:"",description:"",brothers_target:"",sisters_target:"",unit:"عدد",deadline_at:""});
  async function load(){
   const [r,g,m]=await Promise.all([fetch("/api/missions",{cache:"no-store"}),fetch("/api/categories",{cache:"no-store"}),fetch("/api/me",{cache:"no-store"})]);
   const [d,gd,md]=await Promise.all([r.json(),g.json(),m.json()]);
@@ -90,7 +90,8 @@ export default function ScoresPage(){
  }
  function startEditMission(m:any){
   setEditingMission(m);
-  setEditForm({title:m.title??"",description:m.description??"",target_value:String(m.target_value??""),unit:m.unit??"عدد",deadline_at:m.deadline_at?new Date(m.deadline_at).toISOString().slice(0,16):""});
+  const quotas=(data.battalion_quotas??[]).filter((q:any)=>q.mission_id===m.id);
+  setEditForm({title:m.title??"",description:m.description??"",brothers_target:String(quotas.find((q:any)=>q.battalion_id==="brothers")?.quota_value??m.target_value??""),sisters_target:String(quotas.find((q:any)=>q.battalion_id==="sisters")?.quota_value??m.target_value??""),unit:m.unit??"عدد",deadline_at:m.deadline_at?new Date(m.deadline_at).toISOString().slice(0,16):""});
   setError("");setNotice("");
   document.querySelector(".mission-edit-form")?.scrollIntoView({behavior:"smooth",block:"center"});
  }
@@ -99,9 +100,9 @@ export default function ScoresPage(){
   setSaving("edit");setError("");setNotice("");
   try{
    const deadline=editForm.deadline_at?new Date(editForm.deadline_at).toISOString():null;
-   const r=await fetch("/api/missions",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"edit_mission",mission_id:editingMission.id,...editForm,target_value:Number(editForm.target_value),deadline_at:deadline})});
+   const r=await fetch("/api/missions",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"edit_mission",mission_id:editingMission.id,...editForm,brothers_target:Number(editForm.brothers_target),sisters_target:Number(editForm.sisters_target),deadline_at:deadline})});
    const d=await r.json();if(!r.ok)throw new Error(d.message||"ویرایش مأموریت ناموفق بود.");
-   setNotice(d.message||"مشخصات مأموریت و سهمیه هر دو گردان به‌روزرسانی شد.");
+   setNotice(d.message||"مشخصات مأموریت و سهمیه مستقل گردان‌ها به‌روزرسانی شد.");
    setEditingMission(null);await load();
   }catch(e:any){setError(e.message||"خطا در ویرایش مأموریت.");}finally{setSaving("");}
  }
@@ -138,10 +139,13 @@ export default function ScoresPage(){
    <button className="button neon-button" disabled={saving==="mission"||!missionForm.group_id}>{saving==="mission"?"در حال ثبت…":"ثبت مأموریت"}</button>
   </form>}
   {editingMission&&<form className="panel score-form mission-edit-form" onSubmit={saveMissionEdit}>
-   <div className="panel-title"><div><span className="panel-eyebrow">EDIT MISSION</span><h2>ویرایش مأموریت و سهمیه‌ها</h2><p>تغییر سهمیه کل، سهمیه حوزه‌های هر دو گردان را دوباره و متناسب تقسیم می‌کند.</p></div><button type="button" className="button mission-export-button" onClick={()=>setEditingMission(null)}>انصراف</button></div>
+   <div className="panel-title"><div><span className="panel-eyebrow">EDIT MISSION</span><h2>ویرایش مأموریت و سهمیه‌ها</h2><p>سهمیه گردان برادر و خواهر مستقل است و هرکدام جداگانه بین حوزه‌های همان گردان تقسیم می‌شود.</p></div><button type="button" className="button mission-export-button" onClick={()=>setEditingMission(null)}>انصراف</button></div>
    <div className="score-form-grid">
     <label>عنوان مأموریت<input required value={editForm.title} onChange={e=>setEditForm({...editForm,title:e.target.value})}/></label>
-    <label>سهمیه کل هر گردان<input type="number" min="0.01" step="any" required value={editForm.target_value} onChange={e=>setEditForm({...editForm,target_value:e.target.value})}/><small>این مقدار برای هر گردان جداگانه اعمال و بین حوزه‌های همان گردان تقسیم می‌شود.</small></label>
+    {["main_admin","deputy"].includes(role)?<>
+     <label>سهمیه کل گردان برادر<input type="number" min="0.01" step="any" required value={editForm.brothers_target} onChange={e=>setEditForm({...editForm,brothers_target:e.target.value})}/><small>بین ۸ حوزه برادر تقسیم می‌شود.</small></label>
+     <label>سهمیه کل گردان خواهر<input type="number" min="0.01" step="any" required value={editForm.sisters_target} onChange={e=>setEditForm({...editForm,sisters_target:e.target.value})}/><small>بین ۲ حوزه خواهر تقسیم می‌شود.</small></label>
+    </>:<p className="score-wide">سهمیه گردان‌ها فقط توسط مدیر اصلی و معاون قابل تغییر است.</p>}
     <label>واحد اندازه‌گیری<input required value={editForm.unit} onChange={e=>setEditForm({...editForm,unit:e.target.value})}/></label>
     <label>آخرین مهلت ثبت نمره<input type="datetime-local" value={editForm.deadline_at} onChange={e=>setEditForm({...editForm,deadline_at:e.target.value})}/></label>
     <label className="score-wide">توضیحات<textarea rows={2} value={editForm.description} onChange={e=>setEditForm({...editForm,description:e.target.value})}/></label>
