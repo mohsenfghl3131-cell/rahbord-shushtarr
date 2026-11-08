@@ -14,6 +14,23 @@ const fa = (n: number) => Number(n || 0).toLocaleString("fa-IR", { maximumFracti
 const quotaFa = (n: number) => Math.ceil(Number(n || 0)).toLocaleString("fa-IR");
 const clamp = (n: number) => Math.max(0, Math.min(100, n));
 
+type Battalion = { id: string; name: string; quota: number; actual: number; remaining: number; percent: number; areas: Area[]; missions: any[] };
+
+function AreaComparisonChart({ areas }: { areas: Area[] }) {
+  const rows = [...areas].sort((a,b) => clamp(b.percent) - clamp(a.percent));
+  if (!rows.length) return <div className="command-empty-chart">هنوز داده‌ای برای مقایسه حوزه‌ها ثبت نشده است.</div>;
+  return <div className="command-area-chart-list">
+    {rows.map((area,index) => {
+      const percent=clamp(area.percent);
+      return <div className="command-area-chart-row" key={area.id}>
+        <div className="command-area-chart-label"><span>{String(index+1).padStart(2,"0")}</span><b>{area.name}</b><strong>{fa(percent)}٪</strong></div>
+        <div className="command-area-chart-track"><i style={{width:percent+"%"}}/></div>
+        <small>عملکرد: {fa(area.actual)} از سهمیه {quotaFa(area.quota)} · {area.missions.length} مأموریت</small>
+      </div>;
+    })}
+  </div>;
+}
+
 type ChartPoint = { label: string; value: number; quota: number; actual: number; href?: string };
 
 function LineChart({ points, label }: { points: ChartPoint[]; label: string }) {
@@ -79,6 +96,7 @@ function DonutChart({ quota, actual, percent }: { quota: number; actual: number;
 
 export default function CommandDashboard({ initialAreaId, detailOnly = false }: { initialAreaId?: string; detailOnly?: boolean }) {
   const [areas, setAreas] = useState<Area[]>([]);
+  const [battalions, setBattalions] = useState<Battalion[]>([]);
   const [selectedArea, setSelectedArea] = useState<string | null>(initialAreaId ?? null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -90,6 +108,7 @@ export default function CommandDashboard({ initialAreaId, detailOnly = false }: 
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "دریافت داشبورد فرماندهی ناموفق بود.");
       setAreas(data.areas || []);
+      setBattalions(data.battalions || []);
     } catch (e: any) {
       setError(e.message || "خطا در دریافت اطلاعات فرماندهی.");
     } finally {
@@ -123,6 +142,25 @@ export default function CommandDashboard({ initialAreaId, detailOnly = false }: 
        error ? <div className="error">{error}</div> :
        areas.length === 0 ? <div className="empty-state">برای این حساب حوزه‌ای جهت نمایش تعریف نشده است.</div> :
        <>
+        {!chosen && !detailOnly && (
+          <>
+            <div className="command-top-kpis">
+              <div><small>میانگین تحقق حوزه‌ها</small><b className={overallPercent>=70?"good":overallPercent>0?"warn":""}>{fa(clamp(overallPercent))}٪</b></div>
+              <div><small>مجموع سهمیه حوزه‌ها</small><b>{quotaFa(totals.quota)}</b></div>
+              <div><small>عملکرد ثبت‌شده</small><b>{fa(totals.actual)}</b></div>
+              <div><small>باقی‌مانده تا تحقق سهمیه</small><b>{quotaFa(Math.max(0,totals.quota-totals.actual))}</b></div>
+            </div>
+            <div className="command-battalion-summary">
+              {battalions.map((battalion) => (
+                <article className="command-battalion-summary-card" key={battalion.id}>
+                  <div className="command-battalion-summary-head"><span>{battalion.name}</span><b>{fa(clamp(battalion.percent))}٪</b></div>
+                  <div className="command-battalion-summary-track"><i style={{width:clamp(battalion.percent)+"%"}}/></div>
+                  <div className="command-battalion-summary-foot"><span>تحقق: {fa(battalion.actual)}</span><span>سهمیه: {quotaFa(battalion.quota)}</span><span>حوزه: {fa(battalion.areas?.length||0)}</span></div>
+                </article>
+              ))}
+            </div>
+          </>
+        )}
         {chosen ? (
           <div className="command-selected-area">
             <div className="command-detail-toolbar">
@@ -187,8 +225,8 @@ export default function CommandDashboard({ initialAreaId, detailOnly = false }: 
               <span className="command-area-open">جزئیات ←</span>
             </Link>)}</div>
             <div className="command-overview-chart">
-              <div><span>مقایسه حوزه‌ها</span><h4>مقایسه امتیاز حوزه‌ها از ۱۰۰</h4></div>
-              <LineChart points={areas.map(a=>({label:a.name,value:clamp(a.percent),quota:a.quota,actual:a.actual,href:"/dashboard/command/"+a.id}))} label="مقایسه امتیاز کلی حوزه‌ها از ۱۰۰"/>
+              <div><span>تحلیل عملکرد</span><h4>رتبه‌بندی حوزه‌ها بر اساس درصد تحقق مأموریت‌ها</h4><small>از بیشترین درصد تحقق تا کمترین؛ مقادیر سهمیه و عملکرد هر حوزه زیر نمودار آمده است.</small></div>
+              <AreaComparisonChart areas={areas}/>
             </div>
           </div>
         )}
