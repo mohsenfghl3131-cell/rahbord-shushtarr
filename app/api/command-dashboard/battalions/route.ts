@@ -10,7 +10,11 @@ async function access() {
   const ctx = await getCurrentContext();
   if (!ctx) return { ctx: null, battalionIds: [] as string[], error: NextResponse.json({ message: "ابتدا وارد سامانه شوید." }, { status: 401 }) };
   if (SENIOR.includes(ctx.profile.role)) return { ctx, battalionIds: ["brothers", "sisters"], error: null };
-  if (ctx.profile.role === "area_manager" || ctx.profile.role === "area_force") return { ctx, battalionIds: [], error: null };
+  if (ctx.profile.role === "area_manager" || ctx.profile.role === "area_force") {
+    const ids = ctx.areaIds.length ? ctx.areaIds : [EMPTY];
+    const { data: mapped } = await db().from("battalion_areas").select("battalion_id").in("area_id", ids);
+    return { ctx, battalionIds: [...new Set((mapped ?? []).map((x: any) => x.battalion_id))], error: null };
+  }
   if (ctx.profile.role !== "battalion_commander") return { ctx, battalionIds: [], error: NextResponse.json({ message: "دسترسی به داشبورد گردان‌ها ندارید." }, { status: 403 }) };
   const { data } = await db().from("battalion_commander_assignments").select("battalion_id").eq("user_id", ctx.user.id).maybeSingle();
   if (!data?.battalion_id) return { ctx, battalionIds: [], error: NextResponse.json({ message: "حساب فرمانده هنوز به گردان برادر یا خواهر اختصاص داده نشده است. مدیر اصلی باید این انتساب را ثبت کند." }, { status: 403 }) };
@@ -22,19 +26,17 @@ export async function GET() {
   if (error) return error;
   const admin = db();
   let allowedAreaIds: string[] | null = null;
+  if (ctx!.profile.role === "area_manager" || ctx!.profile.role === "area_force") {
+    allowedAreaIds = ctx!.areaIds;
+  }
   if (ctx!.profile.role === "battalion_commander") {
     const { data: assignment } = await admin.from("battalion_commander_assignments").select("battalion_id").eq("user_id", ctx!.user.id).maybeSingle();
     if (!assignment?.battalion_id) return NextResponse.json({ message: "گردان این فرمانده مشخص نشده است." }, { status: 403 });
     const { data: mapped } = await admin.from("battalion_areas").select("area_id").eq("battalion_id", assignment.battalion_id);
     allowedAreaIds = (mapped ?? []).map((x: any) => x.area_id);
   }
-  if (ctx!.profile.role === "area_manager" || ctx!.profile.role === "area_force") {
-    const { data, error: areaError } = await admin.from("areas").select("id,name,is_active").eq("is_active", true).in("id", ctx!.areaIds.length ? ctx!.areaIds : [EMPTY]);
-    if (areaError) return NextResponse.json({ message: "دریافت حوزه‌ها ناموفق بود." }, { status: 500 });
-    return NextResponse.json({ battalions: [], areas: data ?? [], can_manage: false, updated_at: new Date().toISOString() });
-  }
   const [battalionsRes, mapRes, missionsRes, battalionQuotaRes, areaQuotaRes, scoresRes] = await Promise.all([
-    admin.from("battalions").select("id,name").in("id", battalionIds),
+    admin.from("battalions").select("id,name").in("id", battalionIds.length ? battalionIds : [EMPTY]),
     admin.from("battalion_areas").select("battalion_id,area_id,areas(id,name,code)").in("battalion_id", battalionIds),
     admin.from("missions").select("id,title,unit,target_value,group_id,category_groups(name)").eq("is_active", true).order("created_at", { ascending: false }),
     admin.from("mission_battalion_quotas").select("mission_id,battalion_id,quota_value").in("battalion_id", battalionIds),
@@ -45,6 +47,17 @@ export async function GET() {
   if (failure?.error) return NextResponse.json({ message: "دریافت اطلاعات سهمیه‌ها ناموفق بود. " + failure.error.message }, { status: 500 });
 
   const missions = missionsRes.data ?? [];
+  const allAreaIds = [...new Set((mapRes.data ?? []).map((row: any) => row.area_id).filter((id: string) => !allowedAreaIds || allowedAreaIds.includes(id)))];
+  const { data: reportRows, error: reportsError } = allAreaIds.length
+    ? await admin.from("reports").select("id,title,status,created_at,area_id,categories(name)").is("deleted_at", null).in("area_id", allAreaIds).order("created_at", { ascending: false }).limit(1000)
+    : { data: [], error: null };
+  if (reportsError) return NextResponse.json({ message: "دریافت گزارش‌های حوزه‌ها ناموفق بود. " + reportsError.message }, { status: 500 });
+  const reportsByArea = new Map<string, any[]>();
+  for (const report of reportRows ?? []) {
+    const list = reportsByArea.get(report.area_id) ?? [];
+    list.push({ id: report.id, title: report.title, status: report.status, created_at: report.created_at, category: (report as any).categories?.name || "بدون دسته‌بندی" });
+    reportsByArea.set(report.area_id, list);
+  }
   const areasByBattalion = new Map<string, any[]>();
   for (const row of mapRes.data ?? []) {
     const area = Array.isArray(row.areas) ? row.areas[0] : row.areas;
@@ -92,7 +105,7 @@ export async function GET() {
   for (const battalion of battalions) {
     for (const area of battalion.areas) {
       const rows = battalion.missions.map((m: any) => ({ mission_id: m.id, title: m.title, quota: m.areas.find((x: any) => x.id === area.id)?.quota ?? 0, actual: m.areas.find((x: any) => x.id === area.id)?.actual ?? 0 }));
-      const current = areaMap.get(area.id) ?? { id: area.id, name: area.name, quota: 0, actual: 0, missions: [] as any[] };
+      const current = areaMap.get(area.id) ?? { id: area.id, name: area.name, quota: 0, actual: 0, battalion_quota: battalion.quota, battalion_actual: battalion.actual, missions: [] as any[] };
       current.quota += rows.reduce((sum: number, x: any) => sum + x.quota, 0);
       current.actual += rows.reduce((sum: number, x: any) => sum + x.actual, 0);
       current.missions.push(...rows);
@@ -100,7 +113,17 @@ export async function GET() {
     }
   }
   const areaOrder = ["urban-1","urban-2","urban-3","rural-1","rural-2","rural-3","rural-4","rural-5","special-zainab","special-fatemeh"];
-  const areas = [...areaMap.values()].map((a: any) => ({ ...a, remaining: Math.max(0,a.quota-a.actual), surplus: Math.max(0,a.actual-a.quota), percent: a.quota ? Math.round(a.actual/a.quota*100) : 0 })).sort((a: any,b: any) => {
+  const areas = [...areaMap.values()].map((a: any) => {
+    const reports = reportsByArea.get(a.id) ?? [];
+    return { ...a, remaining: Math.max(0,a.quota-a.actual), surplus: Math.max(0,a.actual-a.quota), percent: a.quota ? Math.round(a.actual/a.quota*100) : 0,
+      battalion_quota: a.battalion_quota || 0, battalion_actual: a.battalion_actual || 0,
+      battalion_contribution_percent: a.battalion_quota ? Math.round(a.actual/a.battalion_quota*1000)/10 : 0,
+      report_count: reports.length, approved_reports: reports.filter((r: any) => r.status === "approved").length,
+      pending_reports: reports.filter((r: any) => r.status === "pending").length,
+      rejected_reports: reports.filter((r: any) => r.status === "rejected").length,
+      reports: reports.slice(0, 30)
+    };
+  }).sort((a: any,b: any) => {
     const ac = (mapRes.data ?? []).find((x: any) => x.area_id === a.id);
     const bc = (mapRes.data ?? []).find((x: any) => x.area_id === b.id);
     const aa = Array.isArray(ac?.areas) ? ac.areas[0] : ac?.areas;
