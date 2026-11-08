@@ -9,7 +9,7 @@ export default function ScoresPage(){
  const [missionForm,setMissionForm]=useState({group_id:"",title:"",description:"",target_value:"",unit:"عدد",deadline_at:""});
  const [entry,setEntry]=useState({mission_id:"",area_id:"",actual_value:"",notes:""});
  const [editingMission,setEditingMission]=useState<any>(null);
- const [editForm,setEditForm]=useState({title:"",description:"",brothers_target:"",sisters_target:"",unit:"عدد",deadline_at:""});
+ const [editForm,setEditForm]=useState({title:"",description:"",brothers_target:"",sisters_target:"",battalion_target:"",unit:"عدد",deadline_at:""});
  async function load(){
   const [r,g,m]=await Promise.all([fetch("/api/missions",{cache:"no-store"}),fetch("/api/categories",{cache:"no-store"}),fetch("/api/me",{cache:"no-store"})]);
   const [d,gd,md]=await Promise.all([r.json(),g.json(),m.json()]);
@@ -19,8 +19,8 @@ export default function ScoresPage(){
   setMissionForm(x=>({...x,group_id:x.group_id||md.responsible_group_ids?.[0]||gd.groups?.[0]?.id||""}));
  }
  useEffect(()=>{load().catch(e=>setError(e.message)).finally(()=>setLoading(false));},[]);
- const role=me?.profile?.role,isLeader=["main_admin","deputy","battalion_commander"].includes(role),canCreate=Boolean(data.can_create),canEnter=Boolean(data.can_enter),canDelete=Boolean(data.can_delete);
- const canEditMission=(m:any)=>["main_admin","deputy"].includes(role)||(me?.responsible_group_ids??[]).includes(m.group_id);
+ const role=me?.profile?.role,isLeader=["main_admin","deputy","battalion_commander"].includes(role),isSeniorRole=["main_admin","deputy"].includes(role),canCreate=Boolean(data.can_create),canEnter=Boolean(data.can_enter),canDelete=Boolean(data.can_delete);
+ const canEditMission=(m:any)=>isSeniorRole||role==="battalion_commander"||(me?.responsible_group_ids??[]).includes(m.group_id);
  const quotaFor=(missionId:string,areaId:string)=>Number((data.area_quotas??[]).find((q:any)=>q.mission_id===missionId&&q.area_id===areaId)?.quota_value??0);
  const totalQuotaFor=(missionId:string)=>data.areas.reduce((sum:number,a:any)=>sum+quotaFor(missionId,a.id),0);
  const visibleGroups=groups.filter(g=>isLeader||(me?.responsible_group_ids??[]).includes(g.id));
@@ -91,7 +91,7 @@ export default function ScoresPage(){
  function startEditMission(m:any){
   setEditingMission(m);
   const quotas=(data.battalion_quotas??[]).filter((q:any)=>q.mission_id===m.id);
-  setEditForm({title:m.title??"",description:m.description??"",brothers_target:String(quotas.find((q:any)=>q.battalion_id==="brothers")?.quota_value??m.target_value??""),sisters_target:String(quotas.find((q:any)=>q.battalion_id==="sisters")?.quota_value??m.target_value??""),unit:m.unit??"عدد",deadline_at:m.deadline_at?new Date(m.deadline_at).toISOString().slice(0,16):""});
+  setEditForm({title:m.title??"",description:m.description??"",brothers_target:String(quotas.find((q:any)=>q.battalion_id==="brothers")?.quota_value??m.target_value??""),sisters_target:String(quotas.find((q:any)=>q.battalion_id==="sisters")?.quota_value??m.target_value??""),battalion_target:String(quotas.find((q:any)=>q.battalion_id===data.assigned_battalion_id)?.quota_value??m.target_value??""),unit:m.unit??"عدد",deadline_at:m.deadline_at?new Date(m.deadline_at).toISOString().slice(0,16):""});
   setError("");setNotice("");
   document.querySelector(".mission-edit-form")?.scrollIntoView({behavior:"smooth",block:"center"});
  }
@@ -100,7 +100,7 @@ export default function ScoresPage(){
   setSaving("edit");setError("");setNotice("");
   try{
    const deadline=editForm.deadline_at?new Date(editForm.deadline_at).toISOString():null;
-   const r=await fetch("/api/missions",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"edit_mission",mission_id:editingMission.id,...editForm,brothers_target:Number(editForm.brothers_target),sisters_target:Number(editForm.sisters_target),deadline_at:deadline})});
+   const r=await fetch("/api/missions",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"edit_mission",mission_id:editingMission.id,...editForm,brothers_target:Number(editForm.brothers_target),sisters_target:Number(editForm.sisters_target),battalion_target:Number(editForm.battalion_target),deadline_at:deadline})});
    const d=await r.json();if(!r.ok)throw new Error(d.message||"ویرایش مأموریت ناموفق بود.");
    setNotice(d.message||"مشخصات مأموریت و سهمیه مستقل گردان‌ها به‌روزرسانی شد.");
    setEditingMission(null);await load();
@@ -131,7 +131,7 @@ export default function ScoresPage(){
    <div className="score-form-grid">
     <label>بخش<select required value={missionForm.group_id} onChange={e=>setMissionForm({...missionForm,group_id:e.target.value})}><option value="">انتخاب بخش</option>{visibleGroups.map(g=><option key={g.id} value={g.id}>{g.name}</option>)}</select></label>
     <label>عنوان مأموریت<input required value={missionForm.title} onChange={e=>setMissionForm({...missionForm,title:e.target.value})} placeholder="مثلاً انتشار محتوای عملیاتی"/></label>
-    <label>سهمیه کل هر گردان<input type="number" min="1" step="any" required value={missionForm.target_value} onChange={e=>setMissionForm({...missionForm,target_value:e.target.value})} placeholder="مثلاً ۱۰۰"/><small>همین سهمیه برای هر دو گردان ثبت و به‌صورت مساوی بین حوزه‌های هر گردان تقسیم می‌شود.</small></label>
+    <label>{role==="battalion_commander"?"سهمیه کل گردان شما":"سهمیه کل هر گردان"}<input type="number" min="1" step="any" required value={missionForm.target_value} onChange={e=>setMissionForm({...missionForm,target_value:e.target.value})} placeholder="مثلاً ۱۰۰"/><small>{role==="battalion_commander"?"این سهمیه فقط برای گردان اختصاص‌یافته به حساب شما ثبت و بین حوزه‌های همان گردان تقسیم می‌شود.":"این سهمیه برای هر دو گردان به‌صورت مستقل ثبت و بین حوزه‌های همان گردان تقسیم می‌شود."}</small></label>
     <label>واحد اندازه‌گیری<input required value={missionForm.unit} onChange={e=>setMissionForm({...missionForm,unit:e.target.value})} placeholder="عدد، محتوا، اقدام"/></label>
     <label>آخرین مهلت ثبت نمره<input type="datetime-local" value={missionForm.deadline_at} onChange={e=>setMissionForm({...missionForm,deadline_at:e.target.value})}/><small>پس از این زمان ثبت و ویرایش نمره توسط حوزه‌ها بسته می‌شود.</small></label>
     <label className="score-wide">توضیحات<textarea rows={2} value={missionForm.description} onChange={e=>setMissionForm({...missionForm,description:e.target.value})}/></label>
@@ -142,10 +142,10 @@ export default function ScoresPage(){
    <div className="panel-title"><div><span className="panel-eyebrow">EDIT MISSION</span><h2>ویرایش مأموریت و سهمیه‌ها</h2><p>سهمیه گردان برادر و خواهر مستقل است و هرکدام جداگانه بین حوزه‌های همان گردان تقسیم می‌شود.</p></div><button type="button" className="button mission-export-button" onClick={()=>setEditingMission(null)}>انصراف</button></div>
    <div className="score-form-grid">
     <label>عنوان مأموریت<input required value={editForm.title} onChange={e=>setEditForm({...editForm,title:e.target.value})}/></label>
-    {["main_admin","deputy"].includes(role)?<>
+    {isSeniorRole?<>
      <label>سهمیه کل گردان برادر<input type="number" min="0.01" step="any" required value={editForm.brothers_target} onChange={e=>setEditForm({...editForm,brothers_target:e.target.value})}/><small>بین ۸ حوزه برادر تقسیم می‌شود.</small></label>
      <label>سهمیه کل گردان خواهر<input type="number" min="0.01" step="any" required value={editForm.sisters_target} onChange={e=>setEditForm({...editForm,sisters_target:e.target.value})}/><small>بین ۲ حوزه خواهر تقسیم می‌شود.</small></label>
-    </>:<p className="score-wide">سهمیه گردان‌ها فقط توسط مدیر اصلی و معاون قابل تغییر است.</p>}
+    </>:role==="battalion_commander"?<label>سهمیه کل گردان {data.assigned_battalion_id==="sisters"?"خواهر":"برادر"}<input type="number" min="0.01" step="any" required value={editForm.battalion_target} onChange={e=>setEditForm({...editForm,battalion_target:e.target.value})}/><small>فقط سهمیه گردان اختصاص‌یافته به حساب شما تغییر می‌کند؛ سهمیه گردان مقابل دست‌نخورده می‌ماند.</small></label>:<p className="score-wide">شما می‌توانید مشخصات مأموریت را ویرایش کنید؛ سهمیه گردان‌ها فقط توسط مدیران ارشد یا فرمانده همان گردان تغییر می‌کند.</p>}
     <label>واحد اندازه‌گیری<input required value={editForm.unit} onChange={e=>setEditForm({...editForm,unit:e.target.value})}/></label>
     <label>آخرین مهلت ثبت نمره<input type="datetime-local" value={editForm.deadline_at} onChange={e=>setEditForm({...editForm,deadline_at:e.target.value})}/></label>
     <label className="score-wide">توضیحات<textarea rows={2} value={editForm.description} onChange={e=>setEditForm({...editForm,description:e.target.value})}/></label>
