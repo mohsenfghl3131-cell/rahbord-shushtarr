@@ -4792,3 +4792,26 @@ html[data-theme="light"] .command-page-shell .command-chart-selection b{color:#1
  .command-page-shell{padding:9px!important}
  .command-page-shell .command-top-kpis>div{padding:9px!important}
 }
+
+
+/* Compact dashboard entry card: remove inherited empty panel height */
+.command-entry-panel{
+  min-height:0!important;
+  height:auto!important;
+  padding:14px 18px!important;
+  margin:14px 0!important;
+}
+.command-entry-panel .panel-title{
+  margin:0!important;
+  align-items:center;
+  gap:14px;
+}
+.command-entry-panel .panel-title small{
+  display:block;
+  margin-top:4px;
+  line-height:1.7;
+}
+@media(max-width:640px){
+  .command-entry-panel{padding:12px!important}
+  .command-entry-panel .panel-title{align-items:flex-start;flex-direction:column}
+}
