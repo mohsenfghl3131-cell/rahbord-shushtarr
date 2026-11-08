@@ -76,6 +76,8 @@ export default function AppShell({ children }: Props) {
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const [notificationData, setNotificationData] = useState<any>({ unread_count: 0, unread_messages: [], activity: [], active_missions: [], is_leader: false, is_area: false });
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [quickSearchOpen, setQuickSearchOpen] = useState(false);
+  const [quickSearchQuery, setQuickSearchQuery] = useState("");
 
   useEffect(() => {
     const saved = window.localStorage.getItem("rahbord-theme");
@@ -109,7 +111,21 @@ export default function AppShell({ children }: Props) {
   useEffect(() => {
     setMobileOpen(false);
     setNotificationsOpen(false);
+    setQuickSearchOpen(false);
+    setQuickSearchQuery("");
   }, [pathname]);
+
+  useEffect(() => {
+    const onShortcut = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        setQuickSearchOpen(true);
+      }
+      if (event.key === "Escape") setQuickSearchOpen(false);
+    };
+    window.addEventListener("keydown", onShortcut);
+    return () => window.removeEventListener("keydown", onShortcut);
+  }, []);
 
   useEffect(() => {
     if (!mobileOpen) return;
@@ -241,6 +257,36 @@ export default function AppShell({ children }: Props) {
             <span>سامانه مدیریت و پایش</span>
             <b>{pageTitle}</b>
           </div>
+          <div className={"quick-search-wrap" + (quickSearchOpen ? " is-open" : "")}>
+            <label className="quick-search-box">
+              <span aria-hidden="true">⌕</span>
+              <input
+                type="search"
+                value={quickSearchQuery}
+                onFocus={() => setQuickSearchOpen(true)}
+                onChange={(event) => { setQuickSearchQuery(event.target.value); setQuickSearchOpen(true); }}
+                placeholder="جست‌وجوی بخش‌های سامانه…"
+                aria-label="جست‌وجوی بخش‌های سامانه"
+                aria-expanded={quickSearchOpen}
+              />
+              <kbd>Ctrl K</kbd>
+            </label>
+            {quickSearchOpen && (
+              <>
+                <button className="quick-search-dismiss" type="button" aria-label="بستن جست‌وجو" onClick={() => setQuickSearchOpen(false)} />
+                <div className="quick-search-results">
+                  <div className="quick-search-caption">{quickSearchQuery.trim() ? "نتایج جست‌وجو" : "دسترسی سریع به بخش‌ها"}</div>
+                  {visible.filter((item) => !quickSearchQuery.trim() || item.label.includes(quickSearchQuery.trim()) || item.href.toLowerCase().includes(quickSearchQuery.trim().toLowerCase())).slice(0, 8).map((item) => (
+                    <Link key={item.href} href={item.href} onClick={() => { setQuickSearchOpen(false); setQuickSearchQuery(""); }}>
+                      <span>{item.icon}</span><b>{item.label}</b><small>{item.href}</small>
+                    </Link>
+                  ))}
+                  {!visible.some((item) => !quickSearchQuery.trim() || item.label.includes(quickSearchQuery.trim()) || item.href.toLowerCase().includes(quickSearchQuery.trim().toLowerCase())) && <div className="quick-search-empty">بخشی با این عبارت پیدا نشد.</div>}
+                </div>
+              </>
+            )}
+          </div>
+
           <button className="theme-toggle" type="button" onClick={toggleTheme} aria-label={theme === "dark" ? "فعال‌سازی تم روشن" : "فعال‌سازی تم تاریک"} title={theme === "dark" ? "حالت روشن" : "حالت تاریک"}>
             <span aria-hidden="true">{theme === "dark" ? "☀" : "☾"}</span>
             <small>{theme === "dark" ? "روشن" : "تاریک"}</small>
