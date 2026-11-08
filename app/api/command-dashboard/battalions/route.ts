@@ -81,12 +81,13 @@ export async function GET() {
       missions: missionRows
     };
   });
-  return NextResponse.json({ battalions, areas: [], can_manage: Boolean(ctx && (SENIOR.includes(ctx.profile.role) || ctx.profile.role === "battalion_commander")), updated_at: new Date().toISOString() });
+  return NextResponse.json({ battalions, areas: [], can_manage: Boolean(ctx && SENIOR.includes(ctx.profile.role)), updated_at: new Date().toISOString() });
 }
 
 export async function PATCH(request: Request) {
   const { ctx, battalionIds, error } = await access();
   if (error) return error;
+  if (!ctx || !SENIOR.includes(ctx.profile.role)) return NextResponse.json({ message: "تغییر سهمیه کل گردان فقط در اختیار مدیر اصلی و معاون است." }, { status: 403 });
   const body = await request.json();
   const missionId = String(body.mission_id ?? "");
   const battalionId = String(body.battalion_id ?? "");
