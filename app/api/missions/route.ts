@@ -6,17 +6,20 @@ import {sendTelegramAnnouncement} from "@/lib/telegram-notifications";
 const db=()=>createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.SUPABASE_SERVICE_ROLE_KEY!);
 const leaders=["main_admin","deputy","battalion_commander"];
 const canEnter=(ctx:any)=>leaders.includes(ctx.profile.role)||ctx.profile.role==="area_manager";
-const canManage=(ctx:any,groupId:string)=>["main_admin","deputy"].includes(ctx.profile.role)||(ctx.responsibleGroupIds??[]).includes(groupId);
-const canCreateMission=(ctx:any)=>["main_admin","deputy"].includes(ctx.profile.role)||(ctx.responsibleGroupIds??[]).length>0;
+const isSenior=(ctx:any)=>["main_admin","deputy"].includes(ctx.profile.role);
+const canManage=(ctx:any,groupId:string)=>isSenior(ctx)||(ctx.responsibleGroupIds??[]).includes(groupId);
+const canEditMission=(ctx:any,groupId:string)=>canManage(ctx,groupId)||ctx.profile.role==="battalion_commander";
+const canCreateMission=(ctx:any)=>isSenior(ctx)||ctx.profile.role==="battalion_commander"||(ctx.responsibleGroupIds??[]).length>0;
 
 export async function GET(){
  const ctx=await getCurrentContext();
  if(!ctx)return NextResponse.json({message:"احراز هویت لازم است."},{status:401});
  const admin=db(),isLeader=leaders.includes(ctx.profile.role),isSenior=["main_admin","deputy"].includes(ctx.profile.role),groupIds=ctx.responsibleGroupIds??[];
- let commanderAreaIds:string[]=[];
+ let commanderAreaIds:string[]=[],commanderBattalionId:string|null=null;
  if(ctx.profile.role==="battalion_commander"){
   const {data:assignment}=await admin.from("battalion_commander_assignments").select("battalion_id").eq("user_id",ctx.user.id).maybeSingle();
   if(!assignment?.battalion_id)return NextResponse.json({message:"برای این فرمانده گردانی تعیین نشده است."},{status:403});
+  commanderBattalionId=assignment.battalion_id;
   const {data:mapped}=await admin.from("battalion_areas").select("area_id").eq("battalion_id",assignment.battalion_id);
   commanderAreaIds=(mapped??[]).map((x:any)=>x.area_id);
   if(!commanderAreaIds.length)return NextResponse.json({message:"برای گردان شما حوزه‌ای ثبت نشده است."},{status:403});
@@ -43,21 +46,27 @@ export async function GET(){
  const {data:battalionQuotas}=await admin.from("mission_battalion_quotas").select("mission_id,battalion_id,quota_value").in("mission_id",[...(ids)]);
  return NextResponse.json({
   missions:missions??[],areas,scores:visibleScores,area_quotas:visibleQuotas,battalion_quotas:battalionQuotas??[],
-  can_create:canCreateMission(ctx),can_delete:isSenior,can_enter:canEnter(ctx),is_leader:isLeader,role:ctx.profile.role
+  can_create:canCreateMission(ctx),can_delete:isSenior,can_enter:canEnter(ctx),is_leader:isLeader,role:ctx.profile.role,assigned_battalion_id:commanderBattalionId
  });
 }
 
 export async function POST(request:Request){
  const ctx=await getCurrentContext();
  if(!ctx)return NextResponse.json({message:"احراز هویت لازم است."},{status:401});
- if(!canCreateMission(ctx))return NextResponse.json({message:"تعریف سهمیه و مأموریت فقط در اختیار مدیر اصلی، معاون و مسئولان مجاز بخش است."},{status:403});
+ if(!canCreateMission(ctx))return NextResponse.json({message:"اجازه تعریف مأموریت ندارید."},{status:403});
  const b=await request.json(),groupId=String(b.group_id??""),title=String(b.title??"").trim(),description=String(b.description??"").trim(),unit=String(b.unit??"عدد").trim()||"عدد",target=Number(b.target_value);
  const deadlineAt=b.deadline_at?new Date(b.deadline_at):null;
  if(!groupId||!title||!Number.isFinite(target)||target<=0)return NextResponse.json({message:"بخش، عنوان مأموریت و سهمیه معتبر الزامی است."},{status:400});
  if(b.deadline_at&&(!deadlineAt||Number.isNaN(deadlineAt.getTime())||deadlineAt.getTime()<=Date.now()))return NextResponse.json({message:"مهلت باید در آینده باشد."},{status:400});
  const admin=db(),{data:group}=await admin.from("category_groups").select("id,name").eq("id",groupId).eq("is_active",true).maybeSingle();
  if(!group)return NextResponse.json({message:"بخش انتخاب‌شده معتبر نیست."},{status:400});
- if(!canManage(ctx,groupId))return NextResponse.json({message:"فقط مسئول همان بخش یا مدیران ارشد می‌توانند سهمیه تعیین کنند."},{status:403});
+ let commanderBattalionId:string|null=null;
+ if(ctx.profile.role==="battalion_commander"){
+  const {data:assignment}=await admin.from("battalion_commander_assignments").select("battalion_id").eq("user_id",ctx.user.id).maybeSingle();
+  commanderBattalionId=assignment?.battalion_id??null;
+  if(!commanderBattalionId)return NextResponse.json({message:"گردان این فرمانده مشخص نشده است؛ امکان ثبت مأموریت وجود ندارد."},{status:403});
+ }
+ if(!canManage(ctx,groupId)&&!commanderBattalionId)return NextResponse.json({message:"فقط مسئول همان بخش، فرمانده گردان یا مدیران ارشد می‌توانند مأموریت تعریف کنند."},{status:403});
  let {data,error}=await admin.from("missions").insert({group_id:groupId,title,description,target_value:target,unit,deadline_at:deadlineAt?.toISOString()??null,created_by:ctx.user.id}).select("id").single();
  if(error&&String(error.message??"").includes("deadline_at")){
   if(deadlineAt)return NextResponse.json({message:"برای ثبت مأموریت دارای مهلت، ابتدا ستون مهلت در پایگاه‌داده باید فعال شود. فعلاً مهلت را خالی بگذارید."},{status:503});
@@ -68,7 +77,8 @@ export async function POST(request:Request){
  // The entered target is the same total quota for EACH battalion.
  // Split 100 as 12.5 across 8 brother areas and 50 across 2 sister areas.
  const {data:battalionRows}=await admin.from("battalion_areas").select("battalion_id,area_id");
- for(const battalionId of ["brothers","sisters"]){
+ const battalionsToInitialize=commanderBattalionId?[commanderBattalionId]:["brothers","sisters"];
+ for(const battalionId of battalionsToInitialize){
   const areaRows=(battalionRows??[]).filter((x:any)=>x.battalion_id===battalionId);
   const {error:quotaError}=await admin.from("mission_battalion_quotas").upsert({mission_id:data.id,battalion_id:battalionId,quota_value:target,updated_by:ctx.user.id},{onConflict:"mission_id,battalion_id"});
   if(quotaError)return NextResponse.json({message:"ثبت سهمیه کل گردان ناموفق بود: "+quotaError.message},{status:500});
@@ -89,36 +99,45 @@ export async function PATCH(request:Request){
  const b=await request.json(),admin=db();
  if(b.action==="edit_mission"){
   const missionId=String(b.mission_id??""),title=String(b.title??"").trim(),description=String(b.description??"").trim(),unit=String(b.unit??"عدد").trim()||"عدد";
-  const brothersTarget=Number(b.brothers_target),sistersTarget=Number(b.sisters_target);
   const deadlineAt=b.deadline_at?new Date(b.deadline_at):null;
   if(!missionId||!title)return NextResponse.json({message:"عنوان مأموریت الزامی است."},{status:400});
-  if(isSenior&&[brothersTarget,sistersTarget].some(v=>!Number.isFinite(v)||v<=0))return NextResponse.json({message:"سهمیه هر دو گردان باید عددی معتبر و بزرگ‌تر از صفر باشد."},{status:400});
   if(b.deadline_at&&(!deadlineAt||Number.isNaN(deadlineAt.getTime())))return NextResponse.json({message:"مهلت واردشده معتبر نیست."},{status:400});
-  const {data:mission}=await admin.from("missions").select("id,group_id,title").eq("id",missionId).maybeSingle();
+  const {data:mission}=await admin.from("missions").select("id,group_id,title,target_value").eq("id",missionId).maybeSingle();
   if(!mission)return NextResponse.json({message:"مأموریت پیدا نشد."},{status:404});
-  if(!canManage(ctx,mission.group_id))return NextResponse.json({message:"اجازه ویرایش این مأموریت را ندارید."},{status:403});
-  const update={title,description,target_value:target,unit,deadline_at:deadlineAt?.toISOString()??null};
+  let commanderBattalionId:string|null=null;
+  if(ctx.profile.role==="battalion_commander"){
+   const {data:assignment}=await admin.from("battalion_commander_assignments").select("battalion_id").eq("user_id",ctx.user.id).maybeSingle();
+   commanderBattalionId=assignment?.battalion_id??null;
+   if(!commanderBattalionId)return NextResponse.json({message:"گردان این فرمانده مشخص نشده است."},{status:403});
+  }
+  if(!canEditMission(ctx,mission.group_id))return NextResponse.json({message:"اجازه ویرایش این مأموریت را ندارید."},{status:403});
+  const targetValue=Number(b.target_value??mission.target_value);
+  if(!Number.isFinite(targetValue)||targetValue<=0)return NextResponse.json({message:"سهمیه پایه مأموریت معتبر نیست."},{status:400});
+  const battalionTarget=Number(b.battalion_target);
+  if(commanderBattalionId&&(!Number.isFinite(battalionTarget)||battalionTarget<=0))return NextResponse.json({message:"سهمیه گردان شما باید عددی معتبر و بزرگ‌تر از صفر باشد."},{status:400});
+  const brothersTarget=Number(b.brothers_target),sistersTarget=Number(b.sisters_target);
+  if(isSenior(ctx)&&[brothersTarget,sistersTarget].some(v=>!Number.isFinite(v)||v<=0))return NextResponse.json({message:"سهمیه هر دو گردان باید عددی معتبر و بزرگ‌تر از صفر باشد."},{status:400});
+  const update={title,description,target_value:targetValue,unit,deadline_at:deadlineAt?.toISOString()??null};
   let {error}=await admin.from("missions").update(update).eq("id",missionId);
   if(error&&String(error.message??"").includes("deadline_at")){
-   const fallback=await admin.from("missions").update({title,description,target_value:target,unit}).eq("id",missionId);error=fallback.error;
+   const fallback=await admin.from("missions").update({title,description,target_value:targetValue,unit}).eq("id",missionId);error=fallback.error;
    if(!error&&b.deadline_at)return NextResponse.json({message:"ستون مهلت در پایگاه‌داده فعال نیست؛ سایر تغییرات ذخیره شد اما مهلت تغییر نکرد."},{status:200});
   }
   if(error)return NextResponse.json({message:"ویرایش مشخصات مأموریت ناموفق بود: "+error.message},{status:500});
   const {data:battalionRows}=await admin.from("battalion_areas").select("battalion_id,area_id");
-  if(isSenior){
-   for(const [battalionId,target] of [["brothers",brothersTarget],["sisters",sistersTarget]] as [string,number][]){
-    const areaRows=(battalionRows??[]).filter((x:any)=>x.battalion_id===battalionId);
-    const {error:batchError}=await admin.from("mission_battalion_quotas").upsert({mission_id:missionId,battalion_id:battalionId,quota_value:target,updated_by:ctx.user.id},{onConflict:"mission_id,battalion_id"});
-    if(batchError)return NextResponse.json({message:"ذخیره سهمیه کل گردان ناموفق بود: "+batchError.message},{status:500});
-    if(areaRows.length){
-     const totalCents=Math.round(target*100),baseCents=Math.floor(totalCents/areaRows.length),extraCents=totalCents-baseCents*areaRows.length;
-     const {error:areaError}=await admin.from("mission_area_quotas").upsert(areaRows.map((x:any,index:number)=>({mission_id:missionId,area_id:x.area_id,quota_value:(baseCents+(index<extraCents?1:0))/100,updated_by:ctx.user.id})),{onConflict:"mission_id,area_id"});
-     if(areaError)return NextResponse.json({message:"به‌روزرسانی سهمیه حوزه‌ها ناموفق بود: "+areaError.message},{status:500});
-    }
+  const quotaChanges:[string,number][]=isSenior(ctx)?[["brothers",brothersTarget],["sisters",sistersTarget]]:commanderBattalionId?[[commanderBattalionId,battalionTarget]]:[];
+  for(const [battalionId,quotaTarget] of quotaChanges){
+   const areaRows=(battalionRows??[]).filter((x:any)=>x.battalion_id===battalionId);
+   const {error:batchError}=await admin.from("mission_battalion_quotas").upsert({mission_id:missionId,battalion_id:battalionId,quota_value:quotaTarget,updated_by:ctx.user.id},{onConflict:"mission_id,battalion_id"});
+   if(batchError)return NextResponse.json({message:"ذخیره سهمیه گردان ناموفق بود: "+batchError.message},{status:500});
+   if(areaRows.length){
+    const totalCents=Math.round(quotaTarget*100),baseCents=Math.floor(totalCents/areaRows.length),extraCents=totalCents-baseCents*areaRows.length;
+    const {error:areaError}=await admin.from("mission_area_quotas").upsert(areaRows.map((x:any,index:number)=>({mission_id:missionId,area_id:x.area_id,quota_value:(baseCents+(index<extraCents?1:0))/100,updated_by:ctx.user.id})),{onConflict:"mission_id,area_id"});
+    if(areaError)return NextResponse.json({message:"به‌روزرسانی سهمیه حوزه‌ها ناموفق بود: "+areaError.message},{status:500});
    }
   }
-  await admin.from("audit_logs").insert({user_id:ctx.user.id,action:"mission.update",entity_type:"mission",entity_id:missionId,metadata:{title,brothers_target:brothersTarget,sisters_target:sistersTarget,unit,deadline_at:deadlineAt?.toISOString()??null}});
-  return NextResponse.json({ok:true,message:isSenior?"مشخصات مأموریت و سهمیه مستقل هر دو گردان ذخیره شد.":"مشخصات مأموریت ذخیره شد."});
+  await admin.from("audit_logs").insert({user_id:ctx.user.id,action:"mission.update",entity_type:"mission",entity_id:missionId,metadata:{title,brothers_target:isSenior(ctx)?brothersTarget:undefined,sisters_target:isSenior(ctx)?sistersTarget:undefined,battalion_id:commanderBattalionId??undefined,battalion_target:commanderBattalionId?battalionTarget:undefined,unit,deadline_at:deadlineAt?.toISOString()??null}});
+  return NextResponse.json({ok:true,message:isSenior(ctx)?"مشخصات مأموریت و سهمیه مستقل هر دو گردان ذخیره شد.":commanderBattalionId?"مشخصات مأموریت و سهمیه گردان شما ذخیره شد.":"مشخصات مأموریت ذخیره شد."});
  }
  if(!canEnter(ctx))return NextResponse.json({message:"دسترسی ثبت عملکرد ندارید."},{status:403});
  const missionId=String(b.mission_id??""),areaId=String(b.area_id??""),actual=Number(b.actual_value),notes=String(b.notes??"").trim();
