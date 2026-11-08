@@ -231,7 +231,7 @@ export default async function Dashboard() {
           </div>
         </section>
         <DailyMessage canEdit={["main_admin", "deputy", "battalion_commander"].includes(ctx.profile.role)} />
-        {["main_admin", "deputy", "battalion_commander", "area_manager", "area_force"].includes(ctx.profile.role) && <CommandDashboard />}
+        {["main_admin", "deputy", "battalion_commander", "area_manager", "area_force"].includes(ctx.profile.role) && <section className="panel command-entry-panel"><div className="panel-title"><div><span className="panel-eyebrow">COMMAND CENTER</span><h2>داشبورد فرماندهی</h2><small>برای مشاهده امتیاز و عملکرد مأموریت‌های حوزه‌ها وارد بخش فرماندهی شوید.</small></div><Link className="button neon-button" href="/dashboard/command">ورود به داشبورد ←</Link></div></section>}
         <section className="stats">
           <Stat label="کل گزارش‌ها" value={total} tone="blue" note="تمام گزارش‌های فعال" />
           <Stat label="گزارش‌های امروز" value={todayCount} tone="cyan" note="ثبت‌شده از ابتدای امروز" />
