@@ -36,7 +36,7 @@ export default function ScoresPage(){
  }
  function exportMissionPdf(m:any){
   const rows=missionExportRows(m),total=rows.reduce((n:number,r:any)=>n+r.actual,0),target=totalQuotaFor(m.id);
-  const overall=pct(total,target*Math.max(rows.length,1)),submitted=rows.filter((r:any)=>r.submitted).length,pending=rows.length-submitted;
+  const overall=pct(total,target),submitted=rows.filter((r:any)=>r.submitted).length,pending=rows.length-submitted;
   const generatedAt=new Date(),fmt=(v:any)=>Number(v||0).toLocaleString("fa-IR");
   const tableRows=rows.map((r:any,i:number)=>"<tr><td class='index'>"+fmt(i+1)+"</td><td class='area'><strong>"+safeExportText(r.name)+"</strong></td><td class='actual'>"+fmt(r.actual)+" <small>"+safeExportText(m.unit||"")+"</small></td><td><div class='percent-cell'><b>"+fmt(r.percent)+"٪</b><span class='mini-track'><i style='width:"+Math.min(r.percent,100)+"%'></i></span></div></td><td><span class='status "+(r.submitted?"done":"pending")+"'><i></i>"+(r.submitted?"ثبت شده":"در انتظار ثبت")+"</span></td><td class='notes'>"+safeExportText(r.notes||"—")+"</td></tr>").join("");
   const w=window.open("","_blank");if(!w){setError("مرورگر اجازه باز شدن صفحه گزارش را نداد؛ پنجره بازشو را برای این سایت فعال کنید.");return;}
