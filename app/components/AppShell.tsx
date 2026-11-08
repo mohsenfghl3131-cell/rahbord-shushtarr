@@ -138,7 +138,7 @@ export default function AppShell({ children }: Props) {
   }, [mobileOpen]);
 
   const role = me?.profile?.role;
-  const visible = nav.filter((item) => !item.roles.length || (role && item.roles.includes(role)) || (item.href === "/reports" && me?.can_review) || (item.href === "/messages" && me?.can_message) || (item.href === "/session" && (me?.responsible_group_ids?.length > 0)));
+  const visible = nav.filter((item) => !item.roles.length || (role && item.roles.includes(role)) || (item.href === "/reports" && me?.can_review) || (item.href === "/messages" && me?.can_message) || (item.href === "/session" && (me?.responsible_group_ids?.length > 0)) || (item.href === "/calendar" && (me?.responsible_group_ids?.length > 0)));
 
   const isActive = (href: string) => {
     if (href === "/dashboard") return pathname === "/dashboard";
