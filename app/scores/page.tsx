@@ -20,6 +20,7 @@ export default function ScoresPage(){
  }
  useEffect(()=>{load().catch(e=>setError(e.message)).finally(()=>setLoading(false));},[]);
  const role=me?.profile?.role,isLeader=["main_admin","deputy","battalion_commander"].includes(role),canCreate=Boolean(data.can_create),canEnter=Boolean(data.can_enter),canDelete=Boolean(data.can_delete);
+ const canEditMission=(m:any)=>["main_admin","deputy"].includes(role)||(me?.responsible_group_ids??[]).includes(m.group_id);
  const quotaFor=(missionId:string,areaId:string)=>Number((data.area_quotas??[]).find((q:any)=>q.mission_id===missionId&&q.area_id===areaId)?.quota_value??0);
  const totalQuotaFor=(missionId:string)=>data.areas.reduce((sum:number,a:any)=>sum+quotaFor(missionId,a.id),0);
  const visibleGroups=groups.filter(g=>isLeader||(me?.responsible_group_ids??[]).includes(g.id));
@@ -160,7 +161,7 @@ export default function ScoresPage(){
       </button>
       <div className="score-progress"><span style={{width:Math.min(overall,100)+"%"}}/></div>
       <div className="mission-export-actions"><button type="button" className="button neon-button mission-export-button" onClick={()=>exportMissionPdf(m)}>خروجی PDF</button><button type="button" className="button mission-export-button mission-poster-button" onClick={()=>exportMissionPoster(m)}>دریافت پوستر</button></div>
-      {canCreate&&<button type="button" className="button mission-export-button" onClick={()=>startEditMission(m)}>ویرایش مأموریت و سهمیه</button>}\n      {canDelete&&<button type="button" className="mission-delete" disabled={saving==="delete"} onClick={()=>deleteMission(m)}>حذف مأموریت</button>}
+      {canEditMission(m)&&<button type="button" className="button mission-export-button" onClick={()=>startEditMission(m)}>ویرایش مأموریت و سهمیه</button>}\n      {canDelete&&<button type="button" className="mission-delete" disabled={saving==="delete"} onClick={()=>deleteMission(m)}>حذف مأموریت</button>}
      </article>;
     })}</div>}
   </section>
