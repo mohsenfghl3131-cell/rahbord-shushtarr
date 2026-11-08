@@ -103,7 +103,7 @@ export default function CommandDashboard({ initialAreaId, detailOnly = false }: 
                   <div><b>{fa(clamp(chosen.percent))}</b><small>امتیاز از ۱۰۰</small></div>
                 </div>
                 <p>تحقق {fa(chosen.actual)} از سهمیه {quotaFa(chosen.quota)}</p>
-                <div className="command-share-note">سهم تحقق حوزه از سهمیه کل گردان در مجموع مأموریت‌ها: <b>{fa(chosen.battalion_contribution_percent)}٪</b></div>
+                
               </article>
               <article className="command-chart-card command-line-card">
                 <h4>نمودار خطی تحقق مأموریت‌های حوزه</h4>
@@ -111,6 +111,27 @@ export default function CommandDashboard({ initialAreaId, detailOnly = false }: 
               </article>
             </div>
 
+            <section className="command-detail-section">
+              <div className="command-section-heading">
+                <div><span>پایش اجرایی</span><h4>مأموریت‌های حوزه</h4></div>
+                <b>{fa(chosen.missions.length)} مأموریت</b>
+              </div>
+              {chosen.missions.length ? <div className="command-mission-grid">{chosen.missions.map(m => {
+                const percent = m.quota ? m.actual / m.quota * 100 : 0;
+                const battalionShare = m.battalion_quota ? m.actual / m.battalion_quota * 100 : 0;
+                return <article className="command-mission-item" key={m.mission_id}>
+                  <div className="command-mission-item-head"><b>{m.title}</b><strong>{fa(percent)}٪ تحقق حوزه</strong></div>
+                  <div className="command-progress"><i style={{width: clamp(percent)+"%"}}/></div>
+                  <div className="command-mission-item-stats">
+                    <span>سهمیه حوزه: {quotaFa(m.quota)}</span>
+                    <span>تحقق حوزه: {fa(m.actual)}</span>
+                    <span>سهمیه کل گردان: {quotaFa(m.battalion_quota)}</span>
+                    <span>تحقق کل گردان: {fa(m.battalion_actual)}</span>
+                    <span>میزان تکمیل سهمیه گردان توسط این حوزه: {fa(battalionShare)}٪</span>
+                  </div>
+                </article>;
+              })}</div> : <div className="command-empty-chart">برای این حوزه مأموریت فعالی ثبت نشده است.</div>}
+            </section>
 
           </div>
         ) : detailOnly ? (
