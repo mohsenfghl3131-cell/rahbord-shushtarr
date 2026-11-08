@@ -10,6 +10,7 @@ async function access() {
   const ctx = await getCurrentContext();
   if (!ctx) return { ctx: null, battalionIds: [] as string[], error: NextResponse.json({ message: "ابتدا وارد سامانه شوید." }, { status: 401 }) };
   if (SENIOR.includes(ctx.profile.role)) return { ctx, battalionIds: ["brothers", "sisters"], error: null };
+  if (ctx.profile.role === "area_manager" || ctx.profile.role === "area_force") return { ctx, battalionIds: [], error: null };
   if (ctx.profile.role !== "battalion_commander") return { ctx, battalionIds: [], error: NextResponse.json({ message: "دسترسی به داشبورد گردان‌ها ندارید." }, { status: 403 }) };
   const { data } = await db().from("battalion_commander_assignments").select("battalion_id").eq("user_id", ctx.user.id).maybeSingle();
   if (!data?.battalion_id) return { ctx, battalionIds: [], error: NextResponse.json({ message: "حساب فرمانده هنوز به گردان برادر یا خواهر اختصاص داده نشده است. مدیر اصلی باید این انتساب را ثبت کند." }, { status: 403 }) };
@@ -20,6 +21,11 @@ export async function GET() {
   const { ctx, battalionIds, error } = await access();
   if (error) return error;
   const admin = db();
+  if (ctx!.profile.role === "area_manager" || ctx!.profile.role === "area_force") {
+    const { data, error: areaError } = await admin.from("areas").select("id,name,is_active").eq("is_active", true).in("id", ctx!.areaIds.length ? ctx!.areaIds : [EMPTY]);
+    if (areaError) return NextResponse.json({ message: "دریافت حوزه‌ها ناموفق بود." }, { status: 500 });
+    return NextResponse.json({ battalions: [], areas: data ?? [], can_manage: false, updated_at: new Date().toISOString() });
+  }
   const [battalionsRes, mapRes, missionsRes, battalionQuotaRes, areaQuotaRes, scoresRes] = await Promise.all([
     admin.from("battalions").select("id,name").in("id", battalionIds),
     admin.from("battalion_areas").select("battalion_id,area_id,areas(id,name,code)").in("battalion_id", battalionIds),
@@ -75,7 +81,7 @@ export async function GET() {
       missions: missionRows
     };
   });
-  return NextResponse.json({ battalions, can_manage: Boolean(ctx && (SENIOR.includes(ctx.profile.role) || ctx.profile.role === "battalion_commander")), updated_at: new Date().toISOString() });
+  return NextResponse.json({ battalions, areas: [], can_manage: Boolean(ctx && (SENIOR.includes(ctx.profile.role) || ctx.profile.role === "battalion_commander")), updated_at: new Date().toISOString() });
 }
 
 export async function PATCH(request: Request) {
