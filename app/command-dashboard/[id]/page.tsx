@@ -11,6 +11,7 @@ type DashboardData = {
   trend: { date: string; label: string; count: number }[];
   missionProgress: { id: string; title: string; unit: string; group: string; target: number; actual: number; percent: number; submitted: boolean }[];
   summary: { activeMissions: number; submittedMissions: number; missionAverage: number; reportCount: number };
+  updatedAt?: string;
 };
 
 const fa = (value: number) => value.toLocaleString("fa-IR");
@@ -58,7 +59,6 @@ export default function AreaCommandDashboard() {
       .finally(() => setLoading(false));
   }, [params.id]);
 
-  const maxMission = Math.max(1, ...(data?.missionProgress ?? []).map((item) => item.target));
   const reportMax = Math.max(1, data?.status.total ?? 0);
 
   return (
