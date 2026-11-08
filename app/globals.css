@@ -4672,3 +4672,123 @@ html body main.auth>form.card .error{color:#ffe2e8!important;background:#541b2b!
 .command-line-wrap>small{display:block;margin-top:8px;text-align:center;color:var(--muted);font-size:9px;line-height:1.8}
 .command-donut-card .command-chart-selection{margin-top:2px}
 @media(max-width:760px){.command-chart-selection{gap:5px 9px;padding:9px;font-size:9px}.command-donut-interactive>svg{width:142px}.command-line-wrap svg{width:100%;height:auto}}
+
+
+
+/* COMMAND CENTER — waterfall backdrop, tighter layout and readable analytics */
+.command-page-shell{
+  position:relative!important;isolation:isolate!important;
+  width:100%!important;max-width:none!important;min-height:calc(100vh - 72px)!important;
+  margin:0!important;padding:clamp(12px,1.8vw,24px)!important;
+  background:
+    linear-gradient(135deg,rgba(3,17,32,.78),rgba(4,34,54,.66) 52%,rgba(2,19,37,.78)),
+    url("https://upload.wikimedia.org/wikipedia/commons/1/15/Shushtar_Historical_Hydraulic_System_2.jpg") center center/cover fixed no-repeat!important;
+}
+.command-page-hero{
+  position:relative;isolation:isolate;overflow:hidden;
+  display:flex;align-items:center;justify-content:space-between;gap:18px;
+  min-height:118px;margin:0 0 12px;padding:18px 22px;
+  border:1px solid rgba(92,218,245,.38);border-radius:20px;
+  background:
+    linear-gradient(100deg,rgba(2,17,32,.93),rgba(3,35,57,.78) 62%,rgba(4,45,68,.58)),
+    url("https://upload.wikimedia.org/wikipedia/commons/1/15/Shushtar_Historical_Hydraulic_System_2.jpg") center 48%/cover no-repeat;
+  box-shadow:0 14px 36px rgba(0,0,0,.22),0 0 24px rgba(0,174,220,.10),inset 0 1px rgba(255,255,255,.13);
+}
+.command-page-hero>div:first-child{position:relative;z-index:1;min-width:0}
+.command-page-hero>div:first-child>span{color:#75e7fa;font-size:9px;font-weight:900;letter-spacing:.7px}
+.command-page-hero h1{margin:5px 0 3px;color:#f4fbff!important;font-size:clamp(19px,2.5vw,27px);font-weight:950;text-shadow:0 2px 14px rgba(0,0,0,.5)}
+.command-page-hero p{margin:0;color:#d1eaf6!important;font-size:11px;line-height:1.9}
+.command-page-hero-mark{position:relative;z-index:1;flex:0 0 78px;width:78px;height:78px;display:grid;place-content:center;justify-items:center;border:1px solid rgba(104,229,255,.6);border-radius:22px;background:linear-gradient(145deg,rgba(9,143,190,.58),rgba(33,69,148,.56));box-shadow:0 0 25px rgba(0,195,235,.22),inset 0 1px rgba(255,255,255,.25)}
+.command-page-hero-mark b{color:#fff;font-size:34px;line-height:1.2;text-shadow:0 0 16px rgba(73,224,255,.6)}
+.command-page-hero-mark small{color:#c7f5ff;font-size:8px}
+.command-page-shell .command-dashboard{
+  margin:0!important;padding:clamp(12px,1.6vw,20px)!important;
+  border-color:rgba(90,204,235,.32)!important;border-radius:20px!important;
+  background:linear-gradient(145deg,rgba(4,24,42,.91),rgba(4,32,51,.86))!important;
+  box-shadow:0 18px 48px rgba(0,0,0,.22),inset 0 1px rgba(255,255,255,.10)!important;
+  -webkit-backdrop-filter:blur(18px) saturate(140%)!important;backdrop-filter:blur(18px) saturate(140%)!important;
+}
+.command-page-shell .command-dashboard-head{margin-bottom:10px!important}
+.command-page-shell .command-dashboard-head h2{color:#f0fbff!important}
+.command-page-shell .command-dashboard-head p{color:#b7d3e3!important}
+.command-page-shell .command-top-kpis{margin:8px 0 12px!important;gap:8px!important}
+.command-page-shell .command-top-kpis>div{padding:10px 12px!important;background:linear-gradient(145deg,rgba(13,61,86,.78),rgba(7,34,57,.82))!important;border-color:rgba(90,194,225,.27)!important}
+.command-page-shell .command-top-kpis small{color:#a9cbdc!important}
+.command-page-shell .command-top-kpis b{color:#f4fbff!important}
+.command-page-shell .command-battalion-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:9px;margin:0 0 12px}
+.command-page-shell .command-battalion-summary-card{min-width:0;padding:11px 13px;border:1px solid rgba(84,191,225,.28);border-radius:14px;background:linear-gradient(130deg,rgba(5,50,72,.82),rgba(12,36,65,.82));box-shadow:inset 0 1px rgba(255,255,255,.08)}
+.command-page-shell .command-battalion-summary-head{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#e8f8ff;font-size:11px;font-weight:900}
+.command-page-shell .command-battalion-summary-head b{color:#69e6ee;font-size:16px;font-variant-numeric:tabular-nums}
+.command-page-shell .command-battalion-summary-track{height:7px;margin:9px 0;border-radius:20px;overflow:hidden;background:rgba(148,190,210,.18)}
+.command-page-shell .command-battalion-summary-track i{display:block;height:100%;border-radius:20px;background:linear-gradient(90deg,#19c99a,#24b8ec,#4d8dff);box-shadow:0 0 12px rgba(41,210,230,.34)}
+.command-page-shell .command-battalion-summary-foot{display:flex;flex-wrap:wrap;gap:5px 13px;color:#a9c7d8;font-size:9px}
+.command-page-shell .command-area-overview{gap:10px!important}
+.command-page-shell .command-overview-heading{margin:9px 0 8px!important}
+.command-page-shell .command-area-grid{gap:8px!important}
+.command-page-shell .command-area-card{padding:10px 12px!important;background:linear-gradient(120deg,rgba(5,54,77,.72),rgba(13,36,66,.76))!important;border-color:rgba(86,185,219,.25)!important}
+.command-page-shell .command-area-card-main b{color:#f0faff!important}
+.command-page-shell .command-area-card-main small,.command-page-shell .command-area-card-progress small{color:#a8c7d9!important}
+.command-page-shell .command-overview-chart{margin-top:10px!important;padding:13px!important;background:linear-gradient(145deg,rgba(4,26,45,.76),rgba(6,37,57,.76))!important;border-color:rgba(84,188,224,.28)!important}
+.command-page-shell .command-overview-chart h4{color:#f0faff!important}
+.command-page-shell .command-overview-chart>div>small{color:#a9c8d9!important;font-size:9px}
+.command-area-chart-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px 16px;margin-top:12px}
+.command-area-chart-row{min-width:0;padding:10px 11px;border:1px solid rgba(92,180,213,.17);border-radius:12px;background:rgba(7,36,57,.58)}
+.command-area-chart-label{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.command-area-chart-label>span{display:grid;place-items:center;flex:0 0 25px;height:25px;border-radius:8px;background:rgba(44,180,220,.13);color:#67dff4;font-size:9px;font-weight:900}
+.command-area-chart-label>b{flex:1;min-width:0;color:#e7f6ff;font-size:10px;line-height:1.7}
+.command-area-chart-label>strong{color:#65e2d0;font-size:12px;font-variant-numeric:tabular-nums}
+.command-area-chart-track{height:8px;overflow:hidden;border-radius:20px;background:rgba(153,192,211,.16)}
+.command-area-chart-track i{display:block;height:100%;border-radius:20px;background:linear-gradient(90deg,#20c997,#20b9e8,#4e8bff);box-shadow:0 0 12px rgba(42,203,231,.24)}
+.command-area-chart-row>small{display:block;margin-top:6px;color:#9bbdd0;font-size:8px}
+.command-page-shell .command-detail-analytics{gap:10px!important;margin:10px 0!important}
+.command-page-shell .command-chart-card{background:rgba(5,30,49,.82)!important;border-color:rgba(83,187,221,.26)!important}
+.command-page-shell .command-chart-card h4{color:#effaff!important}
+.command-page-shell .command-chart-selection{background:rgba(4,25,43,.78)!important;border-color:rgba(84,180,215,.2)!important;color:#b9d3e1!important}
+.command-page-shell .command-chart-selection b{color:#effaff!important}
+.command-page-shell .command-mission-item{background:rgba(5,31,50,.72)!important;border-color:rgba(84,180,215,.2)!important}
+.command-page-shell .command-mission-item-head b{color:#effaff!important}
+.command-page-shell .command-mission-item-stats{color:#a9c7d9!important}
+html[data-theme="light"] .command-page-shell{
+  background:linear-gradient(135deg,rgba(7,33,52,.46),rgba(8,48,68,.38)),url("https://upload.wikimedia.org/wikipedia/commons/1/15/Shushtar_Historical_Hydraulic_System_2.jpg") center center/cover fixed no-repeat!important;
+}
+html[data-theme="light"] .command-page-shell .command-dashboard{
+  background:linear-gradient(145deg,rgba(248,253,255,.94),rgba(233,247,252,.92))!important;
+  border-color:rgba(35,139,176,.28)!important;
+}
+html[data-theme="light"] .command-page-shell .command-dashboard-head h2,
+html[data-theme="light"] .command-page-shell .command-overview-chart h4,
+html[data-theme="light"] .command-page-shell .command-area-chart-label>b{color:#153b54!important}
+html[data-theme="light"] .command-page-shell .command-dashboard-head p,
+html[data-theme="light"] .command-page-shell .command-overview-chart>div>small{color:#536f82!important}
+html[data-theme="light"] .command-page-shell .command-top-kpis>div{background:linear-gradient(145deg,#fff,#eaf7fb)!important;border-color:#d1e7ef!important}
+html[data-theme="light"] .command-page-shell .command-top-kpis small{color:#58788d!important}
+html[data-theme="light"] .command-page-shell .command-top-kpis b{color:#143d56!important}
+html[data-theme="light"] .command-page-shell .command-battalion-summary-card{background:linear-gradient(130deg,rgba(244,253,255,.96),rgba(230,246,251,.96))!important;border-color:#c9e4ed!important}
+html[data-theme="light"] .command-page-shell .command-battalion-summary-head{color:#17445c!important}
+html[data-theme="light"] .command-page-shell .command-battalion-summary-foot{color:#58798c!important}
+html[data-theme="light"] .command-page-shell .command-area-card{background:linear-gradient(120deg,rgba(250,255,255,.92),rgba(233,246,252,.92))!important}
+html[data-theme="light"] .command-page-shell .command-area-card-main b{color:#173f58!important}
+html[data-theme="light"] .command-page-shell .command-area-card-main small,html[data-theme="light"] .command-page-shell .command-area-card-progress small{color:#58788b!important}
+html[data-theme="light"] .command-page-shell .command-overview-chart{background:rgba(247,253,255,.92)!important;border-color:#d0e7ef!important}
+html[data-theme="light"] .command-page-shell .command-area-chart-row{background:rgba(255,255,255,.8)!important;border-color:#d9eaf0!important}
+html[data-theme="light"] .command-page-shell .command-area-chart-label>b{color:#1c455e!important}
+html[data-theme="light"] .command-page-shell .command-area-chart-row>small{color:#58798c!important}
+html[data-theme="light"] .command-page-shell .command-chart-card,html[data-theme="light"] .command-page-shell .command-mission-item{background:rgba(255,255,255,.9)!important;border-color:#d4e8ef!important}
+html[data-theme="light"] .command-page-shell .command-chart-card h4,html[data-theme="light"] .command-page-shell .command-mission-item-head b{color:#173f58!important}
+html[data-theme="light"] .command-page-shell .command-chart-selection{background:#f2f9fc!important;border-color:#d8e9ef!important;color:#547387!important}
+html[data-theme="light"] .command-page-shell .command-chart-selection b{color:#173f58!important}
+@media(max-width:760px){
+ .command-page-hero{min-height:104px;padding:14px 15px;border-radius:16px}
+ .command-page-hero-mark{flex-basis:58px;width:58px;height:58px;border-radius:17px}
+ .command-page-hero-mark b{font-size:27px}
+ .command-area-chart-list{grid-template-columns:1fr;gap:7px}
+ .command-page-shell .command-top-kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .command-page-shell .command-area-grid{grid-template-columns:1fr!important}
+ .command-page-shell .command-area-card{grid-template-columns:32px minmax(0,1fr) minmax(82px,.55fr) auto!important}
+}
+@media(max-width:420px){
+ .command-page-hero{gap:8px}
+ .command-page-hero p{font-size:9px}
+ .command-page-shell{padding:9px!important}
+ .command-page-shell .command-top-kpis>div{padding:9px!important}
+}
