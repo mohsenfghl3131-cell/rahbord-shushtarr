@@ -25,6 +25,18 @@ export async function GET(){
     .in("area_id",ids);
   if(error)return NextResponse.json({message:"دریافت فهرست نیروها انجام نشد."},{status:500});
 
+  const forceIds=[...new Set((access??[]).map((row:any)=>row.user_id).filter(Boolean))];
+  const {data:reportRows}=forceIds.length?await admin.from("reports").select("creator_id,status,created_at").in("creator_id",forceIds).is("deleted_at",null):{data:[] as any[]};
+  const forceStats=new Map<string,{report_count:number;approved_count:number;pending_count:number;last_report_at:string|null}>();
+  for(const report of reportRows??[]){
+    const stat=forceStats.get(report.creator_id)??{report_count:0,approved_count:0,pending_count:0,last_report_at:null};
+    stat.report_count++;
+    if(report.status==="approved")stat.approved_count++;
+    if(report.status==="pending")stat.pending_count++;
+    if(!stat.last_report_at||new Date(report.created_at).getTime()>new Date(stat.last_report_at).getTime())stat.last_report_at=report.created_at;
+    forceStats.set(report.creator_id,stat);
+  }
+
   const forceByArea=new Map<string,any[]>();
   for(const row of access??[]){
     const p=Array.isArray(row.profiles)?row.profiles[0]:row.profiles;
@@ -33,7 +45,7 @@ export async function GET(){
     list.push(p);
     forceByArea.set(row.area_id,list);
   }
-  const result=(areas??[]).map(a=>({...a,forces:(forceByArea.get(a.id)??[]).sort((x,y)=>x.display_name.localeCompare(y.display_name,"fa"))}));
+  const result=(areas??[]).map(a=>({...a,forces:(forceByArea.get(a.id)??[]).map((person:any)=>({...person,...(forceStats.get(person.id)??{report_count:0,approved_count:0,pending_count:0,last_report_at:null})})).sort((x,y)=>x.display_name.localeCompare(y.display_name,"fa"))}));
   return NextResponse.json({areas:result,can_create:ctx.profile.role==="area_manager"});
 }
 
