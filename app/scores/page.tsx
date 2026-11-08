@@ -103,7 +103,7 @@ export default function ScoresPage(){
   }catch(e:any){setError(e.message||"خطا در حذف مأموریت.");}finally{setSaving("");}
  }
  return <AppShell><main className="shell unified-page scores-page">
-  <div className="topbar"><div><span className="eyebrow">ارزیابی عملکرد بخش‌ها و حوزه‌ها</span><h1>جلسه و نمره‌دهی</h1><p>{role==="battalion_commander"?"حوزه‌های گردان شما نمایش داده شده‌اند؛ برای هر بخش و مأموریت نمره ثبت کنید.":"برای هر مأموریت، سهمیه یکسانی برای هر گردان تعیین کنید؛ سامانه آن را میان حوزه‌های همان گردان تقسیم می‌کند."}</p></div><span className="header-live">● پایش عملکرد</span></div>
+  <div className="topbar"><div><span className="eyebrow">ارزیابی عملکرد بخش‌ها و حوزه‌ها</span><h1>ماموریت‌ها</h1><p>{role==="battalion_commander"?"حوزه‌های گردان شما نمایش داده شده‌اند؛ برای هر بخش و مأموریت نمره ثبت کنید.":"برای هر مأموریت، سهمیه یکسانی برای هر گردان تعیین کنید؛ سامانه آن را میان حوزه‌های همان گردان تقسیم می‌کند."}</p></div><span className="header-live">● پایش عملکرد</span></div>
   {error&&<div className="error" role="alert">{error}</div>}{notice&&<div className="notice" role="status">{notice}</div>}
   {canCreate&&<form className="panel score-form" onSubmit={createMission}>
    <div className="panel-title"><div><span className="panel-eyebrow">NEW MISSION</span><h2>تعریف مأموریت جدید</h2></div></div>
