@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 type Area = { id: string; name: string; quota: number; actual: number; remaining: number; percent: number };
 type Mission = { id: string; title: string; unit: string; section: string; quota: number; actual: number; remaining: number; percent: number; areas: Area[] };
 type Battalion = { id: string; name: string; quota: number; actual: number; remaining: number; surplus: number; percent: number; areas: {id:string;name:string}[]; missions: Mission[] };
-type ScopedArea = { id: string; name: string; is_active: boolean };
+type ScopedArea = { id: string; name: string; is_active?: boolean; quota?: number; actual?: number; remaining?: number; surplus?: number; percent?: number; missions?: {mission_id:string;title:string;quota:number;actual:number}[] };
 
 const fa = (n: number) => Number(n || 0).toLocaleString("fa-IR", { maximumFractionDigits: 2 });
 const pct = (n: number) => Math.max(0, Math.min(100, n));
@@ -15,6 +15,7 @@ export default function CommandDashboard() {
   const [battalions, setBattalions] = useState<Battalion[]>([]);
   const [canManageQuota, setCanManageQuota] = useState(false);
   const [scopedAreas, setScopedAreas] = useState<ScopedArea[]>([]);
+  const [selectedArea, setSelectedArea] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -71,12 +72,29 @@ export default function CommandDashboard() {
   return (
     <section className="panel command-dashboard-panel command-pro-panel" style={{ margin: "16px 0 20px", padding: 20 }}>
       <div className="panel-title">
-        <div><span className="panel-eyebrow">مرکز پایش و ارزیابی عملکرد</span><h2>داشبورد فرماندهی گردان‌ها</h2><small style={{ color: "var(--muted)", fontSize: 10 }}>سهمیه کل، میزان تحقق، باقیمانده و عملکرد حوزه‌ها</small></div>
+        <div><span className="panel-eyebrow">مرکز پایش و ارزیابی عملکرد</span><h2>داشبورد فرماندهی حوزه‌ها</h2><small style={{ color: "var(--muted)", fontSize: 10 }}>سهمیه کل، میزان تحقق، باقیمانده و عملکرد حوزه‌ها</small></div>
         <span className="command-live">● داده‌های سامانه</span>
       </div>
-      {loading ? <div className="empty-state">در حال محاسبه عملکرد گردان‌ها…</div> :
+      {loading ? <div className="empty-state">در حال محاسبه عملکرد حوزه‌ها…</div> :
        error ? <div className="error">{error}</div> :
-       battalions.length === 0 && scopedAreas.length > 0 ? <div className="command-area-grid">{scopedAreas.map((area,index)=><Link href={"/command-dashboard/"+area.id} className="command-area-card" key={area.id}><span className="command-area-index">{String(index+1).padStart(2,"0")}</span><span className="command-area-name">{area.name}</span><span className="command-area-open">مشاهده داشبورد ←</span></Link>)}</div> :
+       scopedAreas.length > 0 ? (() => {
+         const quota = scopedAreas.reduce((s,a)=>s+Number(a.quota||0),0);
+         const actual = scopedAreas.reduce((s,a)=>s+Number(a.actual||0),0);
+         const remaining = Math.max(0,quota-actual);
+         const percent = quota ? Math.round(actual/quota*100) : 0;
+         const chosen = scopedAreas.find(a=>a.id===selectedArea);
+         const points = scopedAreas.map((a,i)=>({x:36+i*(528/Math.max(1,scopedAreas.length-1)),y:164-(Math.min(100,Number(a.percent||0))/100)*132}));
+         const line = points.map(p=>p.x+","+p.y).join(" ");
+         return <div className="command-area-overview">
+          <div className="command-area-summary"><div><small>سهمیه کل حوزه‌ها</small><strong>{fa(quota)}</strong></div><div><small>محقق‌شده</small><strong className="good">{fa(actual)}</strong></div><div><small>محقق‌نشده</small><strong className="warn">{fa(remaining)}</strong></div><div><small>درصد تحقق</small><strong>{fa(percent)}٪</strong></div></div>
+          <div className="command-area-charts">
+           <div className="command-chart-card"><h3>نسبت تحقق سهمیه‌ها</h3><div className="command-donut" style={{background:"conic-gradient(#26c99a 0% "+(quota?actual/quota*100:0)+"%,rgba(255,255,255,.10) "+(quota?actual/quota*100:0)+"% 100%)"}}><div><b>{fa(percent)}٪</b><small>تحقق کل</small></div></div><p>محقق‌شده: {fa(actual)} · باقی‌مانده: {fa(remaining)}</p></div>
+           <div className="command-chart-card"><h3>مقایسه درصد تحقق حوزه‌ها</h3><svg viewBox="0 0 600 205" role="img" aria-label="نمودار خطی درصد تحقق حوزه‌ها"><path d="M36 32H564 M36 98H564 M36 164H564" stroke="currentColor" opacity=".13" strokeDasharray="4 5" fill="none"/><polyline points={line} fill="none" stroke="#39b8ff" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>{points.map((p,i)=><g key={scopedAreas[i].id}><circle cx={p.x} cy={p.y} r="5" fill="#39b8ff"/><text x={p.x} y="190" textAnchor="middle" fill="currentColor" fontSize="10">{i+1}</text></g>)}</svg><small>شماره‌های نمودار مطابق ترتیب فهرست حوزه‌ها هستند.</small></div>
+          </div>
+          <div className="command-area-grid">{scopedAreas.map((area,index)=><button type="button" onClick={()=>setSelectedArea(selectedArea===area.id?null:area.id)} className={"command-area-card "+(selectedArea===area.id?"active":"")} key={area.id}><span className="command-area-index">{String(index+1).padStart(2,"0")}</span><span className="command-area-name">{area.name}</span><span>{fa(area.actual||0)} از {fa(area.quota||0)} · {fa(area.percent||0)}٪</span><span className="command-area-open">مشاهده جزئیات ↓</span></button>)}</div>
+          {chosen&&<div className="command-area-detail"><h3>{chosen.name}</h3><div className="command-kpi-grid"><div><small>سهمیه</small><strong>{fa(chosen.quota||0)}</strong></div><div><small>محقق‌شده</small><strong>{fa(chosen.actual||0)}</strong></div><div><small>محقق‌نشده</small><strong>{fa(chosen.remaining||0)}</strong></div><div><small>درصد تحقق</small><strong>{fa(chosen.percent||0)}٪</strong></div></div><h4>عملکرد مأموریت‌ها</h4>{(chosen.missions||[]).map(m=><div className="command-mission-performance-row" key={m.mission_id}><b>{m.title}</b><span>{fa(m.actual)} از {fa(m.quota)}</span></div>)}<Link href={"/command-dashboard/"+chosen.id}>بازکردن داشبورد کامل حوزه ←</Link></div>}
+         </div>;
+       })() :
        battalions.length === 0 ? <div className="empty-state">اطلاعاتی برای نمایش وجود ندارد.</div> :
        <div className="command-battalion-list">
         {battalions.map((b) => (
