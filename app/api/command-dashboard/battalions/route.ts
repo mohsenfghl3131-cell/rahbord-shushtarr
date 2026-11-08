@@ -48,16 +48,6 @@ export async function GET() {
 
   const missions = missionsRes.data ?? [];
   const allAreaIds = [...new Set((mapRes.data ?? []).map((row: any) => row.area_id).filter((id: string) => !allowedAreaIds || allowedAreaIds.includes(id)))];
-  const { data: reportRows, error: reportsError } = allAreaIds.length
-    ? await admin.from("reports").select("id,title,status,created_at,area_id,categories(name)").is("deleted_at", null).in("area_id", allAreaIds).order("created_at", { ascending: false }).limit(1000)
-    : { data: [], error: null };
-  if (reportsError) return NextResponse.json({ message: "دریافت گزارش‌های حوزه‌ها ناموفق بود. " + reportsError.message }, { status: 500 });
-  const reportsByArea = new Map<string, any[]>();
-  for (const report of reportRows ?? []) {
-    const list = reportsByArea.get(report.area_id) ?? [];
-    list.push({ id: report.id, title: report.title, status: report.status, created_at: report.created_at, category: (report as any).categories?.name || "بدون دسته‌بندی" });
-    reportsByArea.set(report.area_id, list);
-  }
   const areasByBattalion = new Map<string, any[]>();
   for (const row of mapRes.data ?? []) {
     const area = Array.isArray(row.areas) ? row.areas[0] : row.areas;
@@ -104,7 +94,7 @@ export async function GET() {
   const areaMap = new Map<string, any>();
   for (const battalion of battalions) {
     for (const area of battalion.areas) {
-      const rows = battalion.missions.map((m: any) => ({ mission_id: m.id, title: m.title, quota: m.areas.find((x: any) => x.id === area.id)?.quota ?? 0, actual: m.areas.find((x: any) => x.id === area.id)?.actual ?? 0 }));
+      const rows = battalion.missions.map((m: any) => ({ mission_id: m.id, title: m.title, quota: m.areas.find((x: any) => x.id === area.id)?.quota ?? 0, actual: m.areas.find((x: any) => x.id === area.id)?.actual ?? 0, battalion_quota: m.quota, battalion_actual: m.actual }));
       const current = areaMap.get(area.id) ?? { id: area.id, name: area.name, quota: 0, actual: 0, battalion_quota: battalion.quota, battalion_actual: battalion.actual, missions: [] as any[] };
       current.quota += rows.reduce((sum: number, x: any) => sum + x.quota, 0);
       current.actual += rows.reduce((sum: number, x: any) => sum + x.actual, 0);
@@ -113,17 +103,7 @@ export async function GET() {
     }
   }
   const areaOrder = ["urban-1","urban-2","urban-3","rural-1","rural-2","rural-3","rural-4","rural-5","special-zainab","special-fatemeh"];
-  const areas = [...areaMap.values()].map((a: any) => {
-    const reports = reportsByArea.get(a.id) ?? [];
-    return { ...a, remaining: Math.max(0,a.quota-a.actual), surplus: Math.max(0,a.actual-a.quota), percent: a.quota ? Math.round(a.actual/a.quota*100) : 0,
-      battalion_quota: a.battalion_quota || 0, battalion_actual: a.battalion_actual || 0,
-      battalion_contribution_percent: a.battalion_quota ? Math.round(a.actual/a.battalion_quota*1000)/10 : 0,
-      report_count: reports.length, approved_reports: reports.filter((r: any) => r.status === "approved").length,
-      pending_reports: reports.filter((r: any) => r.status === "pending").length,
-      rejected_reports: reports.filter((r: any) => r.status === "rejected").length,
-      reports: reports.slice(0, 30)
-    };
-  }).sort((a: any,b: any) => {
+  const areas = [...areaMap.values()].map((a: any) => ({ ...a, remaining: Math.max(0,a.quota-a.actual), surplus: Math.max(0,a.actual-a.quota), percent: a.quota ? Math.round(a.actual/a.quota*100) : 0, battalion_quota: a.battalion_quota || 0, battalion_actual: a.battalion_actual || 0, battalion_contribution_percent: a.battalion_quota ? Math.round(a.actual/a.battalion_quota*1000)/10 : 0  }).sort((a: any,b: any) => {
     const ac = (mapRes.data ?? []).find((x: any) => x.area_id === a.id);
     const bc = (mapRes.data ?? []).find((x: any) => x.area_id === b.id);
     const aa = Array.isArray(ac?.areas) ? ac.areas[0] : ac?.areas;
