@@ -4815,3 +4815,39 @@ html[data-theme="light"] .command-page-shell .command-chart-selection b{color:#1
   .command-entry-panel{padding:12px!important}
   .command-entry-panel .panel-title{align-items:flex-start;flex-direction:column}
 }
+
+
+/* Tighten the command dashboard entry spacing on the main dashboard */
+.content:has(.welcome-pro) > .command-entry-panel{
+  min-height:unset!important;
+  height:auto!important;
+  padding:10px 16px!important;
+  margin:8px 0 10px!important;
+  display:block!important;
+}
+.content:has(.welcome-pro) > .command-entry-panel .panel-title{
+  min-height:unset!important;
+  margin:0!important;
+  padding:0!important;
+  align-items:center!important;
+}
+.content:has(.welcome-pro) > .command-entry-panel .panel-title > div{
+  margin:0!important;
+  padding:0!important;
+}
+.content:has(.welcome-pro) > .command-entry-panel .panel-title h2{
+  margin:2px 0!important;
+}
+.content:has(.welcome-pro) > .command-entry-panel .panel-title small{
+  margin-top:2px!important;
+  line-height:1.5!important;
+}
+.content:has(.welcome-pro) > .command-entry-panel + .stats{
+  margin-top:8px!important;
+}
+@media(max-width:640px){
+  .content:has(.welcome-pro) > .command-entry-panel{
+    padding:9px 11px!important;
+    margin:7px 0 9px!important;
+  }
+}
