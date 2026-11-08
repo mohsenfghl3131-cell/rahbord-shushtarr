@@ -69,7 +69,7 @@ export async function GET() {
         const allocation = areaQuotas.find((q) => q.mission_id === mission.id && q.area_id === area.id);
         const quota = Number(allocation?.quota_value ?? 0);
         const actual = scores.filter((s) => s.mission_id === mission.id && s.area_id === area.id).reduce((sum, s) => sum + Number(s.actual_value ?? 0), 0);
-        return { id: area.id, name: area.name, quota, actual, remaining: Math.max(0, quota - actual), percent: quota > 0 ? Math.round(actual / quota * 100) : 0 };
+        return { id: area.id, name: area.name, quota, actual, remaining: Math.max(0, quota - actual), percent: quota > 0 ? Math.min(100, Math.max(0, Math.round(actual / quota * 100))) : 0 };
       });
       const quota = Number(totalRow?.quota_value ?? 0);
       const actual = scores.filter((s) => s.mission_id === mission.id && areaIds.has(s.area_id)).reduce((sum, s) => sum + Number(s.actual_value ?? 0), 0);
@@ -87,7 +87,7 @@ export async function GET() {
     return {
       id: battalion.id, name: battalion.name, areas,
       quota, actual, remaining, surplus: Math.max(0, actual - quota),
-      percent: quota > 0 ? Math.round(actual / quota * 100) : 0,
+      percent: quota > 0 ? Math.min(100, Math.max(0, Math.round(actual / quota * 100))) : 0,
       missions: missionRows
     };
   });
@@ -103,7 +103,11 @@ export async function GET() {
     }
   }
   const areaOrder = ["urban-1","urban-2","urban-3","rural-1","rural-2","rural-3","rural-4","rural-5","special-zainab","special-fatemeh"];
-  const areas = [...areaMap.values()].map((a: any) => {\n    const missionPercents = a.missions.filter((m: any) => Number(m.quota) > 0).map((m: any) => Math.min(100, Math.max(0, Number(m.actual) / Number(m.quota) * 100)));\n    const averageMissionScore = missionPercents.length ? missionPercents.reduce((sum: number, value: number) => sum + value, 0) / missionPercents.length : 0;\n    return { ...a, remaining: Math.max(0,a.quota-a.actual), surplus: Math.max(0,a.actual-a.quota), percent: Math.min(100, Math.max(0, Math.round(averageMissionScore))), battalion_quota: a.battalion_quota || 0, battalion_actual: a.battalion_actual || 0, battalion_contribution_percent: a.battalion_quota ? Math.min(100, Math.max(0, Math.round(a.actual/a.battalion_quota*1000)/10)) : 0 };\n  }).sort((a: any,b: any) => {
+  const areas = [...areaMap.values()].map((a: any) => {
+    const missionPercents = a.missions.filter((m: any) => Number(m.quota) > 0).map((m: any) => Math.min(100, Math.max(0, Number(m.actual) / Number(m.quota) * 100)));
+    const averageMissionScore = missionPercents.length ? missionPercents.reduce((sum: number, value: number) => sum + value, 0) / missionPercents.length : 0;
+    return { ...a, remaining: Math.max(0,a.quota-a.actual), surplus: Math.max(0,a.actual-a.quota), percent: Math.min(100, Math.max(0, Math.round(averageMissionScore * 10) / 10)), battalion_quota: a.battalion_quota || 0, battalion_actual: a.battalion_actual || 0, battalion_contribution_percent: a.battalion_quota ? Math.min(100, Math.max(0, Math.round(a.actual/a.battalion_quota*1000)/10)) : 0 };
+  }).sort((a: any,b: any) => {
     const ac = (mapRes.data ?? []).find((x: any) => x.area_id === a.id);
     const bc = (mapRes.data ?? []).find((x: any) => x.area_id === b.id);
     const aa = Array.isArray(ac?.areas) ? ac.areas[0] : ac?.areas;
