@@ -6,12 +6,14 @@ import { useCallback, useEffect, useState } from "react";
 type Area = { id: string; name: string; quota: number; actual: number; remaining: number; percent: number };
 type Mission = { id: string; title: string; unit: string; section: string; quota: number; actual: number; remaining: number; percent: number; areas: Area[] };
 type Battalion = { id: string; name: string; quota: number; actual: number; remaining: number; surplus: number; percent: number; areas: {id:string;name:string}[]; missions: Mission[] };
+type ScopedArea = { id: string; name: string; is_active: boolean };
 
 const fa = (n: number) => Number(n || 0).toLocaleString("fa-IR", { maximumFractionDigits: 2 });
 const pct = (n: number) => Math.max(0, Math.min(100, n));
 
 export default function CommandDashboard() {
   const [battalions, setBattalions] = useState<Battalion[]>([]);
+  const [scopedAreas, setScopedAreas] = useState<ScopedArea[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -28,6 +30,7 @@ export default function CommandDashboard() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "دریافت داشبورد فرماندهی ناموفق بود.");
       setBattalions(data.battalions || []);
+      setScopedAreas(data.areas || []);
     } catch (e: any) { setError(e.message || "خطا در دریافت اطلاعات."); }
     finally { setLoading(false); }
   }, []);
@@ -71,6 +74,7 @@ export default function CommandDashboard() {
       </div>
       {loading ? <div className="empty-state">در حال محاسبه عملکرد گردان‌ها…</div> :
        error ? <div className="error">{error}</div> :
+       battalions.length === 0 && scopedAreas.length > 0 ? <div className="command-area-grid">{scopedAreas.map((area,index)=><Link href={"/command-dashboard/"+area.id} className="command-area-card" key={area.id}><span className="command-area-index">{String(index+1).padStart(2,"0")}</span><span className="command-area-name">{area.name}</span><span className="command-area-open">مشاهده داشبورد ←</span></Link>)}</div> :
        battalions.length === 0 ? <div className="empty-state">اطلاعاتی برای نمایش وجود ندارد.</div> :
        <div className="command-battalion-list">
         {battalions.map((b) => (
