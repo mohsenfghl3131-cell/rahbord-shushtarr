@@ -92,7 +92,7 @@ export async function PATCH(request:Request){
   const brothersTarget=Number(b.brothers_target),sistersTarget=Number(b.sisters_target);
   const deadlineAt=b.deadline_at?new Date(b.deadline_at):null;
   if(!missionId||!title)return NextResponse.json({message:"عنوان مأموریت الزامی است."},{status:400});
-  if([brothersTarget,sistersTarget].some(v=>!Number.isFinite(v)||v<=0))return NextResponse.json({message:"سهمیه هر دو گردان باید عددی معتبر و بزرگ‌تر از صفر باشد."},{status:400});
+  if(isSenior&&[brothersTarget,sistersTarget].some(v=>!Number.isFinite(v)||v<=0))return NextResponse.json({message:"سهمیه هر دو گردان باید عددی معتبر و بزرگ‌تر از صفر باشد."},{status:400});
   if(b.deadline_at&&(!deadlineAt||Number.isNaN(deadlineAt.getTime())))return NextResponse.json({message:"مهلت واردشده معتبر نیست."},{status:400});
   const {data:mission}=await admin.from("missions").select("id,group_id,title").eq("id",missionId).maybeSingle();
   if(!mission)return NextResponse.json({message:"مأموریت پیدا نشد."},{status:404});
