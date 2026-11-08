@@ -19,7 +19,7 @@ const nav: readonly NavItem[] = [
   { label: "گزارش‌های من", href: "/reports/mine", icon: "▤", roles: [] },
   { label: "همه گزارش‌ها", href: "/reports", icon: "☷", roles: ["main_admin", "deputy", "battalion_commander", "area_manager"] },
   { label: "ارسال نامه", href: "/messages", icon: "✉", roles: [] },
-  { label: "نمره‌دهی", href: "/scores", icon: "％", roles: ["main_admin", "deputy", "battalion_commander", "area_manager"] },
+  { label: "جلسه", href: "/session", icon: "◉", roles: ["main_admin", "deputy", "battalion_commander", "area_manager"] },
   { label: "ارزیابی عملکرد", href: "/performance", icon: "★", roles: ["main_admin", "deputy", "battalion_commander", "area_manager", "area_force"] },
   { label: "کاربران", href: "/users", icon: "♟", roles: ["main_admin", "deputy", "battalion_commander"] },
   { label: "نیروها", href: "/forces", icon: "♟", roles: ["main_admin", "deputy", "battalion_commander", "area_manager"] },
@@ -50,7 +50,8 @@ const pageTitles: Record<string, string> = {
   "/reports/mine": "گزارش‌های من",
   "/reports": "همه گزارش‌ها",
   "/messages": "ارسال نامه و صندوق نامه‌ها",
-  "/scores": "نمره‌دهی و سهمیه مأموریت‌ها",
+  "/scores": "جلسه و نمره‌دهی",
+  "/session": "جلسه و نمره‌دهی",
   "/performance": "ارزیابی و رتبه‌بندی عملکرد",
   "/users": "مدیریت کاربران",
   "/forces": "نیروهای حوزه‌ها",
@@ -119,7 +120,7 @@ export default function AppShell({ children }: Props) {
   }, [mobileOpen]);
 
   const role = me?.profile?.role;
-  const visible = nav.filter((item) => !item.roles.length || (role && item.roles.includes(role)) || (item.href === "/reports" && me?.can_review) || (item.href === "/messages" && me?.can_message) || (item.href === "/scores" && (me?.responsible_group_ids?.length > 0)));
+  const visible = nav.filter((item) => !item.roles.length || (role && item.roles.includes(role)) || (item.href === "/reports" && me?.can_review) || (item.href === "/messages" && me?.can_message) || (item.href === "/session" && (me?.responsible_group_ids?.length > 0)));
 
   const isActive = (href: string) => {
     if (href === "/dashboard") return pathname === "/dashboard";
@@ -155,7 +156,7 @@ export default function AppShell({ children }: Props) {
     ["/dashboard", "/reports/new", "/reports/mine", "/reports"].includes(item.href)
   );
   const management = visible.filter((item) =>
-    ["/messages", "/scores", "/performance", "/users", "/forces", "/organization", "/areas", "/bases", "/categories", "/files", "/analytics", "/audit", "/daily-message", "/telegram", "/settings"].includes(item.href)
+    ["/messages", "/session", "/performance", "/users", "/forces", "/organization", "/areas", "/bases", "/categories", "/files", "/analytics", "/audit", "/daily-message", "/telegram", "/settings"].includes(item.href)
   );
 
   return (
