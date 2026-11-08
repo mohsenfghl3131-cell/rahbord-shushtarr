@@ -3,7 +3,7 @@
 import AppShell from "@/app/components/AppShell";
 import {useEffect,useMemo,useState} from "react";
 
-type Force={id:string;user_code:string;display_name:string;is_active:boolean;created_at:string};
+type Force={id:string;user_code:string;display_name:string;is_active:boolean;created_at:string;report_count?:number;approved_count?:number;pending_count?:number;last_report_at?:string|null};
 type Area={id:string;name:string;code:string|null;is_active:boolean;forces:Force[]};
 
 export default function ForcesPage(){
@@ -66,7 +66,7 @@ export default function ForcesPage(){
         <div className="force-list">
           {selectedArea.forces.length===0?<div className="empty-state">هنوز نیرویی برای این حوزه ثبت نشده است.</div>:selectedArea.forces.map((f,i)=><article className="force-person-row" key={f.id}>
             <div className="avatar">{f.display_name?.slice(0,1)||"ن"}</div>
-            <div className="force-person-info"><b>{f.display_name}</b><small>کد کاربری: {f.user_code}</small></div>
+            <div className="force-person-info"><b>{f.display_name}</b><small>کد کاربری: {f.user_code}</small><small>گزارش‌ها: {Number(f.report_count||0).toLocaleString("fa-IR")} · تأییدشده: {Number(f.approved_count||0).toLocaleString("fa-IR")} · در انتظار: {Number(f.pending_count||0).toLocaleString("fa-IR")}</small>{f.last_report_at&&<small>آخرین گزارش: {new Date(f.last_report_at).toLocaleDateString("fa-IR")}</small>}</div>
             <span className={f.is_active?"force-status active":"force-status"}>{f.is_active?"فعال":"غیرفعال"}</span>
             <span className="force-person-number">{(i+1).toLocaleString("fa-IR")}</span>
           </article>)}
