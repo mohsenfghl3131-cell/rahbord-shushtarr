@@ -143,7 +143,7 @@ export default function ScoresPage(){
     <h3>{entry.area_id&&data.areas.find((a:any)=>a.id===entry.area_id)?(data.areas.find((a:any)=>a.id===entry.area_id).name+" · "):""}ثبت یا ویرایش عملکرد حوزه</h3>
     <div className="score-form-grid">
      <label>حوزه<select required value={entry.area_id} onChange={e=>{const areaId=e.target.value,existing:any=scoreMap.get(selectedMission.id+"_"+areaId);setEntry({mission_id:selectedMission.id,area_id:areaId,actual_value:existing?String(existing.actual_value):"",notes:existing?.notes??""});}}><option value="">انتخاب حوزه</option>{data.areas.map((a:any)=><option key={a.id} value={a.id}>{a.name}</option>)}</select></label>
-     <label>مقدار انجام‌شده<input type="number" min="0" step="any" required value={entry.actual_value} onChange={e=>setEntry({...entry,mission_id:selectedMission.id,actual_value:e.target.value})}/></label>
+     <label>نمره / مقدار تحقق‌یافته<input type="number" min="0" step="any" required value={entry.actual_value} onChange={e=>setEntry({...entry,mission_id:selectedMission.id,actual_value:e.target.value})}/></label>
      <label>توضیحات<input value={entry.notes} onChange={e=>setEntry({...entry,mission_id:selectedMission.id,notes:e.target.value})}/></label>
     </div>
     <button className="button neon-button" disabled={saving==="score"||!entry.area_id||!entry.actual_value}>{saving==="score"?"در حال ثبت…":(scoreMap.has(selectedMission.id+"_"+entry.area_id)?"ذخیره ویرایش نمره":"ثبت نمره حوزه")}</button>
