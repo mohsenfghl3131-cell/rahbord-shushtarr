@@ -44,8 +44,9 @@ export async function GET(){
  if(quotaError)return NextResponse.json({message:"دریافت سهمیه حوزه‌ها ناموفق بود."},{status:500});
  const visibleQuotas=(quotaRows??[]).filter((q:any)=>areas.some((a:any)=>a.id===q.area_id));
  const {data:battalionQuotas}=await admin.from("mission_battalion_quotas").select("mission_id,battalion_id,quota_value").in("mission_id",[...(ids)]);
+ const visibleBattalionQuotas=(battalionQuotas??[]).filter((q:any)=>!commanderBattalionId||q.battalion_id===commanderBattalionId);
  return NextResponse.json({
-  missions:missions??[],areas,scores:visibleScores,area_quotas:visibleQuotas,battalion_quotas:battalionQuotas??[],
+  missions:missions??[],areas,scores:visibleScores,area_quotas:visibleQuotas,battalion_quotas:visibleBattalionQuotas,
   can_create:canCreateMission(ctx),can_delete:isSenior,can_enter:canEnter(ctx),is_leader:isLeader,role:ctx.profile.role,assigned_battalion_id:commanderBattalionId
  });
 }
