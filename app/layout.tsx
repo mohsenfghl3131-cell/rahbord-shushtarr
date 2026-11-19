@@ -5,11 +5,11 @@ export const metadata:Metadata={
  title:{default:"سامانه راهبرد شوشتر",template:"%s | سامانه راهبرد شوشتر"},
  description:"مرکز یکپارچه مدیریت، گزارش‌دهی، پایش و تحلیل راهبرد شوشتر",
  applicationName:"سامانه راهبرد شوشتر",
- manifest:"/manifest.webmanifest?v=5",
+ manifest:"/manifest.webmanifest?v=6",
  icons:{
-  icon:[{url:"/app-icon.svg?v=5",type:"image/svg+xml",sizes:"512x512"}],
-  shortcut:[{url:"/app-icon.svg?v=5",type:"image/svg+xml"}],
-  apple:[{url:"/apple-touch-icon.png?v=5",sizes:"192x192",type:"image/png"}]
+  icon:[{url:"/app-icon.svg?v=6",type:"image/svg+xml",sizes:"512x512"}],
+  shortcut:[{url:"/app-icon.svg?v=6",type:"image/svg+xml",sizes:"512x512"}],
+  apple:[{url:"/app-icon.svg?v=6",sizes:"512x512",type:"image/svg+xml"}]
  },
  appleWebApp:{capable:true,title:"راهبرد شوشتر",statusBarStyle:"default"}
 };
