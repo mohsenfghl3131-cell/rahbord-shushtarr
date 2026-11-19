@@ -4851,3 +4851,21 @@ html[data-theme="light"] .command-page-shell .command-chart-selection b{color:#1
     margin:7px 0 9px!important;
   }
 }
+
+
+/* Mobile drawer width refinement — keep more of the page visible */
+@media (max-width:700px){
+  .unified-shell>.sidebar{
+    width:min(270px,78vw)!important;
+    max-width:270px!important;
+    padding:13px 10px!important;
+  }
+  .unified-shell>.sidebar .brand{gap:9px!important;padding-inline:5px!important}
+  .unified-shell>.sidebar .brand-copy b{font-size:13px!important}
+  .unified-shell>.sidebar nav a{padding:7px 8px!important;min-height:42px!important}
+  .unified-shell>.sidebar .sidebar-profile{padding-inline:2px!important}
+  .unified-shell>.sidebar .sidebar-logout{min-height:42px!important;padding:9px 10px!important}
+}
+@media (max-width:360px){
+  .unified-shell>.sidebar{width:min(258px,82vw)!important;max-width:258px!important}
+}
