@@ -5,10 +5,15 @@ export const metadata:Metadata={
  title:{default:"سامانه راهبرد شوشتر",template:"%s | سامانه راهبرد شوشتر"},
  description:"مرکز یکپارچه مدیریت، گزارش‌دهی، پایش و تحلیل راهبرد شوشتر",
  applicationName:"سامانه راهبرد شوشتر",
- manifest:"/manifest.webmanifest",
+ manifest:"/manifest.webmanifest?v=3",
+ icons:{
+  icon:[{url:"/icon.svg?v=3",type:"image/svg+xml"}],
+  shortcut:[{url:"/icon.svg?v=3",type:"image/svg+xml"}],
+  apple:[{url:"/icon.svg?v=3"}]
+ },
  appleWebApp:{capable:true,title:"راهبرد شوشتر",statusBarStyle:"default"}
 };
-export const viewport:Viewport={width:"device-width",initialScale:1,themeColor:"#102d45"};
+export const viewport:Viewport={width:"device-width",initialScale:1,themeColor:"#061426"};
 export default function RootLayout({children}:{children:React.ReactNode}){
  return <html lang="fa" dir="rtl"><body>{children}</body></html>
 }
