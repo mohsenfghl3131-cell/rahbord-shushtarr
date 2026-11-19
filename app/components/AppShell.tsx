@@ -80,6 +80,8 @@ export default function AppShell({ children }: Props) {
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [quickSearchOpen, setQuickSearchOpen] = useState(false);
   const [quickSearchQuery, setQuickSearchQuery] = useState("");
+  const [installPrompt, setInstallPrompt] = useState<any>(null);
+  const [installAvailable, setInstallAvailable] = useState(false);
 
   useEffect(() => {
     const saved = window.localStorage.getItem("rahbord-theme");
@@ -109,6 +111,29 @@ export default function AppShell({ children }: Props) {
     const timer = window.setInterval(loadNotifications, 30000);
     return () => { alive = false; window.clearInterval(timer); };
   }, []);
+
+  useEffect(() => {
+    const ready = (event: Event) => { const detail = (event as CustomEvent).detail; if (detail) { setInstallPrompt(detail); setInstallAvailable(true); } };
+    const installed = () => { setInstallPrompt(null); setInstallAvailable(false); };
+    window.addEventListener("rahbord-install-ready", ready);
+    window.addEventListener("appinstalled", installed);
+    return () => { window.removeEventListener("rahbord-install-ready", ready); window.removeEventListener("appinstalled", installed); };
+  }, []);
+
+  const installApp = async () => {
+    if (!installPrompt) {
+      alert("برای نصب، منوی سه‌نقطه مرورگر Chrome را باز کن و گزینه «نصب برنامه» یا «افزودن به صفحه اصلی» را بزن.");
+      return;
+    }
+    try {
+      await installPrompt.prompt();
+      await installPrompt.userChoice;
+      setInstallPrompt(null);
+      setInstallAvailable(false);
+    } catch {
+      alert("نصب خودکار در این مرورگر در دسترس نیست. از منوی Chrome گزینه «نصب برنامه» را انتخاب کن.");
+    }
+  };
 
   useEffect(() => {
     setMobileOpen(false);
@@ -221,6 +246,13 @@ export default function AppShell({ children }: Props) {
             <span>مدیریت سامانه</span>
             <nav>{renderNav(management)}</nav>
           </div>
+        </div>
+
+        <div className="sidebar-install-wrap">
+          <button type="button" className="sidebar-install-button" onClick={installApp} title="نصب اپلیکیشن راهبرد شوشتر" aria-label="نصب اپلیکیشن راهبرد شوشتر">
+            <span className="sidebar-install-icon">⇩</span>
+            <span className="nav-label">{installAvailable ? "نصب اپلیکیشن" : "نصب برنامه"}</span>
+          </button>
         </div>
 
         <div className="sidebar-profile">
